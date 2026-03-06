@@ -1,6 +1,6 @@
 ---
 layout: default
-title: AWS Event-Driven Architecture: SNS + SQS Patterns
+title: AWS Event-Driven Architecture
 nav_order: 2
 ---
 
