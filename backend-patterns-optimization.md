@@ -74,6 +74,11 @@ function merged(array $sources): Generator
     }
 }
 ```
+
+`yield from` also propagates the return value of the sub-generator (via `Generator::getReturn()`), which is useful for collecting summaries like row counts.
+
+> **Performance Tip:** A generator processing 1M rows uses ~2MB of memory. The same pipeline with `array_map` + `array_filter` allocates ~200MB+ for intermediate arrays. The trade-off: you lose random access (`$rows[500]`) and can only iterate once. If you need multiple passes, either re-create the generator or `iterator_to_array()` a small, filtered subset.
+
 <pre class="mermaid">
     %%{init: {'theme':'neutral'}}%%
 sequenceDiagram
@@ -127,12 +132,6 @@ sequenceDiagram
 
     Note over App,File: The pipeline "pauses" until Filter yields<br/>or Reader reaches EOF.
 </pre>
-
-
-`yield from` also propagates the return value of the sub-generator (via `Generator::getReturn()`), which is useful for collecting summaries like row counts.
-
-> **Performance Tip:** A generator processing 1M rows uses ~2MB of memory. The same pipeline with `array_map` + `array_filter` allocates ~200MB+ for intermediate arrays. The trade-off: you lose random access (`$rows[500]`) and can only iterate once. If you need multiple passes, either re-create the generator or `iterator_to_array()` a small, filtered subset.
-
 ---
 
 ## Data Mapper with Bulk Loading
