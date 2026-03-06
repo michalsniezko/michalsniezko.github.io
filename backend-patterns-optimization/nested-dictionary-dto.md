@@ -1,6 +1,6 @@
 ---
 layout: default
-title: ERP Bufferization
+title: Nested Dictionary DTOs
 parent: Backend Patterns & Optimization for High-Volume Systems
 nav_order: 6
 ---
