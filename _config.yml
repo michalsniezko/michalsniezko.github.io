@@ -1,4 +1,4 @@
-title: Michał Śnieżko
+title: Distributed Engineer's TIL
 description: "Battle-tested patterns and architectural decisions by Michał Śnieżko."
 
 remote_theme: just-the-docs/just-the-docs
@@ -19,3 +19,5 @@ aux_links:
     - "https://linkedin.com/in/michal-sniezko"
 
 favicon_ico: "/favicon.ico"
+
+logo: "/assets/images/logo.png"
