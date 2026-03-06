@@ -1,3 +1,9 @@
+---
+layout: default
+title: CloudWatch, Autoscaling, Lambda Patterns
+nav_order: 7
+---
+
 # Scaling: CloudWatch, Autoscaling & Lambda Patterns
 
 ## SQS-Based Autoscaling
