@@ -84,7 +84,7 @@ function merged(array $sources): Generator
 
 > **Performance Tip:** A generator processing 1M rows uses ~2MB of memory. The same pipeline with `array_map` + `array_filter` allocates ~200MB+ for intermediate arrays. The trade-off: you lose random access (`$rows[500]`) and can only iterate once. If you need multiple passes, either re-create the generator or `iterator_to_array()` a small, filtered subset.
 
-<pre class="mermaid">
+```mermaid
     %%{init: {'theme':'neutral'}}%%
 sequenceDiagram
     participant App as Main Loop (foreach)
@@ -136,4 +136,4 @@ sequenceDiagram
     deactivate Filter
 
     Note over App,File: The pipeline "pauses" until Filter yields<br/>or Reader reaches EOF.
-</pre>
+```
