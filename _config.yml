@@ -19,3 +19,5 @@ aux_links:
     - "https://linkedin.com/in/michal-sniezko"
 
 favicon_ico: "/favicon.ico"
+
+logo: "/assets/images/logo.png"
