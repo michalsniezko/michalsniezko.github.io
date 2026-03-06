@@ -7,7 +7,7 @@ nav_order: 1
 
 ## The TICK Stack
 
-**Use Case:** You need a self-hosted monitoring pipeline that collects metrics from 50+ services, stores time-series data efficiently, visualizes it in dashboards, and alerts your team when things break — without paying per-host SaaS fees.
+**Use Case:** You need a self-hosted monitoring pipeline that collects metrics from 50+ services, stores time-series data efficiently, visualizes it in dashboards, and alerts your team when things break - without paying per-host SaaS fees.
 
 TICK is four components, each replaceable independently:
 
@@ -101,4 +101,4 @@ volumes:
   influx-data:
 ```
 
-> **Clean Code Tip:** Telegraf has 300+ input plugins. Only enable what you need. Each plugin adds collection overhead, network traffic, and storage cost. Start with `cpu`, `mem`, `disk`, and `net` — add plugins when a specific question demands the data, not preemptively.
+> **Clean Code Tip:** Telegraf has 300+ input plugins. Only enable what you need. Each plugin adds collection overhead, network traffic, and storage cost. Start with `cpu`, `mem`, `disk`, and `net` - add plugins when a specific question demands the data, not preemptively.

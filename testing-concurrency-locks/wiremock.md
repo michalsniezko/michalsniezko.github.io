@@ -106,4 +106,4 @@ class PaymentClientTimeoutTest extends TestCase
 }
 ```
 
-> **Safety First:** When testing timeouts, set WireMock's delay *higher* than your client timeout — otherwise the test passes because the response arrives in time, not because your timeout handling works. Also: WireMock scenarios are global state. If your test suite runs in parallel (`paratest`), use unique scenario names per test class or reset WireMock state between test classes.
+> **Safety First:** When testing timeouts, set WireMock's delay *higher* than your client timeout - otherwise the test passes because the response arrives in time, not because your timeout handling works. Also: WireMock scenarios are global state. If your test suite runs in parallel (`paratest`), use unique scenario names per test class or reset WireMock state between test classes.

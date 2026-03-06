@@ -114,6 +114,6 @@ Resources:
       TopicName: order-events
 ```
 
-> **Pro-Tip:** Each Lambda function gets its own IAM execution role by default (SAM generates it). Use `Policies` with SAM policy templates like `SNSPublishMessagePolicy` instead of crafting inline IAM — it's less error-prone and automatically scopes permissions to the specific topic ARN.
+> **Pro-Tip:** Each Lambda function gets its own IAM execution role by default (SAM generates it). Use `Policies` with SAM policy templates like `SNSPublishMessagePolicy` instead of crafting inline IAM - it's less error-prone and automatically scopes permissions to the specific topic ARN.
 
 > **Gotcha:** Lambda's default timeout is 3 seconds. SNS publish calls typically complete in <100ms, but if your VPC-attached Lambda needs a NAT gateway to reach SNS, cold starts + network setup can blow past that. Either increase the timeout or use a **VPC endpoint for SNS** (`com.amazonaws.region.sns`) to keep traffic off the public internet and reduce latency.

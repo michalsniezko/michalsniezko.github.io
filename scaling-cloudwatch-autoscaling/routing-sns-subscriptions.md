@@ -7,11 +7,11 @@ nav_order: 6
 
 ## Routing via SNS Subscriptions
 
-**Metric:** No custom metric needed — routing is declarative via subscription configuration. Monitor `NumberOfMessagesPublished` (SNS) and `NumberOfMessagesReceived` (SQS) to verify messages flow.
+**Metric:** No custom metric needed - routing is declarative via subscription configuration. Monitor `NumberOfMessagesPublished` (SNS) and `NumberOfMessagesReceived` (SQS) to verify messages flow.
 
 **Scenario:** Your order service publishes `order.created`, `order.paid`, and `order.cancelled` events. The billing service only needs `order.paid`. The analytics service needs everything. The notification service needs `order.paid` and `order.cancelled`. Implementing this routing in application code means every publisher needs to know about every consumer.
 
-**Solution:** Publish everything to one SNS topic. Routing lives in subscription filter policies — the publisher is completely unaware of who consumes what.
+**Solution:** Publish everything to one SNS topic. Routing lives in subscription filter policies - the publisher is completely unaware of who consumes what.
 
 ### Architecture
 
@@ -19,7 +19,7 @@ nav_order: 6
                                  Filter: order_status=["paid"]
 Order Service ──► SNS Topic ──┬──────────────────────────────► SQS (Billing)
                               │
-                              │  Filter: (none — receives all)
+                              │  Filter: (none - receives all)
                               ├──────────────────────────────► SQS (Analytics)
                               │
                               │  Filter: order_status=["paid","cancelled"]
@@ -93,7 +93,7 @@ sns.publish(
 )
 ```
 
-Adding a new consumer (e.g., a fraud detection service) requires zero changes to the publisher — just add a new SQS queue and SNS subscription with the appropriate filter.
+Adding a new consumer (e.g., a fraud detection service) requires zero changes to the publisher - just add a new SQS queue and SNS subscription with the appropriate filter.
 
 ### Verifying Routing (CLI)
 
@@ -109,4 +109,4 @@ aws sns get-subscription-attributes \
     --output text
 ```
 
-> **Cost/Performance Note:** SNS charges per publish ($0.50/million requests), not per subscription delivery. But each SQS queue that receives the message incurs SQS costs. An unfiltered subscription on a high-volume topic (10M messages/day) where the consumer discards 95% of messages wastes ~$3.80/day in SQS receive + delete API calls alone. Always apply the narrowest filter policy possible — you're paying for every message that lands in a queue, even if the consumer immediately discards it.
+> **Cost/Performance Note:** SNS charges per publish ($0.50/million requests), not per subscription delivery. But each SQS queue that receives the message incurs SQS costs. An unfiltered subscription on a high-volume topic (10M messages/day) where the consumer discards 95% of messages wastes ~$3.80/day in SQS receive + delete API calls alone. Always apply the narrowest filter policy possible - you're paying for every message that lands in a queue, even if the consumer immediately discards it.

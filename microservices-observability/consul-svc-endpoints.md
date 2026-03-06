@@ -41,7 +41,7 @@ graph TD
 
 - Services register with Consul on startup and send periodic health checks.
 - Consul removes unhealthy instances from DNS responses.
-- Consumers use internal `.svc` DNS names — no IPs, no load balancer config changes needed.
+- Consumers use internal `.svc` DNS names - no IPs, no load balancer config changes needed.
 
 ### Environment Config
 
@@ -71,4 +71,4 @@ pricing_service:
 }
 ```
 
-> **Gotcha:** If your health check endpoint hits the database or a downstream dependency, a DB outage will mark your service as unhealthy — even though the service process itself is fine. Keep `/health` lightweight (return 200 if the process is up). Use a separate `/health/ready` for deep checks that include dependencies.
+> **Gotcha:** If your health check endpoint hits the database or a downstream dependency, a DB outage will mark your service as unhealthy - even though the service process itself is fine. Keep `/health` lightweight (return 200 if the process is up). Use a separate `/health/ready` for deep checks that include dependencies.

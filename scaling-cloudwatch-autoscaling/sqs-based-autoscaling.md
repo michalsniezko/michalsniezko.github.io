@@ -7,7 +7,7 @@ nav_order: 1
 
 ## SQS-Based Autoscaling
 
-**Metric:** `ApproximateNumberOfMessagesVisible` — the number of messages in the queue waiting to be processed. More useful than CPU for worker-based architectures because a queue can be deep while workers sit idle waiting on I/O (low CPU, high backlog).
+**Metric:** `ApproximateNumberOfMessagesVisible` - the number of messages in the queue waiting to be processed. More useful than CPU for worker-based architectures because a queue can be deep while workers sit idle waiting on I/O (low CPU, high backlog).
 
 CPU-based scaling misses the actual problem: unprocessed work. A worker doing HTTP calls to a slow upstream might use 5% CPU while 50,000 messages pile up. SQS depth tells you how much work exists, not how hard the machines are working.
 
@@ -87,4 +87,4 @@ aws cloudwatch put-metric-data \
     --unit Count
 ```
 
-> **Cost/Performance Note:** Set `scale_in_cooldown` significantly higher than `scale_out_cooldown`. Scaling out is cheap (handle the spike). Scaling in too fast causes **flapping**: traffic spike → scale to 20 → spike subsides → scale to 2 → next batch arrives → scale to 20. A 5-minute scale-in cooldown lets transient dips pass without thrashing. Also: ECS tasks take 30–90 seconds to become healthy — factor this startup lag into your target value.
+> **Cost/Performance Note:** Set `scale_in_cooldown` significantly higher than `scale_out_cooldown`. Scaling out is cheap (handle the spike). Scaling in too fast causes **flapping**: traffic spike → scale to 20 → spike subsides → scale to 2 → next batch arrives → scale to 20. A 5-minute scale-in cooldown lets transient dips pass without thrashing. Also: ECS tasks take 30–90 seconds to become healthy - factor this startup lag into your target value.

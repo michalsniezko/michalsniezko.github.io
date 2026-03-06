@@ -14,7 +14,7 @@ nav_order: 4
 | Concern               | Webpack                            | Rollup                              |
 |-----------------------|------------------------------------|--------------------------------------|
 | Output format         | Proprietary module wrapper         | Clean ES modules / CommonJS          |
-| Tree-shaking          | Works, but less aggressive         | Best-in-class — dead code elimination |
+| Tree-shaking          | Works, but less aggressive         | Best-in-class - dead code elimination |
 | Code splitting        | Excellent for apps                 | Limited (app bundling not its strength) |
 | Config complexity     | Loaders, plugins, dev server       | Minimal for library use cases        |
 | Bundle size (library) | Larger due to runtime overhead     | Smaller, no runtime wrapper          |
@@ -31,7 +31,7 @@ import { terser } from 'rollup-plugin-terser';
 export default {
     input: 'src/index.ts',
 
-    // Peer dependencies — DO NOT bundle these
+    // Peer dependencies - DO NOT bundle these
     external: [
         'react',
         'react-dom',
@@ -85,16 +85,16 @@ export default {
 ### Tree-Shaking in Action
 
 ```typescript
-// src/index.ts — library exports 10 utilities
+// src/index.ts - library exports 10 utilities
 export { formatCurrency } from './formatters/currency';
 export { formatDate } from './formatters/date';
 export { debounce } from './utils/debounce';
 export { throttle } from './utils/throttle';
 // ... 6 more exports
 
-// Consumer app — only imports 2
+// Consumer app - only imports 2
 import { formatCurrency, debounce } from '@company/ui-utils';
 // Rollup's ESM output lets the consumer's bundler drop the other 8 completely
 ```
 
-> **Clean Code Tip:** The `external` array is the most commonly misconfigured option. If you forget to exclude `react`, Rollup bundles React into your library — every app that imports your library ships two copies of React (148KB duplicated). Rule: everything in `peerDependencies` goes in `external`. Use a regex pattern for internal packages to avoid maintaining a long list.
+> **Clean Code Tip:** The `external` array is the most commonly misconfigured option. If you forget to exclude `react`, Rollup bundles React into your library - every app that imports your library ships two copies of React (148KB duplicated). Rule: everything in `peerDependencies` goes in `external`. Use a regex pattern for internal packages to avoid maintaining a long list.

@@ -7,7 +7,7 @@ nav_order: 5
 
 ## JS Testing with Jest
 
-**Scenario:** Your frontend calculates a vehicle's monthly payment based on price, interest rate, and loan term. This logic lives in a pure TypeScript module — no DOM, no API calls. You need fast, isolated tests with good mocking support for the edge cases (zero interest, negative values, rounding).
+**Scenario:** Your frontend calculates a vehicle's monthly payment based on price, interest rate, and loan term. This logic lives in a pure TypeScript module - no DOM, no API calls. You need fast, isolated tests with good mocking support for the edge cases (zero interest, negative values, rounding).
 
 ### Module Under Test
 
@@ -83,4 +83,4 @@ describe('fetchVehiclePrice', () => {
 });
 ```
 
-> **Safety First:** Jest runs tests in parallel by default (one worker per CPU core). If your tests share mutable state (e.g., `global.fetch = jest.fn()` without cleanup), tests can leak state into each other. Always restore mocks in `afterEach` or use `jest.restoreAllMocks()`. For true isolation, use `--runInBand` to run sequentially — slower, but eliminates parallel flakiness during debugging.
+> **Safety First:** Jest runs tests in parallel by default (one worker per CPU core). If your tests share mutable state (e.g., `global.fetch = jest.fn()` without cleanup), tests can leak state into each other. Always restore mocks in `afterEach` or use `jest.restoreAllMocks()`. For true isolation, use `--runInBand` to run sequentially - slower, but eliminates parallel flakiness during debugging.

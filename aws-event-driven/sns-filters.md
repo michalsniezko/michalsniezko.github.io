@@ -7,7 +7,7 @@ nav_order: 2
 
 ## SNS Filter Policies
 
-**Problem:** Your `order-events` topic publishes events for all order states: `created`, `paid`, `shipped`, `cancelled`. The billing queue only cares about `paid` — but without filtering, it receives (and discards) every message. At scale, this wastes compute and can cause consumer lag.
+**Problem:** Your `order-events` topic publishes events for all order states: `created`, `paid`, `shipped`, `cancelled`. The billing queue only cares about `paid` - but without filtering, it receives (and discards) every message. At scale, this wastes compute and can cause consumer lag.
 
 **Solution:** Attach a filter policy to the SNS subscription. SNS evaluates the policy against message attributes and only delivers matching messages to that subscriber.
 
@@ -43,7 +43,7 @@ aws sns set-subscription-attributes \
   --attribute-value '{"order_status": ["paid"], "region": [{"prefix": "eu-"}]}'
 ```
 
-> **Pro-Tip:** By default, filter policies match against **message attributes**. Since 2022, you can set `FilterPolicyScope` to `MessageBody` to filter on the JSON payload itself — useful when you can't control the publisher's attributes. Set it like this:
+> **Pro-Tip:** By default, filter policies match against **message attributes**. Since 2022, you can set `FilterPolicyScope` to `MessageBody` to filter on the JSON payload itself - useful when you can't control the publisher's attributes. Set it like this:
 >
 > ```bash
 > aws sns set-subscription-attributes \

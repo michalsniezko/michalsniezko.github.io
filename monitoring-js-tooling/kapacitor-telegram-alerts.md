@@ -7,7 +7,7 @@ nav_order: 3
 
 ## Kapacitor & Telegram Alerts
 
-**Use Case:** Email alerts get buried. Slack channels get muted. A Telegram bot message pings your phone directly with a sound — hard to ignore at 3 AM when your order queue is backed up.
+**Use Case:** Email alerts get buried. Slack channels get muted. A Telegram bot message pings your phone directly with a sound - hard to ignore at 3 AM when your order queue is backed up.
 
 Kapacitor processes streams from InfluxDB and evaluates TICKscript rules in real time. When a condition is met, it fires an alert to any configured handler (Telegram, Slack, PagerDuty, webhook).
 
@@ -85,4 +85,4 @@ kapacitor enable cpu_alert
 kapacitor show cpu_alert   # verify status
 ```
 
-> **Clean Code Tip:** `.stateChangesOnly()` is the single most important line in any TICKscript. Without it, Kapacitor fires an alert every evaluation cycle while the condition persists — your Telegram bot sends 60 messages per hour for sustained high CPU. State-change alerts fire once on breach and once on recovery. Add `.flapping(0.2, 0.5)` if alerts toggle between OK and WARN rapidly.
+> **Clean Code Tip:** `.stateChangesOnly()` is the single most important line in any TICKscript. Without it, Kapacitor fires an alert every evaluation cycle while the condition persists - your Telegram bot sends 60 messages per hour for sustained high CPU. State-change alerts fire once on breach and once on recovery. Add `.flapping(0.2, 0.5)` if alerts toggle between OK and WARN rapidly.

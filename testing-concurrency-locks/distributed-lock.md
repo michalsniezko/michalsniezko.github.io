@@ -9,14 +9,14 @@ nav_order: 1
 
 **Scenario:** Two Kubernetes pods receive the same SQS message (at-least-once delivery). Both try to generate an invoice for order `ord-999`. Without coordination, you get duplicate invoices and a very confused accounting team.
 
-A distributed lock ensures only one process executes a critical section at a time, even across multiple nodes. The lock state lives in a shared store (Redis, PostgreSQL, DynamoDB) — not in local memory.
+A distributed lock ensures only one process executes a critical section at a time, even across multiple nodes. The lock state lives in a shared store (Redis, PostgreSQL, DynamoDB) - not in local memory.
 
 ### Blocking vs. Non-Blocking
 
 | Strategy         | Behavior                                    | Use When                                |
 |------------------|---------------------------------------------|-----------------------------------------|
-| **Blocking**     | Waits (up to TTL) for the lock to release   | Work must eventually complete — e.g., invoice generation |
-| **Non-Blocking** | Returns `false` immediately if lock is held | Duplicate work is safe to skip — e.g., idempotent cache refresh |
+| **Blocking**     | Waits (up to TTL) for the lock to release   | Work must eventually complete - e.g., invoice generation |
+| **Non-Blocking** | Returns `false` immediately if lock is held | Duplicate work is safe to skip - e.g., idempotent cache refresh |
 
 ### Blocking Lock
 

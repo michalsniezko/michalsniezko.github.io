@@ -7,7 +7,7 @@ nav_order: 5
 
 ## GitHub CLI (`gh pr`)
 
-**Flow:** Branch → commit → push → `gh pr create` → reviewer approves → `gh pr merge` — all without leaving the terminal.
+**Flow:** Branch → commit → push → `gh pr create` → reviewer approves → `gh pr merge` - all without leaving the terminal.
 
 Switching to the GitHub UI to create a PR, copy a link, assign reviewers, and merge breaks flow. `gh` keeps you in the terminal where your context already lives.
 
@@ -57,4 +57,4 @@ gh pr create \
 
 GitHub auto-closes issue `#87` when the PR merges.
 
-> **Reliability Note:** `gh pr merge --auto` enables auto-merge when all checks pass — useful for dependabot PRs. But it merges the moment checks go green, even if you pushed a "wait, one more fix" commit that hasn't been CI'd yet. Use `--auto` only for PRs where the branch is final. For active development branches, merge manually after confirming the latest commit passed.
+> **Reliability Note:** `gh pr merge --auto` enables auto-merge when all checks pass - useful for dependabot PRs. But it merges the moment checks go green, even if you pushed a "wait, one more fix" commit that hasn't been CI'd yet. Use `--auto` only for PRs where the branch is final. For active development branches, merge manually after confirming the latest commit passed.

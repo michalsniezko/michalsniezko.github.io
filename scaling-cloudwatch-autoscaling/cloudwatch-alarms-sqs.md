@@ -7,7 +7,7 @@ nav_order: 2
 
 ## CloudWatch Alarms for SQS Backlog
 
-**Metric:** `ApproximateNumberOfMessagesVisible` (for backlog) and `ApproximateAgeOfOldestMessage` (for staleness). Age is often more actionable — 1,000 messages that are 2 seconds old is fine; 10 messages that are 30 minutes old means your consumer is dead.
+**Metric:** `ApproximateNumberOfMessagesVisible` (for backlog) and `ApproximateAgeOfOldestMessage` (for staleness). Age is often more actionable - 1,000 messages that are 2 seconds old is fine; 10 messages that are 30 minutes old means your consumer is dead.
 
 ### Terraform: Queue Depth Alarm
 
@@ -46,7 +46,7 @@ resource "aws_cloudwatch_metric_alarm" "queue_age_high" {
   period              = 60
   statistic           = "Maximum"
   threshold           = 600        # 10 minutes
-  alarm_description   = "Oldest message in queue is > 10 minutes old — consumer may be stuck"
+  alarm_description   = "Oldest message in queue is > 10 minutes old - consumer may be stuck"
 
   dimensions = {
     QueueName = "order-processing"
@@ -70,4 +70,4 @@ resource "aws_sns_topic_subscription" "slack_webhook" {
 }
 ```
 
-> **Cost/Performance Note:** `evaluation_periods = 3` with `period = 60` means the alarm triggers after 3 consecutive minutes above threshold. This prevents alert noise from brief spikes (e.g., a batch job drops 10k messages, workers drain it in 90 seconds). For `ApproximateAgeOfOldestMessage`, use `statistic = "Maximum"` — you care about the worst case, not the average.
+> **Cost/Performance Note:** `evaluation_periods = 3` with `period = 60` means the alarm triggers after 3 consecutive minutes above threshold. This prevents alert noise from brief spikes (e.g., a batch job drops 10k messages, workers drain it in 90 seconds). For `ApproximateAgeOfOldestMessage`, use `statistic = "Maximum"` - you care about the worst case, not the average.

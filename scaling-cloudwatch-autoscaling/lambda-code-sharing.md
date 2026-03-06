@@ -56,7 +56,7 @@ Resources:
 ### Option B: Monolith Router (Anti-Pattern at Scale)
 
 ```python
-# handler.py — single entry point for everything
+# handler.py - single entry point for everything
 def handler(event, context):
     if "httpMethod" in event:
         return handle_api(event)
@@ -72,11 +72,11 @@ def handler(event, context):
 
 | Aspect                    | Multi-Handler                      | Monolith Router                    |
 |---------------------------|------------------------------------|------------------------------------|
-| Memory/Timeout tuning     | Per function — optimized           | One size fits all — wasteful       |
-| Concurrency limits        | Per function — isolated            | Shared — SQS spike starves API    |
+| Memory/Timeout tuning     | Per function - optimized           | One size fits all - wasteful       |
+| Concurrency limits        | Per function - isolated            | Shared - SQS spike starves API    |
 | Error blast radius        | Bug in S3 handler doesn't affect API | Bug in router breaks everything |
 | Cold starts               | Each function has its own cold start pool | Single pool, fewer cold starts |
 | Deployment                | Can deploy one function independently | All-or-nothing deploy            |
-| Monitoring                | Metrics per function — clear       | One set of metrics — noisy        |
+| Monitoring                | Metrics per function - clear       | One set of metrics - noisy        |
 
-> **Cost/Performance Note:** The monolith router's only real advantage is fewer cold starts (one warm pool serves all events). But this is offset by the inability to right-size memory and timeout per event type. An API handler needs 256MB and 10s; an SQS batch processor needs 512MB and 60s. With the monolith, you set 512MB/60s for everything — overpaying for API calls and under-provisioning nothing. At scale, the wasted memory across millions of API invocations far exceeds the cold start savings.
+> **Cost/Performance Note:** The monolith router's only real advantage is fewer cold starts (one warm pool serves all events). But this is offset by the inability to right-size memory and timeout per event type. An API handler needs 256MB and 10s; an SQS batch processor needs 512MB and 60s. With the monolith, you set 512MB/60s for everything - overpaying for API calls and under-provisioning nothing. At scale, the wasted memory across millions of API invocations far exceeds the cold start savings.

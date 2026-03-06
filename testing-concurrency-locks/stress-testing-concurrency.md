@@ -7,7 +7,7 @@ nav_order: 3
 
 ## Stress Testing Concurrency
 
-**Scenario:** You wrote the upsert fix. Your unit test passes. But does it hold under real concurrency? A single-threaded PHPUnit test won't reproduce the race condition — you need multiple processes hitting the same row simultaneously.
+**Scenario:** You wrote the upsert fix. Your unit test passes. But does it hold under real concurrency? A single-threaded PHPUnit test won't reproduce the race condition - you need multiple processes hitting the same row simultaneously.
 
 **Methodology:** Spawn N parallel processes, each attempting the same upsert. Collect exit codes and stdout. If any process throws an exception or the final row count is wrong, the fix is incomplete.
 

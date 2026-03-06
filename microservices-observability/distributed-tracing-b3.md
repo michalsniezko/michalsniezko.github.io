@@ -69,4 +69,4 @@ traceId: "463ac35c9f6413ad48485a3953bb6124"
 
 ...returns every log line from every service that touched that request, in chronological order.
 
-> **Gotcha:** The most common tracing break: making an outgoing HTTP call without forwarding B3 headers. If even one service in the chain drops them, the downstream services generate new trace IDs and the request becomes invisible in your trace view. Audit every HTTP client in your codebase — Guzzle, cURL, Symfony HttpClient — to ensure middleware or interceptors propagate headers.
+> **Gotcha:** The most common tracing break: making an outgoing HTTP call without forwarding B3 headers. If even one service in the chain drops them, the downstream services generate new trace IDs and the request becomes invisible in your trace view. Audit every HTTP client in your codebase - Guzzle, cURL, Symfony HttpClient - to ensure middleware or interceptors propagate headers.

@@ -39,7 +39,7 @@ arn:aws:sqs:eu-west-1:123456789012:billing-queue
 # Lambda Function
 arn:aws:lambda:eu-west-1:123456789012:function:order-publisher
 
-# IAM Role (no region — IAM is global)
+# IAM Role (no region - IAM is global)
 arn:aws:iam::123456789012:role/lambda-exec-role
 ```
 

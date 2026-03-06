@@ -16,8 +16,8 @@ nav_order: 6
 | Behavior                        | `npm install`                         | `npm ci`                              |
 |---------------------------------|---------------------------------------|---------------------------------------|
 | Reads                           | `package.json` (primary)              | `package-lock.json` (primary)         |
-| Modifies `package-lock.json`    | Yes, if tree differs                  | Never — fails if lockfile is outdated |
-| Deletes `node_modules/`         | No — merges incrementally             | Yes — clean install every time        |
+| Modifies `package-lock.json`    | Yes, if tree differs                  | Never - fails if lockfile is outdated |
+| Deletes `node_modules/`         | No - merges incrementally             | Yes - clean install every time        |
 | Speed (cold)                    | Slower (resolves tree)                | Faster (skips resolution)             |
 | Deterministic                   | No                                    | Yes                                   |
 | Use in                          | Local development                     | CI/CD pipelines                       |

@@ -7,7 +7,7 @@ nav_order: 1
 
 ## Repositories as Service Clients
 
-**Context:** In a monolith, a `Repository` talks to a local database. In a microservices architecture, the same pattern applies — but the "data source" is another service's API. The repository abstraction hides whether data comes from Postgres or an HTTP call, keeping your domain layer clean.
+**Context:** In a monolith, a `Repository` talks to a local database. In a microservices architecture, the same pattern applies - but the "data source" is another service's API. The repository abstraction hides whether data comes from Postgres or an HTTP call, keeping your domain layer clean.
 
 ### Example: A Repository That Calls an External Service
 
@@ -49,4 +49,4 @@ App\Repository\VehicleRepository:
         $baseUrl: '%env(VEHICLE_SERVICE_URL)%'
 ```
 
-> **Gotcha:** Treat HTTP repositories as unreliable data sources. Unlike a DB query, a service call can timeout, return 503, or give you stale data. Always define explicit timeouts on the HTTP client and decide on a fallback strategy (throw, return null, use cache) — don't let Guzzle's default 30s timeout silently stall your request.
+> **Gotcha:** Treat HTTP repositories as unreliable data sources. Unlike a DB query, a service call can timeout, return 503, or give you stale data. Always define explicit timeouts on the HTTP client and decide on a fallback strategy (throw, return null, use cache) - don't let Guzzle's default 30s timeout silently stall your request.

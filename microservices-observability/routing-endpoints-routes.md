@@ -9,7 +9,7 @@ nav_order: 6
 
 **Context:** In a microservice, you deal with two directions of traffic: **outgoing** calls to other services and **incoming** requests to your own endpoints. Mixing these configs leads to confusion about what your service exposes vs. what it consumes.
 
-### `routes.yaml` — Incoming Traffic (What You Expose)
+### `routes.yaml` - Incoming Traffic (What You Expose)
 
 Defines the HTTP endpoints your service handles. This is your service's public contract.
 
@@ -31,7 +31,7 @@ health_check:
     methods: [GET]
 ```
 
-### `endpoints.yaml` — Outgoing Traffic (What You Consume)
+### `endpoints.yaml` - Outgoing Traffic (What You Consume)
 
 Defines base URLs and paths for services you call. Typically loaded into service client configuration.
 
@@ -78,4 +78,4 @@ class VehicleClient
 }
 ```
 
-> **Gotcha:** When a team renames their API path (e.g., `/api/v1/vehicles` → `/api/v2/vehicles`), you only need to update `endpoints.yaml` — not grep through business logic. But this only works if you never hardcode paths in PHP code. The moment someone writes `$client->get('http://vehicle-service.svc:8080/api/v1/vehicles/' . $id)` inline, you've lost the single source of truth. Enforce that all outgoing paths come from config.
+> **Gotcha:** When a team renames their API path (e.g., `/api/v1/vehicles` → `/api/v2/vehicles`), you only need to update `endpoints.yaml` - not grep through business logic. But this only works if you never hardcode paths in PHP code. The moment someone writes `$client->get('http://vehicle-service.svc:8080/api/v1/vehicles/' . $id)` inline, you've lost the single source of truth. Enforce that all outgoing paths come from config.

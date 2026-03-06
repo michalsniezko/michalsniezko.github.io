@@ -7,7 +7,7 @@ nav_order: 6
 
 ## Environment Syncing: Frontend Dictionaries from Backend DTOs
 
-**Use Case:** The backend serves a `/api/v1/filters/dictionaries` endpoint that returns all possible filter values. The frontend needs to consume this and keep its TypeScript types in sync — otherwise the backend adds a new fuel type and the frontend's type system doesn't know it exists.
+**Use Case:** The backend serves a `/api/v1/filters/dictionaries` endpoint that returns all possible filter values. The frontend needs to consume this and keep its TypeScript types in sync - otherwise the backend adds a new fuel type and the frontend's type system doesn't know it exists.
 
 ### Backend Response (Recap)
 

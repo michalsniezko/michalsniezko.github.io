@@ -7,7 +7,7 @@ nav_order: 2
 
 ## Race Conditions & Upsert (`ON CONFLICT`)
 
-**Scenario:** Two workers process SQS messages for the same vehicle simultaneously. Both check `SELECT * FROM vehicle WHERE external_id = 'v-123'` — both get zero rows — both `INSERT`. One succeeds, the other throws a unique constraint violation. Your error logs fill up, messages retry, and the problem compounds.
+**Scenario:** Two workers process SQS messages for the same vehicle simultaneously. Both check `SELECT * FROM vehicle WHERE external_id = 'v-123'` - both get zero rows - both `INSERT`. One succeeds, the other throws a unique constraint violation. Your error logs fill up, messages retry, and the problem compounds.
 
 **Solution:** Replace the check-then-insert with an atomic `UPSERT`. The database handles the race at the storage engine level.
 
@@ -65,4 +65,4 @@ class VehicleRepository
 }
 ```
 
-> **Safety First:** The `WHERE vehicle.updated_at < EXCLUDED.updated_at` clause in the `DO UPDATE` prevents stale data from overwriting newer data (ties into the out-of-order message problem from earlier). Without it, the last writer always wins — even if it carries older data. Also: ensure `external_id` has a `UNIQUE` index, otherwise `ON CONFLICT` has nothing to conflict against and silently inserts duplicates.
+> **Safety First:** The `WHERE vehicle.updated_at < EXCLUDED.updated_at` clause in the `DO UPDATE` prevents stale data from overwriting newer data (ties into the out-of-order message problem from earlier). Without it, the last writer always wins - even if it carries older data. Also: ensure `external_id` has a `UNIQUE` index, otherwise `ON CONFLICT` has nothing to conflict against and silently inserts duplicates.

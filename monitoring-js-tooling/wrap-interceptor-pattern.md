@@ -9,7 +9,7 @@ nav_order: 5
 
 **Use Case:** Every Lambda handler needs the same boilerplate: parse the event, log the request, catch errors, format the response, log the duration. Copy-pasting this into 30 handlers means 30 places to update when you change the error format or add a new header.
 
-**Solution:** A higher-order function that wraps any handler with cross-cutting concerns. The business logic handler stays pure — it receives parsed input and returns data. The wrapper handles HTTP plumbing.
+**Solution:** A higher-order function that wraps any handler with cross-cutting concerns. The business logic handler stays pure - it receives parsed input and returns data. The wrapper handles HTTP plumbing.
 
 ### The Interceptor
 
@@ -28,7 +28,7 @@ function wrapHandler(businessLogic, options = {}) {
             requestId,
             path: event.path,
             method: event.httpMethod,
-            // Never log event.body in production — may contain PII
+            // Never log event.body in production - may contain PII
         }));
 
         try {
@@ -94,7 +94,7 @@ const { OrderService } = require('../core/orderService');
 const service = new OrderService();  // reused across warm invocations
 
 module.exports.handler = wrapHandler(async ({ body }) => {
-    // Pure business logic — no HTTP plumbing
+    // Pure business logic - no HTTP plumbing
     const order = await service.create({
         productId: body.productId,
         quantity: body.quantity,
@@ -112,4 +112,4 @@ module.exports.handler = wrapHandler(
 );
 ```
 
-> **Clean Code Tip:** Resist the urge to make the interceptor configurable for every edge case (custom serializers, per-route middleware chains, plugin systems). That's an HTTP framework — use Express or Fastify at that point. The wrapper should handle 3 things: logging, error formatting, and response shaping. Anything more complex means your Lambda is doing too much.
+> **Clean Code Tip:** Resist the urge to make the interceptor configurable for every edge case (custom serializers, per-route middleware chains, plugin systems). That's an HTTP framework - use Express or Fastify at that point. The wrapper should handle 3 things: logging, error formatting, and response shaping. Anything more complex means your Lambda is doing too much.

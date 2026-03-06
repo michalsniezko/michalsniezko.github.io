@@ -78,4 +78,4 @@ cd infrastructure/environments/dev
 terraform init -backend-config="key=environments/dev/terraform.tfstate"
 ```
 
-> **Security Note:** The S3 state file contains every resource attribute in plaintext — including database passwords, private keys, and API tokens that Terraform manages. Enable S3 bucket versioning (to recover from corruption), enforce SSE-S3 or SSE-KMS encryption, and restrict bucket access to the CI service role only. Never commit `.tfstate` to Git.
+> **Security Note:** The S3 state file contains every resource attribute in plaintext - including database passwords, private keys, and API tokens that Terraform manages. Enable S3 bucket versioning (to recover from corruption), enforce SSE-S3 or SSE-KMS encryption, and restrict bucket access to the CI service role only. Never commit `.tfstate` to Git.

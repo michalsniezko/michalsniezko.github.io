@@ -7,7 +7,7 @@ nav_order: 5
 
 ## API Documentation with Swagger/OpenAPI Annotations
 
-**Context:** Maintaining a separate API doc that drifts from the actual code is a liability. Annotating endpoints directly in the controller keeps documentation co-located with the implementation — when the code changes, the doc reminder is right there.
+**Context:** Maintaining a separate API doc that drifts from the actual code is a liability. Annotating endpoints directly in the controller keeps documentation co-located with the implementation - when the code changes, the doc reminder is right there.
 
 ### Annotated Controller (PHP with OpenAPI Attributes)
 
@@ -57,4 +57,4 @@ docker run -p 8082:8080 \
   swaggerapi/swagger-ui
 ```
 
-> **Gotcha:** Annotations only document what you write — they don't validate runtime behavior. If your annotation says the response is `200` with an `OrderResponse` schema but your code actually returns a different structure on edge cases, the doc becomes a lie. Pair annotations with response serialization tests that assert the actual output matches the documented schema.
+> **Gotcha:** Annotations only document what you write - they don't validate runtime behavior. If your annotation says the response is `200` with an `OrderResponse` schema but your code actually returns a different structure on edge cases, the doc becomes a lie. Pair annotations with response serialization tests that assert the actual output matches the documented schema.

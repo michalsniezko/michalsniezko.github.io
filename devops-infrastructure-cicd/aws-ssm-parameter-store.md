@@ -125,4 +125,4 @@ class ParameterStoreConfig
 }
 ```
 
-> **Security Note:** SSM `GetParameter` calls are logged in CloudTrail — you get a full audit trail of who accessed which secret and when. But: if your application logs the values it reads (`$logger->info('DB config', $params)`), you've just written the plaintext secret to your log aggregator. Treat SSM values as opaque — log the parameter *name*, never the *value*.
+> **Security Note:** SSM `GetParameter` calls are logged in CloudTrail - you get a full audit trail of who accessed which secret and when. But: if your application logs the values it reads (`$logger->info('DB config', $params)`), you've just written the plaintext secret to your log aggregator. Treat SSM values as opaque - log the parameter *name*, never the *value*.

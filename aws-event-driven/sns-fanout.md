@@ -7,7 +7,7 @@ nav_order: 1
 
 ## SNS Fan-out to SQS
 
-**Problem:** Service A needs to notify Services B, C, and D when an order is placed. Direct HTTP calls create tight coupling — if Service C is down, Service A either blocks or needs retry logic for every downstream consumer.
+**Problem:** Service A needs to notify Services B, C, and D when an order is placed. Direct HTTP calls create tight coupling - if Service C is down, Service A either blocks or needs retry logic for every downstream consumer.
 
 **Pattern:** Publish once to an SNS topic. Each downstream service owns its own SQS queue subscribed to that topic. SNS handles delivery, retries, and fan-out. Services consume independently at their own pace.
 

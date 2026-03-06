@@ -78,7 +78,7 @@ class VehicleStatusConsumerTest extends TestCase
 
     public function testOlderEventIsAppliedWhenNoRowExists(): void
     {
-        // First message for this entity — should always insert regardless of age
+        // First message for this entity - should always insert regardless of age
         $this->consumer->handle([
             'entity_id'       => 'v-456',
             'event_timestamp' => '2026-03-06T10:00:00Z',
@@ -103,7 +103,7 @@ class VehicleStatusConsumerTest extends TestCase
             'payload'         => ['status' => 'inspected'],
         ]);
 
-        // Same timestamp, different status — should NOT overwrite (< not <=)
+        // Same timestamp, different status - should NOT overwrite (< not <=)
         $this->consumer->handle([
             'entity_id'       => 'v-789',
             'event_timestamp' => $ts,
@@ -158,4 +158,4 @@ class VehicleStatusConsumerTest extends TestCase
 }
 ```
 
-> **Safety First:** The randomized test (`testRandomizedDeliveryOrder`) is a poor man's property-based test. It catches ordering bugs, but `shuffle()` is non-deterministic — a failing run might not reproduce. Log the shuffle order on failure so you can replay the exact sequence. For deterministic reproduction, seed the shuffle: `mt_srand($seed); shuffle($shuffled);` and log the seed.
+> **Safety First:** The randomized test (`testRandomizedDeliveryOrder`) is a poor man's property-based test. It catches ordering bugs, but `shuffle()` is non-deterministic - a failing run might not reproduce. Log the shuffle order on failure so you can replay the exact sequence. For deterministic reproduction, seed the shuffle: `mt_srand($seed); shuffle($shuffled);` and log the seed.

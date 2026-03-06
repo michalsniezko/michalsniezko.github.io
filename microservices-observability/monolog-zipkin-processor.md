@@ -67,4 +67,4 @@ monolog:
 }
 ```
 
-> **Gotcha:** If you run console commands or async workers (Messenger), there's no incoming HTTP request — `RequestStack::getCurrentRequest()` returns `null`. Your processor must handle this gracefully (like the `'no-trace'` fallback above), or better yet, generate a synthetic trace ID for CLI contexts so those logs are also traceable.
+> **Gotcha:** If you run console commands or async workers (Messenger), there's no incoming HTTP request - `RequestStack::getCurrentRequest()` returns `null`. Your processor must handle this gracefully (like the `'no-trace'` fallback above), or better yet, generate a synthetic trace ID for CLI contexts so those logs are also traceable.
