@@ -1,3 +1,9 @@
+---
+layout: default
+title: Backend Patterns
+nav_order: 4
+---
+
 # Backend Patterns & Optimization for High-Volume Systems
 
 ## Generator Patterns with `yield from`
