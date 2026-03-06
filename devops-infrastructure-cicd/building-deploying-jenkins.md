@@ -7,7 +7,23 @@ nav_order: 3
 
 ## Building & Deploying on Jenkins
 
-**Flow:** Git push → webhook → Jenkins pipeline: **Checkout → Build → Test → Publish Image → Deploy**.
+### Flow
+```mermaid
+graph LR
+Developer((Developer)) -- "Git push" --> Repo[Git Repository]
+Repo -- "Webhook" --> Jenkins{Jenkins Pipeline}
+
+    subgraph "CI/CD Process"
+    Jenkins --> Checkout[Checkout Code]
+    Checkout --> Build[Build]
+    Build --> Test[Test]
+    Test --> Publish[Publish Image]
+    Publish --> Deploy[Deploy]
+    end
+
+    style Jenkins fill:#f0d442,stroke:#333
+    style Deploy fill:#44cc11,color:#fff
+```
 
 Each stage gates the next. If tests fail, the image never gets published. If the image fails to push, deploy never runs. This prevents half-baked artifacts from reaching any environment.
 

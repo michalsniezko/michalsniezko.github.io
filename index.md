@@ -60,6 +60,21 @@ Self-hosted monitoring with the TICK stack, Telegram alerts that wake you at 3 A
 
 ---
 
+## Code Examples
+
+Articles use whichever language fits the context:
+
+- **PHP** — domain logic, Symfony services, Doctrine, Monolog processors
+- **JavaScript / Node.js** — Lambda handlers, AWS SDK v3, Rollup configs
+- **HCL (Terraform)** — infrastructure resources and remote state
+- **SQL** — PostgreSQL upserts and conflict handling
+- **YAML / TOML** — Symfony config, Telegraf/Kapacitor configs
+- **Bash** — CI scripts, `gh` CLI workflows, Kapacitor task loading
+
+Most articles mix languages - e.g. a PHP publisher paired with the Terraform that deploys the SNS topic it publishes to.
+
+---
+
 ## About Me
 
 I'm Michał Śnieżko, a backend software engineer at **Auto1 Group** in Kraków, Poland, with 10+ years of experience building web applications in PHP.
