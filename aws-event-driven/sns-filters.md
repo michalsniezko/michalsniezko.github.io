@@ -59,12 +59,12 @@ resource "aws_sns_topic_subscription" "billing_paid_orders" {
 By default, `filter_policy` matches against **message attributes**. Set `filter_policy_scope` to `MessageBody` to filter on fields inside the JSON payload itself - useful when you can't control the publisher's attributes.
 
 ```hcl
-resource "aws_sns_topic_subscription" "car_changelog" {
-  topic_arn           = var.car_changelog_sns_topic_arn
+resource "aws_sns_topic_subscription" "billing_paid_orders" {
+  topic_arn           = aws_sns_topic.order_events.arn
   protocol            = "sqs"
-  endpoint            = aws_sqs_queue.car_changelog.arn
+  endpoint            = aws_sqs_queue.billing.arn
   filter_policy_scope = "MessageBody"
-  filter_policy       = jsonencode({ type = ["Entity.Car.update"] })
+  filter_policy       = jsonencode({ order_status = ["paid"] })
 }
 ```
 
