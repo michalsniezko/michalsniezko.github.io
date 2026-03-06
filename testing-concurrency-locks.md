@@ -1,3 +1,9 @@
+---
+layout: default
+title: Testing, Concurrency, Distributed Locks
+nav_order: 5
+---
+
 # Testing, Concurrency & Distributed Locks
 
 ## Distributed Lock (Symfony Lock)
