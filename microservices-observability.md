@@ -1,3 +1,9 @@
+---
+layout: default
+title: Microservices
+nav_order: 3
+---
+
 # Microservices: Service Discovery & Observability
 
 ## Repositories as Service Clients
