@@ -12,6 +12,8 @@ permalink: /
 > 
 > No theory without context - every entry here came from a real problem in a PHP/AWS/microservices stack.
 
+> **Author: Michał Śnieżko**
+> Backend Software Engineer focused on AWS, PHP, and Infrastructure as Code.
 ---
 
 ## Contents
