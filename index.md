@@ -1,3 +1,10 @@
+---
+layout: default
+title: Home
+nav_order: 1
+description: "Start here for distributed systems patterns."
+---
+
 # The Distributed Engineer's TIL
 
 > Battle-tested patterns, architectural decisions, and sharp lessons from building distributed systems that actually run in production.
