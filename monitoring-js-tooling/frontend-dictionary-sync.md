@@ -167,5 +167,6 @@ graph TD
     style IF fill:#3178c6,color:#fff
     style Entry fill:#f3f3f3
     style IE fill:#f3f3f3```
+```
 
 > **Clean Code Tip:** Generate the TypeScript types from the backend's OpenAPI spec instead of maintaining them by hand. If the backend uses Swagger annotations, run `openapi-typescript` against the generated spec: `npx openapi-typescript ./openapi.json -o src/types/api.ts`. This eliminates the manual sync and catches schema drift at build time, not at runtime when a user sees a broken dropdown.
