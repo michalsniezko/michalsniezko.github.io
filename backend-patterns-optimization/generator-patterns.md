@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Generator Patterns with `yield from`
+title: Generator Patterns
 parent: Backend Patterns & Optimization for High-Volume Systems
 nav_order: 1
 ---
