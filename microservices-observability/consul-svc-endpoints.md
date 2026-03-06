@@ -7,7 +7,7 @@ nav_order: 2
 
 ## Consul & `.svc` Endpoints
 
-**Context:** Hardcoding service URLs (`http://10.0.3.47:8080`) breaks the moment an instance scales, moves, or dies. A service mesh like Consul maintains a registry of healthy instances and provides stable DNS names so services find each other without caring about infrastructure.
+**Context:** Hardcoding service URLs (`http://10.0.3.47:8080`) breaks the moment an instance scales, moves, or dies. A service mesh like [Consul](https://developer.hashicorp.com/consul/docs) maintains a registry of healthy instances and provides stable DNS names so services find each other without caring about infrastructure.
 
 ### How It Works
 

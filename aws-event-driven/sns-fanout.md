@@ -31,6 +31,8 @@ graph LR
 
 ### Terraform: SNS Topic, SQS Queue & Subscription
 
+[`aws_sns_topic_subscription`](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/sns_topic_subscription) wires each SQS queue to the topic:
+
 ```hcl
 resource "aws_sns_topic" "order_events" {
   name = "order-events"
@@ -73,4 +75,4 @@ resource "aws_sqs_queue_policy" "billing_allow_sns" {
 }
 ```
 
-> **Gotcha:** Without `RawMessageDelivery: true`, SNS wraps your message in its own JSON envelope. Your consumer then has to unwrap `Message` from within an SNS notification object. Always enable raw delivery for SQS subscribers unless you need the SNS metadata.
+> **Gotcha:** Without [`RawMessageDelivery`](https://docs.aws.amazon.com/sns/latest/dg/sns-large-payload-raw-message-delivery.html)`: true`, SNS wraps your message in its own JSON envelope. Your consumer then has to unwrap `Message` from within an SNS notification object. Always enable raw delivery for SQS subscribers unless you need the SNS metadata.

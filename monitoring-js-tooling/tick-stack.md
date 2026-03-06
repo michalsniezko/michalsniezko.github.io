@@ -21,10 +21,10 @@ Telegraf ──► InfluxDB ──► Chronograf
 
 | Component    | Role                          | Analogy                        |
 |-------------|-------------------------------|--------------------------------|
-| **Telegraf**  | Agent that collects metrics (CPU, RAM, disk, custom)  | Prometheus node_exporter  |
-| **InfluxDB**  | Time-series database optimized for write-heavy workloads | Prometheus TSDB          |
-| **Chronograf**| Dashboard UI for queries and visualization              | Grafana                  |
-| **Kapacitor** | Stream processing engine for alerting rules             | Prometheus Alertmanager  |
+| [**Telegraf**](https://docs.influxdata.com/telegraf/latest/)  | Agent that collects metrics (CPU, RAM, disk, custom)  | Prometheus node_exporter  |
+| [**InfluxDB**](https://docs.influxdata.com/influxdb/latest/)  | Time-series database optimized for write-heavy workloads | Prometheus TSDB          |
+| [**Chronograf**](https://docs.influxdata.com/chronograf/latest/)| Dashboard UI for queries and visualization              | Grafana                  |
+| [**Kapacitor**](https://docs.influxdata.com/kapacitor/latest/) | Stream processing engine for alerting rules             | Prometheus Alertmanager  |
 
 ### Telegraf Agent Config
 

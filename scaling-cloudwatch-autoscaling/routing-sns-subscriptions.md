@@ -11,7 +11,7 @@ nav_order: 6
 
 **Scenario:** Your order service publishes `order.created`, `order.paid`, and `order.cancelled` events. The billing service only needs `order.paid`. The analytics service needs everything. The notification service needs `order.paid` and `order.cancelled`. Implementing this routing in application code means every publisher needs to know about every consumer.
 
-**Solution:** Publish everything to one SNS topic. Routing lives in subscription filter policies - the publisher is completely unaware of who consumes what.
+**Solution:** Publish everything to one SNS topic. Routing lives in [subscription filter policies](https://docs.aws.amazon.com/sns/latest/dg/sns-subscription-filter-policies.html) - the publisher is completely unaware of who consumes what.
 
 ### Architecture
 

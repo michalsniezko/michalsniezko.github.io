@@ -7,7 +7,7 @@ nav_order: 1
 
 ## Terraform Project Structure & Remote Backend
 
-**Flow:** Engineer writes HCL → commits to Git → CI runs `terraform plan` → reviewer approves → CI runs `terraform apply` → state is stored remotely in S3, locked via DynamoDB.
+**Flow:** Engineer writes HCL → commits to Git → CI runs `terraform plan` → reviewer approves → CI runs `terraform apply` → state is stored remotely in the [S3 backend](https://developer.hashicorp.com/terraform/language/backend/s3), locked via DynamoDB.
 
 Without a remote backend, the state file (`terraform.tfstate`) lives on whoever's laptop ran `apply` last. A second engineer runs `apply` from their machine with stale state and overwrites infrastructure. DynamoDB locking prevents concurrent applies from corrupting state.
 

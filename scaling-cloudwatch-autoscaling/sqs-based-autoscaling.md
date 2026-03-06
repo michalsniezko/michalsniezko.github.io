@@ -21,6 +21,8 @@ BacklogPerInstance = ApproximateNumberOfMessagesVisible / RunningTaskCount
 
 ### Terraform: ECS Autoscaling on Queue Depth
 
+[`aws_appautoscaling_policy`](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/appautoscaling_policy) with `TargetTrackingScaling` adjusts the ECS service's desired count based on the custom metric:
+
 ```hcl
 resource "aws_appautoscaling_target" "workers" {
   max_capacity       = 20

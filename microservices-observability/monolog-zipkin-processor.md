@@ -7,7 +7,7 @@ nav_order: 4
 
 ## Monolog Integration with Zipkin Processor
 
-**Context:** Tracing headers exist on the HTTP layer, but your application logs (Monolog) don't automatically include them. Without adding the TraceID to every log entry, you can't correlate application-level logs with distributed traces.
+**Context:** Tracing headers exist on the HTTP layer, but your application logs ([Monolog](https://github.com/Seldaek/monolog)) don't automatically include them. Without adding the TraceID to every log entry, you can't correlate application-level logs with distributed traces.
 
 ### Custom Monolog Processor
 

@@ -67,7 +67,7 @@ exports.handler = async (event) => {
 };
 ```
 
-### SAM Template (Abbreviated)
+### [SAM](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/what-is-sam.html) Template (Abbreviated)
 
 ```yaml
 Resources:

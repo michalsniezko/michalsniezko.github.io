@@ -8,7 +8,7 @@ nav_order: 4
 
 ## Amazon ARN Structure
 
-**Problem:** IAM policies, subscription configs, and cross-account access all reference resources by ARN. Misunderstanding the format leads to overly permissive policies or hard-to-debug "access denied" errors.
+**Problem:** IAM policies, subscription configs, and cross-account access all reference resources by [ARN](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference-arns.html). Misunderstanding the format leads to overly permissive policies or hard-to-debug "access denied" errors.
 
 ### ARN Format
 

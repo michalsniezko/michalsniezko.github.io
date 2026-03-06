@@ -7,9 +7,11 @@ nav_order: 2
 
 ## CloudWatch Alarms for SQS Backlog
 
-**Metric:** `ApproximateNumberOfMessagesVisible` (for backlog) and `ApproximateAgeOfOldestMessage` (for staleness). Age is often more actionable - 1,000 messages that are 2 seconds old is fine; 10 messages that are 30 minutes old means your consumer is dead.
+**Metric:** `ApproximateNumberOfMessagesVisible` (for backlog) and [`ApproximateAgeOfOldestMessage`](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-available-cloudwatch-metrics.html) (for staleness). Age is often more actionable - 1,000 messages that are 2 seconds old is fine; 10 messages that are 30 minutes old means your consumer is dead.
 
 ### Terraform: Queue Depth Alarm
+
+[`aws_cloudwatch_metric_alarm`](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_metric_alarm) triggers SNS notifications when thresholds are breached:
 
 ```hcl
 resource "aws_cloudwatch_metric_alarm" "queue_backlog_high" {

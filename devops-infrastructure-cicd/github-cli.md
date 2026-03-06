@@ -5,7 +5,7 @@ parent: Infrastructure as Code
 nav_order: 5
 ---
 
-## GitHub CLI (`gh pr`)
+## [GitHub CLI](https://cli.github.com/manual/) (`gh pr`)
 
 **Flow:** Branch → commit → push → `gh pr create` → reviewer approves → `gh pr merge` - all without leaving the terminal.
 

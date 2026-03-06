@@ -7,7 +7,7 @@ nav_order: 4
 
 ## Rollup.js Bundler
 
-**Use Case:** You're building a shared JS/TS library consumed by multiple frontend apps. Webpack bundles everything into one fat file (good for apps). Rollup produces clean ES modules with tree-shaking that lets the consuming app drop unused exports (good for libraries).
+**Use Case:** You're building a shared JS/TS library consumed by multiple frontend apps. Webpack bundles everything into one fat file (good for apps). [Rollup](https://rollupjs.org/) produces clean ES modules with tree-shaking that lets the consuming app drop unused exports (good for libraries).
 
 ### Why Rollup Over Webpack for Libraries
 

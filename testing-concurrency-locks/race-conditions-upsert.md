@@ -5,7 +5,7 @@ parent: Testing, Concurrency, Distributed Locks
 nav_order: 2
 ---
 
-## Race Conditions & Upsert (`ON CONFLICT`)
+## Race Conditions & Upsert ([`ON CONFLICT`](https://www.postgresql.org/docs/current/sql-insert.html#SQL-ON-CONFLICT))
 
 **Scenario:** Two workers process SQS messages for the same vehicle simultaneously. Both check `SELECT * FROM vehicle WHERE external_id = 'v-123'` - both get zero rows - both `INSERT`. One succeeds, the other throws a unique constraint violation. Your error logs fill up, messages retry, and the problem compounds.
 
@@ -37,7 +37,7 @@ DO UPDATE SET
 WHERE vehicle.updated_at < EXCLUDED.updated_at;
 ```
 
-### Doctrine DBAL Implementation
+### [Doctrine DBAL](https://www.doctrine-project.org/projects/doctrine-dbal/en/latest/index.html) Implementation
 
 ```php
 class VehicleRepository

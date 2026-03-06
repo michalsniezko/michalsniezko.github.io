@@ -9,9 +9,11 @@ nav_order: 3
 
 **Use Case:** Email alerts get buried. Slack channels get muted. A Telegram bot message pings your phone directly with a sound - hard to ignore at 3 AM when your order queue is backed up.
 
-Kapacitor processes streams from InfluxDB and evaluates TICKscript rules in real time. When a condition is met, it fires an alert to any configured handler (Telegram, Slack, PagerDuty, webhook).
+Kapacitor processes streams from InfluxDB and evaluates [TICKscript](https://docs.influxdata.com/kapacitor/latest/reference/tick/) rules in real time. When a condition is met, it fires an alert to any configured handler (Telegram, Slack, PagerDuty, webhook).
 
 ### Kapacitor Config (Telegram Handler)
+
+Requires a [Telegram Bot API](https://core.telegram.org/bots/api) token — create one via @BotFather.
 
 ```toml
 # kapacitor.conf

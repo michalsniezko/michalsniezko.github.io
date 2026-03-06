@@ -9,7 +9,7 @@ nav_order: 4
 
 **Flow:** Engineer stores secret in SSM → application reads it at boot (or Terraform references it during deploy) → no secrets in Git, no secrets in environment variable definitions committed to repos.
 
-Hardcoding `DB_PASSWORD=hunter2` in a `.env` file that gets committed (even to a private repo) is a matter of time before it leaks. SSM Parameter Store provides encrypted, versioned, auditable secret storage.
+Hardcoding `DB_PASSWORD=hunter2` in a `.env` file that gets committed (even to a private repo) is a matter of time before it leaks. [SSM Parameter Store](https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-parameter-store.html) provides encrypted, versioned, auditable secret storage.
 
 ### Storing Parameters (Terraform)
 
@@ -125,4 +125,4 @@ class ParameterStoreConfig
 }
 ```
 
-> **Security Note:** SSM `GetParameter` calls are logged in CloudTrail - you get a full audit trail of who accessed which secret and when. But: if your application logs the values it reads (`$logger->info('DB config', $params)`), you've just written the plaintext secret to your log aggregator. Treat SSM values as opaque - log the parameter *name*, never the *value*.
+> **Security Note:** SSM `GetParameter` calls are logged in [CloudTrail](https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-user-guide.html) - you get a full audit trail of who accessed which secret and when. But: if your application logs the values it reads (`$logger->info('DB config', $params)`), you've just written the plaintext secret to your log aggregator. Treat SSM values as opaque - log the parameter *name*, never the *value*.

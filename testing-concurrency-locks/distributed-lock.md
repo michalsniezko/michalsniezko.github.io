@@ -5,7 +5,7 @@ parent: Testing, Concurrency, Distributed Locks
 nav_order: 1
 ---
 
-## Distributed Lock (Symfony Lock)
+## Distributed Lock ([Symfony Lock](https://symfony.com/doc/current/lock.html))
 
 **Scenario:** Two Kubernetes pods receive the same SQS message (at-least-once delivery). Both try to generate an invoice for order `ord-999`. Without coordination, you get duplicate invoices and a very confused accounting team.
 

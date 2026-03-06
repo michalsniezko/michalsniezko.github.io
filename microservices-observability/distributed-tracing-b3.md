@@ -7,7 +7,7 @@ nav_order: 3
 
 ## Distributed Tracing with X-B3 Headers (Zipkin)
 
-**Context:** A single user request might pass through an API gateway, auth service, order service, payment service, and notification service. Without a shared trace ID, correlating logs across these systems is guesswork. Zipkin's B3 propagation solves this by threading a `TraceID` through every hop.
+**Context:** A single user request might pass through an API gateway, auth service, order service, payment service, and notification service. Without a shared trace ID, correlating logs across these systems is guesswork. [Zipkin's B3 propagation](https://github.com/openzipkin/b3-propagation) solves this by threading a `TraceID` through every hop.
 
 ### B3 Header Set
 
@@ -59,7 +59,7 @@ class TracingMiddleware
 }
 ```
 
-### Viewing in Kibana
+### Viewing in [Kibana](https://www.elastic.co/kibana)
 
 With the TraceID indexed in your logs, a Kibana query like:
 

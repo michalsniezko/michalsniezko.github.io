@@ -39,7 +39,7 @@ resource "aws_cloudwatch_metric_alarm" "lambda_duration_high" {
 }
 ```
 
-### Structured Logging for CloudWatch Insights
+### Structured Logging for [CloudWatch Logs Insights](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/AnalyzingLogData.html)
 
 ```javascript
 exports.handler = async (event, context) => {

@@ -49,4 +49,4 @@ async function handleOrderUpdate(message) {
 
 > **Gotcha:** Use the publisher's event timestamp, **not** the SQS `SentTimestamp` attribute. SQS timestamps reflect when the message entered the queue, not when the business event occurred. If a publisher retries a failed SNS publish, the SQS timestamp will be newer but the event is the same (or older).
 
-> **Pro-Tip:** For strict ordering without consumer-side logic, use **SQS FIFO queues** with `MessageGroupId`. Messages within the same group are delivered in order. Trade-off: FIFO queues cap at 300 msg/s per group (3,000 with batching) vs. virtually unlimited for standard queues.
+> **Pro-Tip:** For strict ordering without consumer-side logic, use **[SQS FIFO queues](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/FIFO-queues.html)** with `MessageGroupId`. Messages within the same group are delivered in order. Trade-off: FIFO queues cap at 300 msg/s per group (3,000 with batching) vs. virtually unlimited for standard queues.
