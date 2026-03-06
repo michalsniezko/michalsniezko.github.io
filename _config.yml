@@ -1,11 +1,12 @@
 title: The Distributed Engineer’s TIL
-description: Practical patterns and architectural deep dives.
+description: "Battle-tested patterns and architectural decisions by Michał Śnieżko."
+
 remote_theme: just-the-docs/just-the-docs
 
 mermaid:
   version: "10"
 
-color_scheme: dark
+color_scheme: light
 
 search_enabled: true
 
