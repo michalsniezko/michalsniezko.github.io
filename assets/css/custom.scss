@@ -1,8 +1,0 @@
----
----
-@import "support/variables";
-@import "color_schemes/dark";
-
-html[data-theme='dark'] {
-  @include dark-scheme;
-}
