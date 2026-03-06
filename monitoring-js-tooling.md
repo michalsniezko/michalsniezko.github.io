@@ -1,3 +1,9 @@
+---
+layout: default
+title: Monitoring with TICK Stack, JavaScript Tooling
+nav_order: 8
+---
+
 # Monitoring with TICK Stack & JavaScript Tooling
 
 ## The TICK Stack
