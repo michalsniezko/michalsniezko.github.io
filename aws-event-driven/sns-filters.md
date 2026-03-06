@@ -22,32 +22,52 @@ nav_order: 2
 
 This policy delivers only messages where `order_status` is `paid` AND `region` starts with `eu-`.
 
-### Publishing with Message Attributes
+### Publishing with Message Attributes (PHP)
 
-```bash
-aws sns publish \
-  --topic-arn arn:aws:sns:eu-west-1:123456789012:order-events \
-  --message '{"orderId": "abc-123", "amount": 49.99}' \
-  --message-attributes '{
-    "order_status": {"DataType": "String", "StringValue": "paid"},
-    "region": {"DataType": "String", "StringValue": "eu-west"}
-  }'
+```php
+use Aws\Sns\SnsClient;
+
+$sns = new SnsClient(['region' => 'eu-west-1', 'version' => 'latest']);
+
+$sns->publish([
+    'TopicArn' => 'arn:aws:sns:eu-west-1:123456789012:order-events',
+    'Message'  => json_encode(['orderId' => 'abc-123', 'amount' => 49.99]),
+    'MessageAttributes' => [
+        'order_status' => ['DataType' => 'String', 'StringValue' => 'paid'],
+        'region'       => ['DataType' => 'String', 'StringValue' => 'eu-west'],
+    ],
+]);
 ```
 
-### Applying the Filter Policy to a Subscription
+### Terraform: Subscription with Filter on Message Attributes
 
-```bash
-aws sns set-subscription-attributes \
-  --subscription-arn arn:aws:sns:eu-west-1:123456789012:order-events:a1b2c3d4 \
-  --attribute-name FilterPolicy \
-  --attribute-value '{"order_status": ["paid"], "region": [{"prefix": "eu-"}]}'
+```hcl
+resource "aws_sns_topic_subscription" "billing_paid_orders" {
+  topic_arn = aws_sns_topic.order_events.arn
+  protocol  = "sqs"
+  endpoint  = aws_sqs_queue.billing.arn
+
+  filter_policy = jsonencode({
+    order_status = ["paid"]
+    region       = [{ prefix = "eu-" }]
+  })
+}
 ```
 
-> **Pro-Tip:** By default, filter policies match against **message attributes**. Since 2022, you can set `FilterPolicyScope` to `MessageBody` to filter on the JSON payload itself - useful when you can't control the publisher's attributes. Set it like this:
->
-> ```bash
-> aws sns set-subscription-attributes \
->   --subscription-arn <sub-arn> \
->   --attribute-name FilterPolicyScope \
->   --attribute-value MessageBody
-> ```
+### Terraform: Filter on Message Body
+
+By default, `filter_policy` matches against **message attributes**. Set `filter_policy_scope` to `MessageBody` to filter on fields inside the JSON payload itself - useful when you can't control the publisher's attributes.
+
+```hcl
+resource "aws_sns_topic_subscription" "car_changelog" {
+  topic_arn           = var.car_changelog_sns_topic_arn
+  protocol            = "sqs"
+  endpoint            = aws_sqs_queue.car_changelog.arn
+  filter_policy_scope = "MessageBody"
+  filter_policy       = jsonencode({ type = ["Entity.Car.update"] })
+}
+```
+
+Both `filter_policy_scope` and `filter_policy` live on the same subscription resource - SNS uses the scope to decide whether to evaluate the filter against message attributes or the message body.
+
+> **Gotcha:** If you set `filter_policy_scope = "MessageBody"` but your publisher sends the routing info as message attributes (not in the JSON body), the filter will never match and the subscription silently receives nothing. Make sure the scope matches where your publisher actually puts the data.

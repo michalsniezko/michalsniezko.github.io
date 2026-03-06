@@ -53,38 +53,62 @@ resource "aws_appautoscaling_policy" "scale_on_queue" {
 }
 ```
 
-### Publishing the Custom Metric (Lambda or Cron)
+### Publishing the Custom Metric (Lambda)
 
-```bash
-#!/bin/bash
-QUEUE_URL="https://sqs.eu-west-1.amazonaws.com/123456789012/order-processing"
-CLUSTER="production"
-SERVICE="order-worker"
+```javascript
+const { SQSClient, GetQueueAttributesCommand } = require('@aws-sdk/client-sqs');
+const { ECSClient, DescribeServicesCommand } = require('@aws-sdk/client-ecs');
+const { CloudWatchClient, PutMetricDataCommand } = require('@aws-sdk/client-cloudwatch');
 
-MSG_COUNT=$(aws sqs get-queue-attributes \
-    --queue-url "$QUEUE_URL" \
-    --attribute-names ApproximateNumberOfMessagesVisible \
-    --query 'Attributes.ApproximateNumberOfMessagesVisible' \
-    --output text)
+const sqs = new SQSClient({});
+const ecs = new ECSClient({});
+const cw  = new CloudWatchClient({});
 
-TASK_COUNT=$(aws ecs describe-services \
-    --cluster "$CLUSTER" \
-    --services "$SERVICE" \
-    --query 'services[0].runningCount' \
-    --output text)
+exports.handler = async () => {
+    const queueAttrs = await sqs.send(new GetQueueAttributesCommand({
+        QueueUrl: process.env.QUEUE_URL,
+        AttributeNames: ['ApproximateNumberOfMessagesVisible'],
+    }));
+    const msgCount = parseInt(queueAttrs.Attributes.ApproximateNumberOfMessagesVisible, 10);
 
-# Avoid division by zero
-if [ "$TASK_COUNT" -eq 0 ]; then
-    BACKLOG="$MSG_COUNT"
-else
-    BACKLOG=$((MSG_COUNT / TASK_COUNT))
-fi
+    const services = await ecs.send(new DescribeServicesCommand({
+        cluster: process.env.CLUSTER,
+        services: [process.env.SERVICE],
+    }));
+    const taskCount = services.services[0].runningCount;
 
-aws cloudwatch put-metric-data \
-    --namespace "Custom/WorkerScaling" \
-    --metric-name "BacklogPerInstance" \
-    --value "$BACKLOG" \
-    --unit Count
+    const backlog = taskCount === 0 ? msgCount : Math.floor(msgCount / taskCount);
+
+    await cw.send(new PutMetricDataCommand({
+        Namespace: 'Custom/WorkerScaling',
+        MetricData: [{
+            MetricName: 'BacklogPerInstance',
+            Value: backlog,
+            Unit: 'Count',
+        }],
+    }));
+};
+```
+
+### Terraform: Scheduled Lambda for Custom Metric
+
+```hcl
+resource "aws_cloudwatch_event_rule" "backlog_metric" {
+  name                = "publish-backlog-metric"
+  schedule_expression = "rate(1 minute)"
+}
+
+resource "aws_cloudwatch_event_target" "backlog_lambda" {
+  rule = aws_cloudwatch_event_rule.backlog_metric.name
+  arn  = aws_lambda_function.backlog_publisher.arn
+}
+
+resource "aws_lambda_permission" "allow_eventbridge" {
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.backlog_publisher.function_name
+  principal     = "events.amazonaws.com"
+  source_arn    = aws_cloudwatch_event_rule.backlog_metric.arn
+}
 ```
 
 > **Cost/Performance Note:** Set `scale_in_cooldown` significantly higher than `scale_out_cooldown`. Scaling out is cheap (handle the spike). Scaling in too fast causes **flapping**: traffic spike → scale to 20 → spike subsides → scale to 2 → next batch arrives → scale to 20. A 5-minute scale-in cooldown lets transient dips pass without thrashing. Also: ECS tasks take 30–90 seconds to become healthy - factor this startup lag into your target value.

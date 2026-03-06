@@ -99,18 +99,26 @@ await sns.send(new PublishCommand({
 
 Adding a new consumer (e.g., a fraud detection service) requires zero changes to the publisher - just add a new SQS queue and SNS subscription with the appropriate filter.
 
-### Verifying Routing (CLI)
+### Verifying Routing (Terraform Output)
 
-```bash
-# List all subscriptions on a topic
-aws sns list-subscriptions-by-topic \
-    --topic-arn arn:aws:sns:eu-west-1:123456789012:order-events
+```hcl
+output "billing_subscription_arn" {
+  value = aws_sns_topic_subscription.billing.arn
+}
 
-# Check a specific subscription's filter policy
-aws sns get-subscription-attributes \
-    --subscription-arn arn:aws:sns:eu-west-1:123456789012:order-events:a1b2c3d4 \
-    --query 'Attributes.FilterPolicy' \
-    --output text
+output "billing_filter_policy" {
+  value = aws_sns_topic_subscription.billing.filter_policy
+}
+
+output "analytics_subscription_arn" {
+  value = aws_sns_topic_subscription.analytics.arn
+}
+
+output "notifications_filter_policy" {
+  value = aws_sns_topic_subscription.notifications.filter_policy
+}
 ```
+
+Run `terraform output` after apply to confirm each subscription has the expected filter policy. For runtime verification, check the SNS delivery metrics in CloudWatch: `NumberOfMessagesPublished` on the topic vs. `NumberOfMessagesReceived` on each queue.
 
 > **Cost/Performance Note:** SNS charges per publish ($0.50/million requests), not per subscription delivery. But each SQS queue that receives the message incurs SQS costs. An unfiltered subscription on a high-volume topic (10M messages/day) where the consumer discards 95% of messages wastes ~$3.80/day in SQS receive + delete API calls alone. Always apply the narrowest filter policy possible - you're paying for every message that lands in a queue, even if the consumer immediately discards it.

@@ -19,34 +19,47 @@ Publisher ──► SNS ────┼──► SQS (Billing)   ──► Consu
                       └──► SQS (Analytics) ──► Consumer D
 ```
 
-### Subscribing an SQS Queue to SNS (CLI)
+### Terraform: SNS Topic, SQS Queue & Subscription
 
-```bash
-aws sns subscribe \
-  --topic-arn arn:aws:sns:eu-west-1:123456789012:order-events \
-  --protocol sqs \
-  --notification-endpoint arn:aws:sqs:eu-west-1:123456789012:billing-queue \
-  --attributes '{"RawMessageDelivery": "true"}'
+```hcl
+resource "aws_sns_topic" "order_events" {
+  name = "order-events"
+}
+
+resource "aws_sqs_queue" "billing" {
+  name = "billing-queue"
+}
+
+resource "aws_sns_topic_subscription" "billing" {
+  topic_arn            = aws_sns_topic.order_events.arn
+  protocol             = "sqs"
+  endpoint             = aws_sqs_queue.billing.arn
+  raw_message_delivery = true
+}
 ```
 
 ### SQS Queue Policy (Allow SNS to Push)
 
-```json
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Principal": {"Service": "sns.amazonaws.com"},
-      "Action": "sqs:SendMessage",
-      "Resource": "arn:aws:sqs:eu-west-1:123456789012:billing-queue",
-      "Condition": {
-        "ArnEquals": {
-          "aws:SourceArn": "arn:aws:sns:eu-west-1:123456789012:order-events"
+```hcl
+resource "aws_sqs_queue_policy" "billing_allow_sns" {
+  queue_url = aws_sqs_queue.billing.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect    = "Allow"
+        Principal = { Service = "sns.amazonaws.com" }
+        Action    = "sqs:SendMessage"
+        Resource  = aws_sqs_queue.billing.arn
+        Condition = {
+          ArnEquals = {
+            "aws:SourceArn" = aws_sns_topic.order_events.arn
+          }
         }
       }
-    }
-  ]
+    ]
+  })
 }
 ```
 

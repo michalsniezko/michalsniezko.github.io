@@ -11,23 +11,23 @@ nav_order: 4
 
 Hardcoding `DB_PASSWORD=hunter2` in a `.env` file that gets committed (even to a private repo) is a matter of time before it leaks. SSM Parameter Store provides encrypted, versioned, auditable secret storage.
 
-### Storing Parameters (CLI)
+### Storing Parameters (Terraform)
 
-```bash
+```hcl
 # String parameter (non-sensitive config)
-aws ssm put-parameter \
-    --name "/order-service/prod/database/host" \
-    --value "orders-db.cluster-abc123.eu-west-1.rds.amazonaws.com" \
-    --type String \
-    --region eu-west-1
+resource "aws_ssm_parameter" "db_host" {
+  name  = "/order-service/prod/database/host"
+  type  = "String"
+  value = "orders-db.cluster-abc123.eu-west-1.rds.amazonaws.com"
+}
 
 # SecureString (encrypted with KMS)
-aws ssm put-parameter \
-    --name "/order-service/prod/database/password" \
-    --value "s3cureP@ssw0rd!" \
-    --type SecureString \
-    --key-id "alias/order-service-key" \
-    --region eu-west-1
+resource "aws_ssm_parameter" "db_password" {
+  name   = "/order-service/prod/database/password"
+  type   = "SecureString"
+  value  = var.db_password  # passed via CI variable, never hardcoded
+  key_id = "alias/order-service-key"
+}
 ```
 
 ### Referencing in Terraform (ECS Task Definition)
