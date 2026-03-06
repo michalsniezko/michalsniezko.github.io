@@ -10,3 +10,9 @@ color_scheme: dark
 search_enabled: true
 
 footer_content: "Copyright &copy; 2026 Michał Śnieżko. Distributed Engineer's TIL blog."
+
+aux_links:
+  "GitHub":
+    - "https://github.com/michalsniezko"
+  "LinkedIn":
+    - "https://linkedin.com/in/michal-sniezko"
