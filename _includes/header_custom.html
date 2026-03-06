@@ -1,50 +1,22 @@
-<style>
-    .theme-toggle-btn {
-        background: transparent;
-        border: 1px solid var(--border-color);
-        border-radius: 5px;
-        padding: 5px 10px;
-        cursor: pointer;
-        color: var(--text-color);
-        font-size: 14px;
-        margin-left: 10px;
-        transition: all 0.2s ease;
-    }
-    .theme-toggle-btn:hover {
-        background: var(--feedback-color);
-    }
-</style>
-
-<button id="theme-toggle" class="theme-toggle-btn" style="cursor: pointer; padding: 5px 10px;">
+<button id="theme-toggle" style="cursor:pointer; background:transparent; border:1px solid grey; border-radius:4px; padding:2px 8px; margin-left:10px;">
     <span id="theme-icon">🌙</span>
 </button>
 
 <script>
-    (function() {
-        const toggle = document.getElementById('theme-toggle');
-        const icon = document.getElementById('theme-icon');
-        const html = document.documentElement;
+    var toggle = document.getElementById('theme-toggle');
+    var html = document.documentElement;
 
-        const updateIcon = (theme) => {
-            icon.innerText = theme === 'dark' ? '☀️' : '🌙';
-        };
+    toggle.onclick = function() {
+        var current = html.getAttribute('data-theme') || 'light';
+        var next = (current === 'dark') ? 'light' : 'dark';
+        html.setAttribute('data-theme', next);
+        localStorage.setItem('theme', next);
+        document.getElementById('theme-icon').innerText = (next === 'dark') ? '☀️' : '🌙';
+    };
 
-        // Funkcja przełączająca
-        toggle.addEventListener('click', () => {
-            const currentTheme = html.getAttribute('data-theme') || 'light';
-            const nextTheme = currentTheme === 'dark' ? 'light' : 'dark';
-
-            html.setAttribute('data-theme', nextTheme);
-            localStorage.setItem('theme', nextTheme);
-            updateIcon(nextTheme);
-            console.log("Theme changed to:", nextTheme); // Sprawdź to w F12
-        });
-
-        // Wczytanie zapamiętanego motywu przy starcie
-        const savedTheme = localStorage.getItem('theme');
-        if (savedTheme) {
-            html.setAttribute('data-theme', savedTheme);
-            updateIcon(savedTheme);
-        }
-    })();
+    var saved = localStorage.getItem('theme');
+    if (saved) {
+        html.setAttribute('data-theme', saved);
+        document.getElementById('theme-icon').innerText = (saved === 'dark') ? '☀️' : '🌙';
+    }
 </script>
