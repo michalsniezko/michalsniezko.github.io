@@ -1,6 +1,10 @@
 title: The Distributed Engineer’s TIL
-description: Practical patterns, architectural deep dives, and lessons learned from building and scaling distributed systems.
-theme: jekyll-theme-architect
-show_downloads: false
+description: Practical patterns and architectural deep dives.
+remote_theme: just-the-docs/just-the-docs
+
 mermaid:
-  theme: forest
+  version: "10"
+
+color_scheme: light 
+
+search_enabled: true
