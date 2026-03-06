@@ -74,6 +74,60 @@ function merged(array $sources): Generator
     }
 }
 ```
+<pre class="mermaid">
+    %%{init: {'theme':'neutral'}}%%
+sequenceDiagram
+    participant App as Main Loop (foreach)
+    participant Merger as mergeDataSources()<br/>(The Orchestrator)
+    participant Reader as readCsvRows()<br/>(The Producer)
+    participant Filter as filterHighValue()<br/>(The Processor)
+    participant File as CSV File on Disk
+
+    Note over App,File: START: Memory usage ~2MB
+    
+    App->>Merger: Request next row (foreach)
+    activate Merger
+    Note right of Merger: yield from delegates to<br/>readCsvRows('jan.csv')
+    Merger->>Reader: Request first row
+    activate Reader
+    
+    Reader->>File: Read one line
+    File-->>Reader: Line: [email, name, 1500.00]
+    Note right of Reader: Yields: ['amount' => 1500.00]
+    Reader-->>Merger: (Delegated via yield from)
+    deactivate Reader
+    
+    Merger-->>Filter: Passes row to filter
+    activate Filter
+    Note right of Filter: Checks: 1500.00 >= 1000.00?<br/>YES
+    Note right of Filter: Yields: ['amount' => 1500.00]
+    Filter-->>App: (Passes to final foreach)
+    deactivate Filter
+    
+    App->>Exporter: push($row)
+    Note over App,File: Row Processed. Memory usage still ~2MB
+
+    %% -- Row 2 (Filtered Out) --
+    
+    App->>Merger: Request next row
+    activate Merger
+    Merger->>Reader: Request next row
+    activate Reader
+    Reader->>File: Read one line
+    File-->>Reader: Line: [email, name, 500.00]
+    Note right of Reader: Yields: ['amount' => 500.00]
+    Reader-->>Merger: (Delegated)
+    deactivate Reader
+    
+    Merger-->>Filter: Passes row to filter
+    activate Filter
+    Note right of Filter: Checks: 500.00 >= 1000.00?<br/>NO. No yield happens.
+    Note over Filter: Filter continues its internal foreach<br/>to find next match.
+    deactivate Filter
+
+    Note over App,File: The pipeline "pauses" until Filter yields<br/>or Reader reaches EOF.
+</pre>
+
 
 `yield from` also propagates the return value of the sub-generator (via `Generator::getReturn()`), which is useful for collecting summaries like row counts.
 
@@ -551,3 +605,11 @@ public function getDictionaries(
 ```
 
 > **Performance Tip:** Dictionary data changes rarely. Set `Cache-Control` headers aggressively (5–15 min) and consider a CDN or reverse proxy (Varnish) in front of this endpoint. For large dictionaries (10k+ vehicle models), add an `ETag` header based on a hash of the data so clients skip re-downloading unchanged payloads (`304 Not Modified`).
+
+<script type="module">
+	import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+	mermaid.initialize({
+		startOnLoad: true,
+		theme: 'default'
+	});
+</script>
