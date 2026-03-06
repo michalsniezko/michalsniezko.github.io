@@ -15,15 +15,18 @@ nav_order: 6
 
 ### Architecture
 
-```
-                                 Filter: order_status=["paid"]
-Order Service ──► SNS Topic ──┬──────────────────────────────► SQS (Billing)
-                              │
-                              │  Filter: (none - receives all)
-                              ├──────────────────────────────► SQS (Analytics)
-                              │
-                              │  Filter: order_status=["paid","cancelled"]
-                              └──────────────────────────────► SQS (Notifications)
+```mermaid
+graph LR
+    OS[Order Service] --> SNS((SNS Topic))
+
+    SNS -- "Filter: status=paid" --> Billing[(SQS Billing)]
+    SNS -- "Filter: none (all)" --> Analytics[(SQS Analytics)]
+    SNS -- "Filter: status=paid OR cancelled" --> Notif[(SQS Notifications)]
+
+    style SNS fill:#f96,stroke:#333,stroke-width:2px
+    style Billing fill:#fff,stroke:#333
+    style Analytics fill:#fff,stroke:#333
+    style Notif fill:#fff,stroke:#333
 ```
 
 ### Terraform: Topic + Subscriptions with Filters
