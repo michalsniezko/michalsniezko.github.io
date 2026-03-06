@@ -139,17 +139,33 @@ function SelectFilter({ label, options, grouped, onChange }: {
 
 ### Sync Strategy
 
-```
-Backend (PHP)                    Frontend (TypeScript)
-─────────────                    ─────────────────────
-FilterDictionary DTO             FilterDictionary interface
-  └─ DictionaryEntry               └─ DictionaryEntry
-       ├─ key: string                    ├─ key: string
-       ├─ label: string                  ├─ label: string
-       └─ group: ?string                 └─ group?: string
+```mermaid
+graph TD
+    subgraph "Backend (PHP)"
+    DTO[FilterDictionary DTO]
+    Entry[DictionaryEntry]
+    DTO --> Entry
+    
+    Entry --- K1[key: string]
+    Entry --- L1[label: string]
+    Entry --- G1[group: ?string]
+    end
 
-       Source of truth ───────────► Derived from API response
-       (Backend owns the schema)    (Frontend mirrors it)
-```
+    subgraph "Frontend (TypeScript)"
+    IF[FilterDictionary interface]
+    IE[DictionaryEntry]
+    IF --> IE
+    
+    IE --- K2[key: string]
+    IE --- L2[label: string]
+    IE --- G2[group?: string]
+    end
+
+    DTO -. "Source of Truth / API Response" .-> IF
+
+    style DTO fill:#777bb4,color:#fff
+    style IF fill:#3178c6,color:#fff
+    style Entry fill:#f3f3f3
+    style IE fill:#f3f3f3```
 
 > **Clean Code Tip:** Generate the TypeScript types from the backend's OpenAPI spec instead of maintaining them by hand. If the backend uses Swagger annotations, run `openapi-typescript` against the generated spec: `npx openapi-typescript ./openapi.json -o src/types/api.ts`. This eliminates the manual sync and catches schema drift at build time, not at runtime when a user sees a broken dropdown.
