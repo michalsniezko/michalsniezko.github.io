@@ -3,6 +3,7 @@ layout: default
 title: Home
 nav_order: 1
 description: "Start here for distributed systems patterns."
+permalink: /
 ---
 
 # The Distributed Engineer's TIL
@@ -19,43 +20,43 @@ description: "Start here for distributed systems patterns."
 
 Decoupling services with SNS fan-out, SQS consumers, and filter policies that keep queues lean.
 
-- [AWS Messaging Patterns](./aws-messaging-patterns.md)
+- [AWS Messaging Patterns](aws-event-driven/index.md)
 
 ### 2. Microservices & Observability
 
 How services find each other with Consul, how requests get traced with Zipkin B3 headers, and why your API docs belong in the code.
 
-- [Microservices & Observability](./microservices-observability.md)
+- [Microservices & Observability](microservices-observability/index.md)
 
 ### 3. High-Performance Backend (PHP)
 
 Generators that process millions of rows in 2MB of memory, bulk-loading patterns that kill N+1 calls, and structured DTOs for frontend consumption.
 
-- [Backend Patterns & Optimization](./backend-patterns-optimization.md)
+- [Backend Patterns & Optimization](backend-patterns-optimization/index.md)
 
 ### 4. Concurrency & Resilience
 
 Distributed locks that prevent duplicate invoices, upserts that eliminate race conditions, and bash scripts that prove your fix works under real concurrency.
 
-- [Testing & Concurrency](./testing-concurrency-locks.md)
+- [Testing & Concurrency](testing-concurrency-locks/index.md)
 
 ### 5. Infrastructure as Code & CI/CD
 
 Terraform with remote state locking, Jenkins pipelines that apply the exact plan you reviewed, and secrets that never touch a Git repo.
 
-- [DevOps & Infrastructure](./devops-infrastructure-cicd.md)
+- [DevOps & Infrastructure](devops-infrastructure-cicd/index.md)
 
 ### 6. Cloud-Native Scaling
 
 Autoscaling ECS workers based on SQS queue depth instead of CPU, CloudWatch alarms that catch stale consumers, and Lambda concurrency guardrails.
 
-- [Scaling & CloudWatch](./scaling-cloudwatch-autoscaling.md)
+- [Scaling & CloudWatch](scaling-cloudwatch-autoscaling/index.md)
 
 ### 7. Monitoring & Tooling
 
 Self-hosted monitoring with the TICK stack, Telegram alerts that wake you at 3 AM, and Rollup configs that produce clean library bundles.
 
-- [Monitoring & JS Tooling](./monitoring-js-tooling.md)
+- [Monitoring & JS Tooling](monitoring-js-tooling/index.md)
 
 ---
 
