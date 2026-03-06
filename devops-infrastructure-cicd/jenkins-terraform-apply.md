@@ -9,7 +9,7 @@ nav_order: 2
 
 **Flow:** PR merged → Jenkins webhook fires → pipeline checks out code → `terraform plan -out=plan.bin` → artifact saved → manual approval gate → `terraform apply plan.bin` (the exact reviewed plan, not a re-computed one).
 
-The saved plan file is critical. Without it, there's a gap between what the reviewer approved and what actually gets applied — another commit or a resource drift could change the plan between stages.
+The saved plan file is critical. Without it, there's a gap between what the reviewer approved and what actually gets applied - another commit or a resource drift could change the plan between stages.
 
 ### Jenkinsfile
 
