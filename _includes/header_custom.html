@@ -15,31 +15,36 @@
     }
 </style>
 
-<button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle theme">
+<button id="theme-toggle" class="theme-toggle-btn" style="cursor: pointer; padding: 5px 10px;">
     <span id="theme-icon">🌙</span>
 </button>
 
 <script>
-    const toggle = document.getElementById('theme-toggle');
-    const icon = document.getElementById('theme-icon');
-    const html = document.documentElement;
+    (function() {
+        const toggle = document.getElementById('theme-toggle');
+        const icon = document.getElementById('theme-icon');
+        const html = document.documentElement;
 
-    const updateIcon = (theme) => {
-        icon.innerText = theme === 'dark' ? '☀️' : '🌙';
-    };
+        const updateIcon = (theme) => {
+            icon.innerText = theme === 'dark' ? '☀️' : '🌙';
+        };
 
-    toggle.addEventListener('click', () => {
-        const current = html.getAttribute('data-theme') || 'light';
-        const next = current === 'dark' ? 'light' : 'dark';
+        // Funkcja przełączająca
+        toggle.addEventListener('click', () => {
+            const currentTheme = html.getAttribute('data-theme') || 'light';
+            const nextTheme = currentTheme === 'dark' ? 'light' : 'dark';
 
-        html.setAttribute('data-theme', next);
-        localStorage.setItem('theme', next);
-        updateIcon(next);
-    });
+            html.setAttribute('data-theme', nextTheme);
+            localStorage.setItem('theme', nextTheme);
+            updateIcon(nextTheme);
+            console.log("Theme changed to:", nextTheme); // Sprawdź to w F12
+        });
 
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme) {
-        html.setAttribute('data-theme', savedTheme);
-        updateIcon(savedTheme);
-    }
+        // Wczytanie zapamiętanego motywu przy starcie
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme) {
+            html.setAttribute('data-theme', savedTheme);
+            updateIcon(savedTheme);
+        }
+    })();
 </script>
