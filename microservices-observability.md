@@ -60,7 +60,7 @@ App\Repository\VehicleRepository:
 
 ### How It Works
 
-<pre class="mermaid">
+```mermaid
 graph TD
     subgraph Client
     A[Billing Service]
@@ -86,7 +86,7 @@ graph TD
     style I1 fill:#d4edda,stroke:#28a745
     style I2 fill:#d4edda,stroke:#28a745
     style I3 fill:#f8d7da,stroke:#dc3545
-</pre>
+```
 
 - Services register with Consul on startup and send periodic health checks.
 - Consul removes unhealthy instances from DNS responses.
@@ -388,11 +388,3 @@ class VehicleClient
 ```
 
 > **Gotcha:** When a team renames their API path (e.g., `/api/v1/vehicles` → `/api/v2/vehicles`), you only need to update `endpoints.yaml` — not grep through business logic. But this only works if you never hardcode paths in PHP code. The moment someone writes `$client->get('http://vehicle-service.svc:8080/api/v1/vehicles/' . $id)` inline, you've lost the single source of truth. Enforce that all outgoing paths come from config.
-
-<script type="module">
-	import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
-	mermaid.initialize({
-		startOnLoad: true,
-		theme: 'default'
-	});
-</script>
