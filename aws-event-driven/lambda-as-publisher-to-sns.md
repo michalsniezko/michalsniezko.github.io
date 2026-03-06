@@ -16,56 +16,55 @@ nav_order: 5
 ```
 order-publishers/
 ├── handlers/
-│   ├── api_handler.py       # Triggered by API Gateway
-│   ├── s3_handler.py        # Triggered by S3 PutObject
-│   └── scheduler_handler.py # Triggered by EventBridge rule
+│   ├── apiHandler.js        # Triggered by API Gateway
+│   ├── s3Handler.js         # Triggered by S3 PutObject
+│   └── schedulerHandler.js  # Triggered by EventBridge rule
 ├── shared/
-│   └── publisher.py         # Common SNS publish logic
+│   └── publisher.js         # Common SNS publish logic
 └── template.yaml            # SAM / CloudFormation
 ```
 
 ### Shared Publisher Module
 
-```python
-import boto3
-import json
-import os
-from datetime import datetime, timezone
+```javascript
+// shared/publisher.js
+const { SNSClient, PublishCommand } = require('@aws-sdk/client-sns');
 
-sns = boto3.client("sns")
-TOPIC_ARN = os.environ["ORDER_TOPIC_ARN"]
+const sns = new SNSClient({});
+const TOPIC_ARN = process.env.ORDER_TOPIC_ARN;
 
-def publish_order_event(event_type: str, entity_id: str, payload: dict):
-    sns.publish(
-        TopicArn=TOPIC_ARN,
-        Message=json.dumps({
-            "event_type": event_type,
-            "entity_id": entity_id,
-            "event_timestamp": datetime.now(timezone.utc).isoformat(),
-            "payload": payload
+async function publishOrderEvent(eventType, entityId, payload) {
+    await sns.send(new PublishCommand({
+        TopicArn: TOPIC_ARN,
+        Message: JSON.stringify({
+            event_type: eventType,
+            entity_id: entityId,
+            event_timestamp: new Date().toISOString(),
+            payload,
         }),
-        MessageAttributes={
-            "event_type": {
-                "DataType": "String",
-                "StringValue": event_type
-            }
-        }
-    )
+        MessageAttributes: {
+            event_type: {
+                DataType: 'String',
+                StringValue: eventType,
+            },
+        },
+    }));
+}
+
+module.exports = { publishOrderEvent };
 ```
 
 ### Handler Example (API Gateway Trigger)
 
-```python
-from shared.publisher import publish_order_event
+```javascript
+// handlers/apiHandler.js
+const { publishOrderEvent } = require('../shared/publisher');
 
-def handler(event, context):
-    body = json.loads(event["body"])
-    publish_order_event(
-        event_type="order.created",
-        entity_id=body["order_id"],
-        payload=body
-    )
-    return {"statusCode": 202, "body": "accepted"}
+exports.handler = async (event) => {
+    const body = JSON.parse(event.body);
+    await publishOrderEvent('order.created', body.order_id, body);
+    return { statusCode: 202, body: 'accepted' };
+};
 ```
 
 ### SAM Template (Abbreviated)
@@ -75,8 +74,8 @@ Resources:
   ApiPublisher:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: handlers/api_handler.handler
-      Runtime: python3.12
+      Handler: handlers/apiHandler.handler
+      Runtime: nodejs20.x
       Environment:
         Variables:
           ORDER_TOPIC_ARN: !Ref OrderTopic
@@ -93,8 +92,8 @@ Resources:
   S3Publisher:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: handlers/s3_handler.handler
-      Runtime: python3.12
+      Handler: handlers/s3Handler.handler
+      Runtime: nodejs20.x
       Environment:
         Variables:
           ORDER_TOPIC_ARN: !Ref OrderTopic

@@ -82,15 +82,19 @@ resource "aws_sns_topic_subscription" "notifications" {
 
 ### Publisher (Unchanged Regardless of Consumers)
 
-```python
-sns.publish(
-    TopicArn=TOPIC_ARN,
-    Message=json.dumps({"orderId": "ord-456", "amount": 199.99}),
-    MessageAttributes={
-        "order_status": {"DataType": "String", "StringValue": "paid"},
-        "region":       {"DataType": "String", "StringValue": "eu-west"},
-    }
-)
+```javascript
+const { SNSClient, PublishCommand } = require('@aws-sdk/client-sns');
+
+const sns = new SNSClient({});
+
+await sns.send(new PublishCommand({
+    TopicArn: TOPIC_ARN,
+    Message: JSON.stringify({ orderId: 'ord-456', amount: 199.99 }),
+    MessageAttributes: {
+        order_status: { DataType: 'String', StringValue: 'paid' },
+        region:       { DataType: 'String', StringValue: 'eu-west' },
+    },
+}));
 ```
 
 Adding a new consumer (e.g., a fraud detection service) requires zero changes to the publisher - just add a new SQS queue and SNS subscription with the appropriate filter.

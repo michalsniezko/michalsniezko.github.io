@@ -41,31 +41,25 @@ resource "aws_cloudwatch_metric_alarm" "lambda_duration_high" {
 
 ### Structured Logging for CloudWatch Insights
 
-```python
-import json
-import logging
-import time
+```javascript
+exports.handler = async (event, context) => {
+    const start = Date.now();
 
-logger = logging.getLogger()
-logger.setLevel(logging.INFO)
+    // ... business logic ...
 
-def handler(event, context):
-    start = time.time()
+    const durationMs = Date.now() - start;
+    const remainingMs = context.getRemainingTimeInMillis();
 
-    # ... business logic ...
-
-    duration_ms = (time.time() - start) * 1000
-    remaining_ms = context.get_remaining_time_in_millis()
-
-    logger.info(json.dumps({
-        "event": "invocation_complete",
-        "function": context.function_name,
-        "request_id": context.aws_request_id,
-        "duration_ms": round(duration_ms, 2),
-        "remaining_ms": remaining_ms,
-        "memory_limit_mb": context.memory_limit_in_mb,
-        "records_processed": len(event.get("Records", [])),
-    }))
+    console.log(JSON.stringify({
+        event: 'invocation_complete',
+        function: context.functionName,
+        request_id: context.awsRequestId,
+        duration_ms: durationMs,
+        remaining_ms: remainingMs,
+        memory_limit_mb: parseInt(context.memoryLimitInMB, 10),
+        records_processed: (event.Records || []).length,
+    }));
+};
 ```
 
 ### CloudWatch Insights Query

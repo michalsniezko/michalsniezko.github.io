@@ -14,14 +14,14 @@ nav_order: 5
 ```
 shared-codebase/
 ├── handlers/
-│   ├── api.py           # API Gateway → handler
-│   ├── sqs_consumer.py  # SQS → handler
-│   ├── s3_trigger.py    # S3 → handler
-│   └── scheduler.py     # EventBridge → handler
+│   ├── api.js            # API Gateway → handler
+│   ├── sqsConsumer.js    # SQS → handler
+│   ├── s3Trigger.js      # S3 → handler
+│   └── scheduler.js      # EventBridge → handler
 ├── core/
-│   ├── service.py       # Shared business logic
-│   └── publisher.py     # Shared SNS publish
-└── template.yaml        # SAM: 4 functions, 1 codebase
+│   ├── service.js        # Shared business logic
+│   └── publisher.js      # Shared SNS publish
+└── template.yaml         # SAM: 4 functions, 1 codebase
 ```
 
 ```yaml
@@ -31,6 +31,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: handlers/api.handler
+      Runtime: nodejs20.x
       MemorySize: 256
       Timeout: 10
       Events:
@@ -41,7 +42,8 @@ Resources:
   SqsConsumer:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: handlers/sqs_consumer.handler
+      Handler: handlers/sqsConsumer.handler
+      Runtime: nodejs20.x
       MemorySize: 512        # needs more memory for batch processing
       Timeout: 60            # SQS batches take longer
       ReservedConcurrentExecutions: 30
@@ -55,17 +57,19 @@ Resources:
 
 ### Option B: Monolith Router (Anti-Pattern at Scale)
 
-```python
-# handler.py - single entry point for everything
-def handler(event, context):
-    if "httpMethod" in event:
-        return handle_api(event)
-    elif "Records" in event and event["Records"][0].get("eventSource") == "aws:sqs":
-        return handle_sqs(event)
-    elif "Records" in event and event["Records"][0].get("eventSource") == "aws:s3":
-        return handle_s3(event)
-    else:
-        raise ValueError(f"Unknown event source: {json.dumps(event)[:200]}")
+```javascript
+// handler.js - single entry point for everything
+exports.handler = async (event, context) => {
+    if (event.httpMethod) {
+        return handleApi(event);
+    } else if (event.Records?.[0]?.eventSource === 'aws:sqs') {
+        return handleSqs(event);
+    } else if (event.Records?.[0]?.eventSource === 'aws:s3') {
+        return handleS3(event);
+    } else {
+        throw new Error(`Unknown event source: ${JSON.stringify(event).slice(0, 200)}`);
+    }
+};
 ```
 
 ### Comparison

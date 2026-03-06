@@ -28,21 +28,23 @@ Every message includes an `event_timestamp`. The consumer compares the incoming 
 }
 ```
 
-### Consumer Pseudocode
+### Consumer Logic
 
-```python
-def handle_order_update(message):
-    order = db.get_order(message["entity_id"])
+```javascript
+async function handleOrderUpdate(message) {
+    const order = await db.getOrder(message.entity_id);
 
-    if order and order.last_event_at >= message["event_timestamp"]:
-        log.info(f"Skipping stale event for {message['entity_id']}")
-        return  # ACK the message, discard stale data
+    if (order && order.lastEventAt >= message.event_timestamp) {
+        console.log(`Skipping stale event for ${message.entity_id}`);
+        return; // ACK the message, discard stale data
+    }
 
-    db.upsert_order(
-        entity_id=message["entity_id"],
-        status=message["payload"]["status"],
-        last_event_at=message["event_timestamp"]
-    )
+    await db.upsertOrder({
+        entityId: message.entity_id,
+        status: message.payload.status,
+        lastEventAt: message.event_timestamp,
+    });
+}
 ```
 
 > **Gotcha:** Use the publisher's event timestamp, **not** the SQS `SentTimestamp` attribute. SQS timestamps reflect when the message entered the queue, not when the business event occurred. If a publisher retries a failed SNS publish, the SQS timestamp will be newer but the event is the same (or older).

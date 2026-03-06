@@ -20,20 +20,23 @@ nav_order: 4
 
 ### Client Reuse (Module-Level Init)
 
-```python
-import boto3
+```javascript
+const { DynamoDBClient } = require('@aws-sdk/client-dynamodb');
+const { DynamoDBDocumentClient, PutCommand } = require('@aws-sdk/lib-dynamodb');
+const { SNSClient, PublishCommand } = require('@aws-sdk/client-sns');
 
-# Initialized ONCE per Lambda container - persists across warm invocations
-dynamodb = boto3.resource('dynamodb')
-table = dynamodb.Table('orders')
-sns = boto3.client('sns')
+// Initialized ONCE per Lambda container - persists across warm invocations
+const dynamodb = DynamoDBDocumentClient.from(new DynamoDBClient({}));
+const sns = new SNSClient({});
 
-def handler(event, context):
-    for record in event['Records']:
-        body = json.loads(record['body'])
-        # Reuses the existing connection pool
-        table.put_item(Item=body)
-        sns.publish(TopicArn=TOPIC_ARN, Message=record['body'])
+exports.handler = async (event) => {
+    for (const record of event.Records) {
+        const body = JSON.parse(record.body);
+        // Reuses the existing connection pool
+        await dynamodb.send(new PutCommand({ TableName: 'orders', Item: body }));
+        await sns.send(new PublishCommand({ TopicArn: TOPIC_ARN, Message: record.body }));
+    }
+};
 ```
 
 ### PHP SDK: Retry Configuration
