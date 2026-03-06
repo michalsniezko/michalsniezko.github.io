@@ -54,17 +54,32 @@ App\Repository\VehicleRepository:
 
 ### How It Works
 
-```
-┌─────────────┐       DNS query: vehicle-service.svc
-│  Billing     │ ─────────────────────────────────► ┌───────────┐
-│  Service     │                                     │  Consul   │
-│              │ ◄──── A record: 10.0.3.47 ──────── │  DNS      │
-└─────────────┘                                      └───────────┘
-                                                          │
-                                            ┌─────────────┼─────────────┐
-                                            │             │             │
-                                        instance-1   instance-2   instance-3
-                                        (healthy)    (healthy)    (failing ✗)
+```mermaid
+graph TD
+    subgraph Client
+    A[Billing Service]
+    end
+
+    subgraph Discovery
+    B[Consul DNS]
+    end
+
+    subgraph "Vehicle Service Cluster"
+    I1[Instance-1 <br/>10.0.3.47 <br/><b>Healthy</b>]
+    I2[Instance-2 <br/>10.0.3.48 <br/><b>Healthy</b>]
+    I3[Instance-3 <br/>10.0.3.49 <br/><b>Failing ✗</b>]
+    end
+
+    A -- "DNS query: vehicle-service.svc" --> B
+    B -- "A record: 10.0.3.47" --> A
+    
+    B -. checks .- I1
+    B -. checks .- I2
+    B -. checks .- I3
+
+    style I1 fill:#d4edda,stroke:#28a745
+    style I2 fill:#d4edda,stroke:#28a745
+    style I3 fill:#f8d7da,stroke:#dc3545
 ```
 
 - Services register with Consul on startup and send periodic health checks.
