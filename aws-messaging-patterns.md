@@ -1,3 +1,9 @@
+---
+layout: default
+title: AWS Event-Driven Architecture: SNS + SQS Patterns
+nav_order: 2
+---
+
 # AWS Event-Driven Architecture: SNS + SQS Patterns
 
 ## SNS Fan-out to SQS
