@@ -2,7 +2,7 @@
 
 ## Generator Patterns with `yield from`
 
-**Problem:** Loading 500k rows into an array to transform and filter them will eat gigabytes of memory. `array_map` and `array_filter` both build full intermediate arrays in memory — you pay for the entire dataset even if you only need the first 100 matching rows.
+**Problem:** Loading 500k rows into an array to transform and filter them will eat gigabytes of memory. `array_map` and `array_filter` both build full intermediate arrays in memory - you pay for the entire dataset even if you only need the first 100 matching rows.
 
 **Solution:** Generators produce one item at a time. Memory usage stays flat regardless of dataset size. `yield from` lets you compose generators by delegating to sub-generators without flattening into arrays.
 
@@ -39,7 +39,7 @@ function mergeDataSources(array $filePaths): Generator
     }
 }
 
-// Process 3 files with 500k rows each — memory stays under 2MB
+// Process 3 files with 500k rows each - memory stays under 2MB
 $allRows = mergeDataSources([
     '/data/transactions_jan.csv',
     '/data/transactions_feb.csv',
@@ -56,7 +56,7 @@ foreach ($highValue as $row) {
 ### Why `yield from` Instead of Nested Loops
 
 ```php
-// Without yield from — you must manually iterate and re-yield
+// Without yield from - you must manually iterate and re-yield
 function merged(array $sources): Generator
 {
     foreach ($sources as $source) {
@@ -66,7 +66,7 @@ function merged(array $sources): Generator
     }
 }
 
-// With yield from — delegation is clean
+// With yield from - delegation is clean
 function merged(array $sources): Generator
 {
     foreach ($sources as $source) {
@@ -284,13 +284,13 @@ class OrderServiceTest extends TestCase
 | `Argument::type(Foo::class)` | Match any argument of type `Foo`               |
 | `Argument::cetera()`         | Match any remaining arguments                  |
 
-> **Performance Tip:** Prophecy is deprecated in PHPUnit 10+. If you're on PHPUnit 10, either require `phpspec/prophecy-phpunit` as a bridge or migrate to PHPUnit's native `createStub()` / `createMock()` — which have improved significantly. For new projects, prefer `createStub()` for behavior (no call verification) and `createMock()` only when you need `expects($this->once())`.
+> **Performance Tip:** Prophecy is deprecated in PHPUnit 10+. If you're on PHPUnit 10, either require `phpspec/prophecy-phpunit` as a bridge or migrate to PHPUnit's native `createStub()` / `createMock()` - which have improved significantly. For new projects, prefer `createStub()` for behavior (no call verification) and `createMock()` only when you need `expects($this->once())`.
 
 ---
 
 ## WireMock for Endpoint Testing
 
-**Problem:** Integration tests that hit real external services are slow, flaky, and dependent on third-party uptime. Mocking at the PHP level (Prophecy/PHPUnit) skips the HTTP layer entirely — you miss serialization bugs, wrong headers, and real HTTP status handling.
+**Problem:** Integration tests that hit real external services are slow, flaky, and dependent on third-party uptime. Mocking at the PHP level (Prophecy/PHPUnit) skips the HTTP layer entirely - you miss serialization bugs, wrong headers, and real HTTP status handling.
 
 **Solution:** WireMock runs a real HTTP server that returns canned responses. Your application makes actual HTTP calls to `localhost:8080` (WireMock), so the full HTTP client stack is exercised.
 
@@ -384,7 +384,7 @@ class VehicleClientIntegrationTest extends TestCase
 
 ## ERP Bufferization
 
-**Problem:** A legacy ERP system (e.g., Oracle) has a hard limit on concurrent connections or API calls — say 50 requests/second. Your modern microservice processes 2,000 events/second. Sending each event individually will either crash the ERP or trigger rate-limit errors that cascade into retries and queue backlogs.
+**Problem:** A legacy ERP system (e.g., Oracle) has a hard limit on concurrent connections or API calls - say 50 requests/second. Your modern microservice processes 2,000 events/second. Sending each event individually will either crash the ERP or trigger rate-limit errors that cascade into retries and queue backlogs.
 
 **Solution:** Buffer commands in memory (or a queue), flush them in controlled batches at a cadence the ERP can handle.
 
@@ -479,7 +479,7 @@ class ErpCommandHandler
 }
 ```
 
-> **Performance Tip:** The in-memory buffer is fast but loses data on process crash. For durability, use the queue-based approach (SQS/RabbitMQ) with a rate-limited consumer. The consumer pulls at the ERP's safe throughput (e.g., 50 msg/s), and the queue absorbs spikes. Monitor queue depth — if it grows steadily, your production rate permanently exceeds consumption rate and you need to negotiate higher ERP limits or aggregate commands.
+> **Performance Tip:** The in-memory buffer is fast but loses data on process crash. For durability, use the queue-based approach (SQS/RabbitMQ) with a rate-limited consumer. The consumer pulls at the ERP's safe throughput (e.g., 50 msg/s), and the queue absorbs spikes. Monitor queue depth - if it grows steadily, your production rate permanently exceeds consumption rate and you need to negotiate higher ERP limits or aggregate commands.
 
 ---
 
