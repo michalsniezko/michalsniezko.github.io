@@ -8,3 +8,5 @@ mermaid:
 color_scheme: dark 
 
 search_enabled: true
+
+footer_content: "Copyright &copy; 2026 Michał Śnieżko. Distributed Engineer's TIL blog."
