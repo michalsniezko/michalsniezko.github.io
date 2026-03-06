@@ -20,11 +20,27 @@ nav_order: 3
 
 ### Propagation Flow
 
-```
-User ──► API Gateway ──► Order Service ──► Payment Service
-         TraceId: aaa      TraceId: aaa      TraceId: aaa
-         SpanId:  001      SpanId:  002      SpanId:  003
-                           ParentSpan: 001   ParentSpan: 002
+```mermaid
+sequenceDiagram
+    participant U as User
+    participant G as API Gateway
+    participant O as Order Service
+    participant P as Payment Service
+
+    Note over U,P: TraceId: aaa (Consistent across all services)
+
+    U->>G: Request
+    Note right of G: SpanId: 001<br/>Parent: none
+
+    G->>O: Forward Request
+    Note right of O: SpanId: 002<br/>Parent: 001
+
+    O->>P: Trigger Payment
+    Note right of P: SpanId: 003<br/>Parent: 002
+    
+    P-->>O: Response
+    O-->>G: Response
+    G-->>U: Response
 ```
 
 The `TraceId` stays the same. Each service creates a new `SpanId` and sets `ParentSpanId` to the caller's span.
