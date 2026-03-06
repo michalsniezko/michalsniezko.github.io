@@ -11,12 +11,23 @@ nav_order: 1
 
 TICK is four components, each replaceable independently:
 
-```
-Telegraf ──► InfluxDB ──► Chronograf
-  (collect)    (store)      (visualize)
-                 │
-             Kapacitor
-              (alert)
+```mermaid
+graph LR
+    T[Telegraf] -- "collects metrics" --> I[(InfluxDB)]
+    I -- "query / display" --> C[Chronograf]
+    I <--> K[Kapacitor]
+    
+    subgraph "TICK Stack"
+    T
+    I
+    C
+    K
+    end
+
+    style T fill:#00a3e0,color:#fff
+    style I fill:#00a3e0,color:#fff
+    style C fill:#00a3e0,color:#fff
+    style K fill:#00a3e0,color:#fff
 ```
 
 | Component    | Role                          | Analogy                        |
