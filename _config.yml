@@ -5,6 +5,7 @@ remote_theme: just-the-docs/just-the-docs
 mermaid:
   version: "10"
 
-color_scheme: dark 
+color_scheme: nil
+dark_mode: true
 
 search_enabled: true

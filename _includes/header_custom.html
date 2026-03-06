@@ -1,0 +1,45 @@
+<style>
+    .theme-toggle-btn {
+        background: transparent;
+        border: 1px solid var(--border-color);
+        border-radius: 5px;
+        padding: 5px 10px;
+        cursor: pointer;
+        color: var(--text-color);
+        font-size: 14px;
+        margin-left: 10px;
+        transition: all 0.2s ease;
+    }
+    .theme-toggle-btn:hover {
+        background: var(--feedback-color);
+    }
+</style>
+
+<button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle theme">
+    <span id="theme-icon">🌙</span>
+</button>
+
+<script>
+    const toggle = document.getElementById('theme-toggle');
+    const icon = document.getElementById('theme-icon');
+    const html = document.documentElement;
+
+    const updateIcon = (theme) => {
+        icon.innerText = theme === 'dark' ? '☀️' : '🌙';
+    };
+
+    toggle.addEventListener('click', () => {
+        const current = html.getAttribute('data-theme') || 'light';
+        const next = current === 'dark' ? 'light' : 'dark';
+
+        html.setAttribute('data-theme', next);
+        localStorage.setItem('theme', next);
+        updateIcon(next);
+    });
+
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) {
+        html.setAttribute('data-theme', savedTheme);
+        updateIcon(savedTheme);
+    }
+</script>
