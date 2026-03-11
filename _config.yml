@@ -1,4 +1,4 @@
-title: Distributed Engineer's TIL
+title: Distributed Engineer's Handbook
 description: "Battle-tested patterns and architectural decisions by Michał Śnieżko."
 
 remote_theme: just-the-docs/just-the-docs
@@ -10,7 +10,7 @@ color_scheme: light
 
 search_enabled: true
 
-footer_content: "Copyright &copy; 2026 Michał Śnieżko. Distributed Engineer's TIL blog."
+footer_content: "Copyright &copy; 2026 Michał Śnieżko. Distributed Engineer's Handbook."
 
 aux_links:
   "GitHub":
