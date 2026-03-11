@@ -6,7 +6,7 @@ description: "Start here for distributed systems patterns."
 permalink: /
 ---
 
-# The Distributed Engineer's TIL
+# The Distributed Engineer's Handbook
 
 > Battle-tested patterns, architectural decisions, and sharp lessons from building distributed systems that actually run in production.
 > 
