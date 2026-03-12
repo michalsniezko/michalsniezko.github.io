@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Generator Patterns
-parent: Backend Patterns & Optimization for High-Volume Systems
+parent: PHP Patterns in Practice
 nav_order: 1
 ---
 

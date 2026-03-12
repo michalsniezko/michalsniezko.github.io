@@ -1,7 +1,7 @@
 ---
 layout: default
 title: SNS Fan-out to SQS
-parent: AWS Event-Driven Architecture
+parent: Messaging & Event-Driven Architecture
 nav_order: 1
 ---
 

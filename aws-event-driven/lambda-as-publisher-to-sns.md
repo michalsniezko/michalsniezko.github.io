@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Lambda as Publisher to SNS
-parent: AWS Event-Driven Architecture
+parent: Messaging & Event-Driven Architecture
 nav_order: 5
 ---
 

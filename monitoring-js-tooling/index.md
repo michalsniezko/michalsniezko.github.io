@@ -1,8 +1,8 @@
 ---
 layout: default
-title: Monitoring with TICK Stack, JavaScript Tooling
+title: Self-Hosted Monitoring
 nav_order: 8
 has_children: true
 ---
 
-# Monitoring with TICK Stack & JavaScript Tooling
+# Self-Hosted Monitoring

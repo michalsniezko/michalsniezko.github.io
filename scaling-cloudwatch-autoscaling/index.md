@@ -1,8 +1,8 @@
 ---
 layout: default
-title: CloudWatch, Autoscaling, Lambda Patterns
+title: Autoscaling & Lambda
 nav_order: 7
 has_children: true
 ---
 
-# Scaling: CloudWatch, Autoscaling & Lambda Patterns
+# Autoscaling & Lambda

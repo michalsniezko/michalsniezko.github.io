@@ -1,7 +1,7 @@
 ---
 layout: default
 title: SNS Filter Policies
-parent: AWS Event-Driven Architecture
+parent: Messaging & Event-Driven Architecture
 nav_order: 2
 ---
 

@@ -1,7 +1,7 @@
 ---
 layout: default
 title: "Lambda Code Sharing: Multi-Handler vs. Monolith Router"
-parent: CloudWatch, Autoscaling, Lambda Patterns
+parent: Autoscaling & Lambda
 nav_order: 5
 ---
 

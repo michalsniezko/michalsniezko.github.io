@@ -1,8 +1,8 @@
 ---
 layout: default
 title: Rollup.js Bundler
-parent: Monitoring with TICK Stack, JavaScript Tooling
-nav_order: 4
+parent: JavaScript & Frontend Tooling
+nav_order: 1
 ---
 
 ## Rollup.js Bundler

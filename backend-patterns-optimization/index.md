@@ -1,8 +1,8 @@
 ---
 layout: default
-title: Backend Patterns & Optimization for High-Volume Systems
-nav_order: 3
+title: PHP Patterns in Practice
+nav_order: 4
 has_children: true
 ---
 
-# Backend Patterns & Optimization for High-Volume Systems
+# PHP Patterns in Practice

@@ -1,8 +1,8 @@
 ---
 layout: default
 title: Prophecy & Promise Pattern (PHPUnit)
-parent: Backend Patterns & Optimization for High-Volume Systems
-nav_order: 3
+parent: Testing & Concurrency
+nav_order: 7
 ---
 
 ## Prophecy & Promise Pattern (PHPUnit)

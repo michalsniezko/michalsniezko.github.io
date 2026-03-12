@@ -1,7 +1,7 @@
 ---
 layout: default
 title: AWS SDK Pitfalls in High-Concurrency Environments
-parent: CloudWatch, Autoscaling, Lambda Patterns
+parent: Autoscaling & Lambda
 nav_order: 4
 ---
 

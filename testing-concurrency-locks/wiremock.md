@@ -1,7 +1,7 @@
 ---
 layout: default
 title: WireMock for External API Simulation
-parent: Testing, Concurrency, Distributed Locks
+parent: Testing & Concurrency
 nav_order: 4
 ---
 

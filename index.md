@@ -16,47 +16,53 @@ permalink: /
 
 ## Contents
 
-### 1. Event-Driven Architecture (AWS)
+### 1. Messaging & Event-Driven Architecture
 
-Decoupling services with SNS fan-out, SQS consumers, and filter policies that keep queues lean.
+SNS fan-out, SQS consumers, filter policies, adaptive message splitting, and subscription-based routing.
 
-- [AWS Messaging Patterns](aws-event-driven/index.md)
+- [Messaging & Event-Driven Architecture](aws-event-driven/index.md)
 
-### 2. Microservices & Observability
+### 2. Microservices & Service Design
 
-How services find each other with Consul, how requests get traced with Zipkin B3 headers, and why your API docs belong in the code.
+How services find each other with Consul, how requests get traced with Zipkin B3 headers, stale cache fallbacks for resilience, and why your API docs belong in the code.
 
-- [Microservices & Observability](microservices-observability/index.md)
+- [Microservices & Service Design](microservices-observability/index.md)
 
-### 3. High-Performance Backend (PHP)
+### 3. PHP Patterns in Practice
 
-Generators that process millions of rows in 2MB of memory, bulk-loading patterns that kill N+1 calls, and structured DTOs for frontend consumption.
+Generators, bulk-loading, DTOs, processor chains with circuit breakers, event replay, JSON patch changelogs, specification pattern, and pluggable validator pipelines.
 
-- [Backend Patterns & Optimization](backend-patterns-optimization/index.md)
+- [PHP Patterns in Practice](backend-patterns-optimization/index.md)
 
-### 4. Concurrency & Resilience
+### 4. Testing & Concurrency
 
-Distributed locks that prevent duplicate invoices, upserts that eliminate race conditions, and bash scripts that prove your fix works under real concurrency.
+Distributed locks, upserts that eliminate race conditions, WireMock for external API simulation, PHPUnit mocking with Prophecy, and concurrency stress testing.
 
 - [Testing & Concurrency](testing-concurrency-locks/index.md)
 
-### 5. Infrastructure as Code & CI/CD
+### 5. Infrastructure & CI/CD
 
 Terraform with remote state locking, Jenkins pipelines that apply the exact plan you reviewed, and secrets that never touch a Git repo.
 
-- [DevOps & Infrastructure](devops-infrastructure-cicd/index.md)
+- [Infrastructure & CI/CD](devops-infrastructure-cicd/index.md)
 
-### 6. Cloud-Native Scaling
+### 6. Autoscaling & Lambda
 
 Autoscaling ECS workers based on SQS queue depth instead of CPU, CloudWatch alarms that catch stale consumers, and Lambda concurrency guardrails.
 
-- [Scaling & CloudWatch](scaling-cloudwatch-autoscaling/index.md)
+- [Autoscaling & Lambda](scaling-cloudwatch-autoscaling/index.md)
 
-### 7. Monitoring & Tooling
+### 7. Self-Hosted Monitoring
 
-Self-hosted monitoring with the TICK stack, Telegram alerts that wake you at 3 AM, and Rollup configs that produce clean library bundles.
+The TICK stack (Telegraf, InfluxDB, Chronograf, Kapacitor), Telegram alerts, and custom metric pipelines.
 
-- [Monitoring & JS Tooling](monitoring-js-tooling/index.md)
+- [Self-Hosted Monitoring](monitoring-js-tooling/index.md)
+
+### 8. JavaScript & Frontend Tooling
+
+Rollup bundler configs, frontend dictionary sync from backend DTOs, and the wrap interceptor pattern for Node.js Lambdas.
+
+- [JavaScript & Frontend Tooling](js-frontend-tooling/index.md)
 
 ---
 

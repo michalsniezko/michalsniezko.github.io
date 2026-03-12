@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Building & Deploying on Jenkins
-parent: Infrastructure as Code
+parent: Infrastructure & CI/CD
 nav_order: 3
 ---
 

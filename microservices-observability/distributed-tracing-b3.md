@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Distributed Tracing with X-B3 Headers
-parent: Microservices
+parent: Microservices & Service Design
 nav_order: 3
 ---
 

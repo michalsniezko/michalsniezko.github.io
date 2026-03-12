@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Handling Out-of-Order Messages
-parent: AWS Event-Driven Architecture
+parent: Messaging & Event-Driven Architecture
 nav_order: 3
 ---
 

@@ -1,8 +1,8 @@
 ---
 layout: default
 title: Wrap Interceptor Pattern (Node.js Lambda)
-parent: Monitoring with TICK Stack, JavaScript Tooling
-nav_order: 5
+parent: JavaScript & Frontend Tooling
+nav_order: 2
 ---
 
 ## Wrap Interceptor Pattern (Node.js Lambda)

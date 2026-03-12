@@ -1,7 +1,7 @@
 ---
 layout: default
 title: API Documentation with Swagger/OpenAPI
-parent: Microservices
+parent: Microservices & Service Design
 nav_order: 5
 ---
 

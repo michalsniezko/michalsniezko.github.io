@@ -1,7 +1,7 @@
 ---
 layout: default
 title: AWS SSM Parameter Store
-parent: Infrastructure as Code
+parent: Infrastructure & CI/CD
 nav_order: 4
 ---
 

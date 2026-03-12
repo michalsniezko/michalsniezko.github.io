@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Distributed Lock (Symfony Lock)
-parent: Testing, Concurrency, Distributed Locks
+parent: Testing & Concurrency
 nav_order: 1
 ---
 

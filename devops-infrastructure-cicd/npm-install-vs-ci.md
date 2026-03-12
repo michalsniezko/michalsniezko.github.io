@@ -1,7 +1,7 @@
 ---
 layout: default
 title: npm install vs. npm ci
-parent: Infrastructure as Code
+parent: Infrastructure & CI/CD
 nav_order: 6
 ---
 

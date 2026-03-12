@@ -1,7 +1,7 @@
 ---
 layout: default
 title: SQS-Based Autoscaling
-parent: CloudWatch, Autoscaling, Lambda Patterns
+parent: Autoscaling & Lambda
 nav_order: 1
 ---
 

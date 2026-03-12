@@ -1,7 +1,7 @@
 ---
 layout: default
 title: InfluxDB for Metrics
-parent: Monitoring with TICK Stack, JavaScript Tooling
+parent: Self-Hosted Monitoring
 nav_order: 2
 ---
 

@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Amazon ARN Structure
-parent: AWS Event-Driven Architecture
+parent: Messaging & Event-Driven Architecture
 nav_order: 4
 ---
 

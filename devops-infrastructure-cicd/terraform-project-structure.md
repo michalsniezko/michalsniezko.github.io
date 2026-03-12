@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Terraform Project Structure & Remote Backend
-parent: Infrastructure as Code
+parent: Infrastructure & CI/CD
 nav_order: 1
 ---
 

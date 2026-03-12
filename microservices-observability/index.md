@@ -1,8 +1,8 @@
 ---
 layout: default
-title: Microservices
+title: Microservices & Service Design
 nav_order: 3
 has_children: true
 ---
 
-# Microservices: Service Discovery & Observability
+# Microservices & Service Design

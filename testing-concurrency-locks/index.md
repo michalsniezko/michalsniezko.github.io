@@ -1,8 +1,8 @@
 ---
 layout: default
-title: Testing, Concurrency, Distributed Locks
+title: Testing & Concurrency
 nav_order: 5
 has_children: true
 ---
 
-# Testing, Concurrency & Distributed Locks
+# Testing & Concurrency

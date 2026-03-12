@@ -1,26 +1,26 @@
 ---
 layout: default
 title: "Environment Syncing: Frontend Dictionaries from Backend DTOs"
-parent: Monitoring with TICK Stack, JavaScript Tooling
-nav_order: 6
+parent: JavaScript & Frontend Tooling
+nav_order: 3
 ---
 
 ## Environment Syncing: Frontend Dictionaries from Backend DTOs
 
-**Use Case:** The backend serves a `/api/v1/filters/dictionaries` endpoint that returns all possible filter values. The frontend needs to consume this and keep its TypeScript types in sync - otherwise the backend adds a new fuel type and the frontend's type system doesn't know it exists.
+**Use Case:** The backend serves a `/api/v1/filters/dictionaries` endpoint that returns all possible filter values. The frontend needs to consume this and keep its TypeScript types in sync - otherwise the backend adds a new delivery method and the frontend's type system doesn't know it exists.
 
 ### Backend Response (Recap)
 
 ```json
 {
-    "makes": [
-        {"key": "bmw", "label": "BMW", "group": "German"},
-        {"key": "toyota", "label": "Toyota", "group": "Japanese"}
+    "categories": [
+        {"key": "electronics", "label": "Electronics", "group": "Hardware"},
+        {"key": "software", "label": "Software", "group": "Digital"}
     ],
-    "fuelTypes": [
-        {"key": "petrol", "label": "Petrol"},
-        {"key": "diesel", "label": "Diesel"},
-        {"key": "electric", "label": "Electric"}
+    "deliveryMethods": [
+        {"key": "express", "label": "Express"},
+        {"key": "standard", "label": "Standard"},
+        {"key": "digital", "label": "Digital Download"}
     ]
 }
 ```
@@ -37,10 +37,10 @@ interface DictionaryEntry {
 }
 
 interface FilterDictionary {
-    makes: DictionaryEntry[];
-    fuelTypes: DictionaryEntry[];
-    colors: DictionaryEntry[];
-    transmissions: DictionaryEntry[];
+    categories: DictionaryEntry[];
+    deliveryMethods: DictionaryEntry[];
+    statuses: DictionaryEntry[];
+    formats: DictionaryEntry[];
 }
 ```
 
@@ -79,12 +79,12 @@ export async function getDictionary(): Promise<FilterDictionary> {
 ### Usage in a Filter Component
 
 ```typescript
-// components/VehicleFilter.tsx
+// components/ProductFilter.tsx
 
 import { useEffect, useState } from 'react';
 import { getDictionary, type FilterDictionary, type DictionaryEntry } from '../services/dictionaryService';
 
-function VehicleFilter({ onFilterChange }) {
+function ProductFilter({ onFilterChange }) {
     const [dictionary, setDictionary] = useState<FilterDictionary | null>(null);
 
     useEffect(() => {
@@ -96,15 +96,15 @@ function VehicleFilter({ onFilterChange }) {
     return (
         <div>
             <SelectFilter
-                label="Make"
-                options={dictionary.makes}
+                label="Category"
+                options={dictionary.categories}
                 grouped={true}
-                onChange={(key) => onFilterChange('make', key)}
+                onChange={(key) => onFilterChange('category', key)}
             />
             <SelectFilter
-                label="Fuel Type"
-                options={dictionary.fuelTypes}
-                onChange={(key) => onFilterChange('fuelType', key)}
+                label="Delivery Method"
+                options={dictionary.deliveryMethods}
+                onChange={(key) => onFilterChange('deliveryMethod', key)}
             />
         </div>
     );

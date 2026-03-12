@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Repositories as Service Clients
-parent: Microservices
+parent: Microservices & Service Design
 nav_order: 1
 ---
 

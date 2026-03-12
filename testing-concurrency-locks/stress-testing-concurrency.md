@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Stress Testing Concurrency
-parent: Testing, Concurrency, Distributed Locks
+parent: Testing & Concurrency
 nav_order: 3
 ---
 
@@ -17,7 +17,7 @@ nav_order: 3
 #!/bin/bash
 set -euo pipefail
 
-EXTERNAL_ID="stress-test-vehicle-$(date +%s)"
+EXTERNAL_ID="stress-test-shipment-$(date +%s)"
 CONCURRENCY=20
 ERRORS=0
 PIDS=()
@@ -25,10 +25,10 @@ PIDS=()
 echo "Spawning $CONCURRENCY concurrent upserts for $EXTERNAL_ID..."
 
 for i in $(seq 1 $CONCURRENCY); do
-    php bin/console app:upsert-vehicle \
+    php bin/console app:upsert-shipment \
         --external-id="$EXTERNAL_ID" \
-        --make="Make-$i" \
-        --model="Model-$i" \
+        --origin="Origin-$i" \
+        --destination="Destination-$i" \
         > "/tmp/upsert_${i}.log" 2>&1 &
     PIDS+=($!)
 done
@@ -42,7 +42,7 @@ done
 
 # Verify: exactly 1 row should exist
 ROW_COUNT=$(psql -t -A -c \
-    "SELECT COUNT(*) FROM vehicle WHERE external_id = '$EXTERNAL_ID'")
+    "SELECT COUNT(*) FROM shipment WHERE external_id = '$EXTERNAL_ID'")
 
 echo "Errors: $ERRORS / $CONCURRENCY"
 echo "Row count: $ROW_COUNT (expected: 1)"
@@ -64,10 +64,10 @@ echo "PASS: All $CONCURRENCY processes completed, exactly 1 row."
 ### Symfony Command for the Test
 
 ```php
-#[AsCommand(name: 'app:upsert-vehicle')]
-class UpsertVehicleCommand extends Command
+#[AsCommand(name: 'app:upsert-shipment')]
+class UpsertShipmentCommand extends Command
 {
-    public function __construct(private VehicleRepository $repo)
+    public function __construct(private ShipmentRepository $repo)
     {
         parent::__construct();
     }
@@ -75,16 +75,16 @@ class UpsertVehicleCommand extends Command
     protected function configure(): void
     {
         $this->addOption('external-id', null, InputOption::VALUE_REQUIRED);
-        $this->addOption('make', null, InputOption::VALUE_REQUIRED);
-        $this->addOption('model', null, InputOption::VALUE_REQUIRED);
+        $this->addOption('origin', null, InputOption::VALUE_REQUIRED);
+        $this->addOption('destination', null, InputOption::VALUE_REQUIRED);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->repo->upsert(
             $input->getOption('external-id'),
-            $input->getOption('make'),
-            $input->getOption('model'),
+            $input->getOption('origin'),
+            $input->getOption('destination'),
         );
 
         $output->writeln('OK');

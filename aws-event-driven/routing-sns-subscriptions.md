@@ -1,8 +1,8 @@
 ---
 layout: default
 title: Routing via SNS Subscriptions
-parent: CloudWatch, Autoscaling, Lambda Patterns
-nav_order: 6
+parent: Messaging & Event-Driven Architecture
+nav_order: 7
 ---
 
 ## Routing via SNS Subscriptions
@@ -124,4 +124,4 @@ output "notifications_filter_policy" {
 
 Run `terraform output` after apply to confirm each subscription has the expected filter policy. For runtime verification, check the SNS delivery metrics in CloudWatch: `NumberOfMessagesPublished` on the topic vs. `NumberOfMessagesReceived` on each queue.
 
-> **Cost/Performance Note:** SNS charges per publish ($0.50/million requests), not per subscription delivery. But each SQS queue that receives the message incurs SQS costs. An unfiltered subscription on a high-volume topic (10M messages/day) where the consumer discards 95% of messages wastes ~$3.80/day in SQS receive + delete API calls alone. Always apply the narrowest filter policy possible - you're paying for every message that lands in a queue, even if the consumer immediately discards it.
+> **Cost/Performance Note:** SNS charges per publish (\$0.50/million requests), not per subscription delivery. But each SQS queue that receives the message incurs SQS costs. An unfiltered subscription on a high-volume topic (10M messages/day) where the consumer discards 95% of messages wastes ~$3.80/day in SQS receive + delete API calls alone. Always apply the narrowest filter policy possible - you're paying for every message that lands in a queue, even if the consumer immediately discards it.

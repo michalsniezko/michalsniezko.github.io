@@ -1,7 +1,7 @@
 ---
 layout: default
 title: CloudWatch Alarms for SQS Backlog
-parent: CloudWatch, Autoscaling, Lambda Patterns
+parent: Autoscaling & Lambda
 nav_order: 2
 ---
 

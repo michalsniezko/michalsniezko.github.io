@@ -1,13 +1,13 @@
 ---
 layout: default
 title: Nested Dictionary DTOs
-parent: Backend Patterns & Optimization for High-Volume Systems
+parent: PHP Patterns in Practice
 nav_order: 6
 ---
 
 ## Nested Dictionary DTOs
 
-**Problem:** The frontend renders dynamic filter dropdowns (vehicle make, color, fuel type) that need a structured list of possible values. Hardcoding these on the frontend means deploying a JS build every time a value changes. Sending raw DB enums is messy and leaks internal naming.
+**Problem:** The frontend renders dynamic filter dropdowns (product category, status, format) that need a structured list of possible values. Hardcoding these on the frontend means deploying a JS build every time a value changes. Sending raw DB enums is messy and leaks internal naming.
 
 **Solution:** Return a single "dictionary" endpoint that nests all filterable dimensions into a typed DTO. The frontend calls it once on page load and populates all dropdowns from the response.
 
@@ -18,11 +18,11 @@ class FilterDictionary
 {
     public function __construct(
         /** @var DictionaryEntry[] */
-        public readonly array $makes,
+        public readonly array $categories,
         /** @var DictionaryEntry[] */
-        public readonly array $fuelTypes,
+        public readonly array $formats,
         /** @var DictionaryEntry[] */
-        public readonly array $colors,
+        public readonly array $statuses,
         /** @var DictionaryEntry[] */
         public readonly array $transmissions,
     ) {}
@@ -31,9 +31,9 @@ class FilterDictionary
 class DictionaryEntry
 {
     public function __construct(
-        public readonly string $key,   // internal value: "diesel"
-        public readonly string $label, // display value: "Diesel"
-        public readonly ?string $group = null, // optional grouping: "German" for makes
+        public readonly string $key,   // internal value: "physical"
+        public readonly string $label, // display value: "Physical"
+        public readonly ?string $group = null, // optional grouping: "Books" for categories
     ) {}
 }
 ```
@@ -46,14 +46,14 @@ class FilterDictionaryBuilder
     public function build(string $locale): FilterDictionary
     {
         return new FilterDictionary(
-            makes: $this->buildMakes(),
-            fuelTypes: [
-                new DictionaryEntry('petrol', 'Petrol'),
-                new DictionaryEntry('diesel', 'Diesel'),
-                new DictionaryEntry('electric', 'Electric'),
-                new DictionaryEntry('hybrid', 'Hybrid'),
+            categories: $this->buildCategories(),
+            formats: [
+                new DictionaryEntry('digital', 'Digital'),
+                new DictionaryEntry('physical', 'Physical'),
+                new DictionaryEntry('bundle', 'Bundle'),
+                new DictionaryEntry('subscription', 'Subscription'),
             ],
-            colors: $this->buildColors($locale),
+            statuses: $this->buildStatuses($locale),
             transmissions: [
                 new DictionaryEntry('manual', 'Manual'),
                 new DictionaryEntry('automatic', 'Automatic'),
@@ -61,23 +61,23 @@ class FilterDictionaryBuilder
         );
     }
 
-    private function buildMakes(): array
+    private function buildCategories(): array
     {
         return [
-            new DictionaryEntry('bmw', 'BMW', group: 'German'),
-            new DictionaryEntry('mercedes', 'Mercedes-Benz', group: 'German'),
-            new DictionaryEntry('toyota', 'Toyota', group: 'Japanese'),
-            new DictionaryEntry('honda', 'Honda', group: 'Japanese'),
+            new DictionaryEntry('electronics', 'Electronics', group: 'Hardware'),
+            new DictionaryEntry('accessories', 'Accessories', group: 'Hardware'),
+            new DictionaryEntry('software', 'Software', group: 'Digital'),
+            new DictionaryEntry('media', 'Media', group: 'Digital'),
         ];
     }
 
-    private function buildColors(string $locale): array
+    private function buildStatuses(string $locale): array
     {
         // In production, load translations from a catalog
         return [
-            new DictionaryEntry('black', $locale === 'de' ? 'Schwarz' : 'Black'),
-            new DictionaryEntry('white', $locale === 'de' ? 'Weiß' : 'White'),
-            new DictionaryEntry('silver', $locale === 'de' ? 'Silber' : 'Silver'),
+            new DictionaryEntry('active', $locale === 'de' ? 'Aktiv' : 'Active'),
+            new DictionaryEntry('inactive', $locale === 'de' ? 'Inaktiv' : 'Inactive'),
+            new DictionaryEntry('archived', $locale === 'de' ? 'Archiviert' : 'Archived'),
         ];
     }
 }
@@ -87,19 +87,19 @@ class FilterDictionaryBuilder
 
 ```json
 {
-  "makes": [
-    {"key": "bmw", "label": "BMW", "group": "German"},
-    {"key": "mercedes", "label": "Mercedes-Benz", "group": "German"},
-    {"key": "toyota", "label": "Toyota", "group": "Japanese"}
+  "categories": [
+    {"key": "electronics", "label": "Electronics", "group": "Hardware"},
+    {"key": "accessories", "label": "Accessories", "group": "Hardware"},
+    {"key": "software", "label": "Software", "group": "Digital"}
   ],
-  "fuelTypes": [
-    {"key": "petrol", "label": "Petrol"},
-    {"key": "diesel", "label": "Diesel"},
-    {"key": "electric", "label": "Electric"}
+  "formats": [
+    {"key": "digital", "label": "Digital"},
+    {"key": "physical", "label": "Physical"},
+    {"key": "bundle", "label": "Bundle"}
   ],
-  "colors": [
-    {"key": "black", "label": "Black"},
-    {"key": "white", "label": "White"}
+  "statuses": [
+    {"key": "active", "label": "Active"},
+    {"key": "inactive", "label": "Inactive"}
   ],
   "transmissions": [
     {"key": "manual", "label": "Manual"},
@@ -125,4 +125,4 @@ public function getDictionaries(
 }
 ```
 
-> **Performance Tip:** Dictionary data changes rarely. Set `Cache-Control` headers aggressively (5–15 min) and consider a CDN or reverse proxy (Varnish) in front of this endpoint. For large dictionaries (10k+ vehicle models), add an `ETag` header based on a hash of the data so clients skip re-downloading unchanged payloads (`304 Not Modified`).
+> **Performance Tip:** Dictionary data changes rarely. Set `Cache-Control` headers aggressively (5–15 min) and consider a CDN or reverse proxy (Varnish) in front of this endpoint. For large dictionaries (10k+ catalog entries), add an `ETag` header based on a hash of the data so clients skip re-downloading unchanged payloads (`304 Not Modified`).

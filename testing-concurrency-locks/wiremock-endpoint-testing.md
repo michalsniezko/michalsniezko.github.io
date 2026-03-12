@@ -1,8 +1,8 @@
 ---
 layout: default
 title: WireMock for Endpoint Testing
-parent: Backend Patterns & Optimization for High-Volume Systems
-nav_order: 4
+parent: Testing & Concurrency
+nav_order: 8
 ---
 
 ## WireMock for Endpoint Testing
@@ -17,7 +17,7 @@ nav_order: 4
 {
   "request": {
     "method": "GET",
-    "urlPathPattern": "/api/v1/vehicles/[a-f0-9-]+",
+    "urlPathPattern": "/api/v1/products/[a-f0-9-]+",
     "headers": {
       "Accept": { "equalTo": "application/json" }
     }
@@ -27,9 +27,8 @@ nav_order: 4
     "headers": { "Content-Type": "application/json" },
     "jsonBody": {
       "id": "abc-123",
-      "make": "Toyota",
-      "model": "Corolla",
-      "year": 2024
+      "name": "Widget Pro",
+      "category": "electronics"
     }
   }
 }
@@ -53,37 +52,37 @@ services:
 ### Test Using WireMock
 
 ```php
-class VehicleClientIntegrationTest extends TestCase
+class ProductClientIntegrationTest extends TestCase
 {
-    private VehicleClient $client;
+    private ProductClient $client;
 
     protected function setUp(): void
     {
-        $this->client = new VehicleClient(
+        $this->client = new ProductClient(
             HttpClient::create(),
             'http://localhost:8080' // WireMock
         );
     }
 
-    public function testGetVehicleReturnsDTO(): void
+    public function testGetProductReturnsDTO(): void
     {
         // WireMock mapping already loaded from ./tests/wiremock/mappings/
-        $vehicle = $this->client->getVehicle('abc-123');
+        $product = $this->client->getProduct('abc-123');
 
-        self::assertSame('Toyota', $vehicle->make);
-        self::assertSame(2024, $vehicle->year);
+        self::assertSame('Widget Pro', $product->name);
+        self::assertSame('electronics', $product->category);
     }
 
-    public function testGetVehicleHandles500(): void
+    public function testGetProductHandles500(): void
     {
         // Use WireMock admin API to register fault scenario
         $this->registerWireMockStub([
-            'request' => ['method' => 'GET', 'urlPath' => '/api/v1/vehicles/fail-id'],
+            'request' => ['method' => 'GET', 'urlPath' => '/api/v1/products/fail-id'],
             'response' => ['status' => 500, 'body' => 'Internal Server Error'],
         ]);
 
         $this->expectException(UpstreamServiceException::class);
-        $this->client->getVehicle('fail-id');
+        $this->client->getProduct('fail-id');
     }
 
     private function registerWireMockStub(array $mapping): void

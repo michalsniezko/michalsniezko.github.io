@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Consul & .svc Endpoints
-parent: Microservices
+parent: Microservices & Service Design
 nav_order: 2
 ---
 
@@ -21,13 +21,13 @@ graph TD
     B[Consul DNS]
     end
 
-    subgraph "Vehicle Service Cluster"
+    subgraph "Inventory Service Cluster"
     I1[Instance-1 <br/>10.0.3.47 <br/><b>Healthy</b>]
     I2[Instance-2 <br/>10.0.3.48 <br/><b>Healthy</b>]
     I3[Instance-3 <br/>10.0.3.49 <br/><b>Failing ✗</b>]
     end
 
-    A -- "DNS query: vehicle-service.svc" --> B
+    A -- "DNS query: inventory-service.svc" --> B
     B -- "A record: 10.0.3.47" --> A
 
     B -. checks .- I1
@@ -47,8 +47,8 @@ graph TD
 
 ```yaml
 # endpoints.yaml (outgoing calls)
-vehicle_service:
-    base_url: "http://vehicle-service.svc:8080"
+inventory_service:
+    base_url: "http://inventory-service.svc:8080"
 
 pricing_service:
     base_url: "http://pricing-service.svc:8080"
@@ -59,7 +59,7 @@ pricing_service:
 ```json
 {
   "service": {
-    "name": "vehicle-service",
+    "name": "inventory-service",
     "port": 8080,
     "check": {
       "http": "http://localhost:8080/health",

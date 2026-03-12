@@ -1,7 +1,7 @@
 ---
 layout: default
 title: GitHub CLI
-parent: Infrastructure as Code
+parent: Infrastructure & CI/CD
 nav_order: 5
 ---
 
@@ -51,7 +51,7 @@ gh pr review 142 --approve
 
 ```bash
 gh pr create \
-    --title "Fix race condition in vehicle upsert" \
+    --title "Fix race condition in shipment upsert" \
     --body "Closes #87. Uses ON CONFLICT instead of check-then-insert."
 ```
 

@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Kapacitor & Telegram Alerts
-parent: Monitoring with TICK Stack, JavaScript Tooling
+parent: Self-Hosted Monitoring
 nav_order: 3
 ---
 

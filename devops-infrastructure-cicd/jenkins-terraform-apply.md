@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Jenkins & Terraform Apply
-parent: Infrastructure as Code
+parent: Infrastructure & CI/CD
 nav_order: 2
 ---
 

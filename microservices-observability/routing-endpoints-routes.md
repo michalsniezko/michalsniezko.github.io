@@ -1,7 +1,7 @@
 ---
 layout: default
 title: "Routing Logic: endpoints.yaml vs routes.yaml"
-parent: Microservices
+parent: Microservices & Service Design
 nav_order: 6
 ---
 
@@ -38,11 +38,11 @@ Defines base URLs and paths for services you call. Typically loaded into service
 ```yaml
 # config/endpoints.yaml
 services:
-    vehicle_service:
-        base_url: "http://vehicle-service.svc:8080"
+    inventory_service:
+        base_url: "http://inventory-service.svc:8080"
         endpoints:
-            get_vehicle: "/api/v1/vehicles/{vehicleId}"
-            search_vehicles: "/api/v1/vehicles"
+            get_product: "/api/v1/products/{productId}"
+            search_products: "/api/v1/products"
 
     pricing_service:
         base_url: "http://pricing-service.svc:8080"
@@ -54,14 +54,14 @@ services:
 
 ```yaml
 # services.yaml
-App\Client\VehicleClient:
+App\Client\InventoryClient:
     arguments:
-        $baseUrl: '%vehicle_service.base_url%'
-        $endpoints: '%vehicle_service.endpoints%'
+        $baseUrl: '%inventory_service.base_url%'
+        $endpoints: '%inventory_service.endpoints%'
 ```
 
 ```php
-class VehicleClient
+class InventoryClient
 {
     public function __construct(
         private HttpClientInterface $httpClient,
@@ -69,13 +69,13 @@ class VehicleClient
         private array $endpoints
     ) {}
 
-    public function getVehicle(string $vehicleId): array
+    public function getProduct(string $productId): array
     {
-        $path = str_replace('{vehicleId}', $vehicleId, $this->endpoints['get_vehicle']);
+        $path = str_replace('{productId}', $productId, $this->endpoints['get_product']);
 
         return $this->httpClient->request('GET', $this->baseUrl . $path)->toArray();
     }
 }
 ```
 
-> **Gotcha:** When a team renames their API path (e.g., `/api/v1/vehicles` → `/api/v2/vehicles`), you only need to update `endpoints.yaml` - not grep through business logic. But this only works if you never hardcode paths in PHP code. The moment someone writes `$client->get('http://vehicle-service.svc:8080/api/v1/vehicles/' . $id)` inline, you've lost the single source of truth. Enforce that all outgoing paths come from config.
+> **Gotcha:** When a team renames their API path (e.g., `/api/v1/products` → `/api/v2/products`), you only need to update `endpoints.yaml` - not grep through business logic. But this only works if you never hardcode paths in PHP code. The moment someone writes `$client->get('http://inventory-service.svc:8080/api/v1/products/' . $id)` inline, you've lost the single source of truth. Enforce that all outgoing paths come from config.

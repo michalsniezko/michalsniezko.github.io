@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Lambda Monitoring with CloudWatch
-parent: CloudWatch, Autoscaling, Lambda Patterns
+parent: Autoscaling & Lambda
 nav_order: 3
 ---
 

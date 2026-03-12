@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Monolog Integration with Zipkin Processor
-parent: Microservices
+parent: Microservices & Service Design
 nav_order: 4
 ---
 
