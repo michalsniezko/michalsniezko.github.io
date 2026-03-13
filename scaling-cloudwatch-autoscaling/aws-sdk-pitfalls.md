@@ -20,7 +20,7 @@ nav_order: 4
 
 ### Client Reuse (Module-Level Init)
 
-The [AWS SDK for JavaScript v3](https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/) uses a modular client-per-service design — initialize clients once at module level, not per invocation:
+The [AWS SDK for JavaScript v3](https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/) uses a modular client-per-service design: initialize clients once at module level, not per invocation:
 
 ```javascript
 const { DynamoDBClient } = require('@aws-sdk/client-dynamodb');

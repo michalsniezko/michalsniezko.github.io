@@ -70,12 +70,12 @@ Rollup bundler configs, frontend dictionary sync from backend DTOs, and the wrap
 
 Articles use whichever language fits the context:
 
-- **PHP** — domain logic, Symfony services, Doctrine, Monolog processors
-- **JavaScript / Node.js** — Lambda handlers, AWS SDK v3, Rollup configs
-- **HCL (Terraform)** — infrastructure resources and remote state
-- **SQL** — PostgreSQL upserts and conflict handling
-- **YAML / TOML** — Symfony config, Telegraf/Kapacitor configs
-- **Bash** — CI scripts, `gh` CLI workflows, Kapacitor task loading
+- **PHP:** domain logic, Symfony services, Doctrine, Monolog processors
+- **JavaScript / Node.js:** Lambda handlers, AWS SDK v3, Rollup configs
+- **HCL (Terraform):** infrastructure resources and remote state
+- **SQL:** PostgreSQL upserts and conflict handling
+- **YAML / TOML:** Symfony config, Telegraf/Kapacitor configs
+- **Bash:** CI scripts, `gh` CLI workflows, Kapacitor task loading
 
 Most articles mix languages - e.g. a PHP publisher paired with the Terraform that deploys the SNS topic it publishes to.
 
@@ -85,7 +85,7 @@ Most articles mix languages - e.g. a PHP publisher paired with the Terraform tha
 
 I'm Michał Śnieżko, a backend software engineer at **Auto1 Group** in Kraków, Poland, with 10+ years of experience building web applications in PHP.
 
-I work in a microservice environment where I integrate services through internal clients, Consul discovery, and AWS messaging (SNS/SQS). Day to day I build event pipelines with filtering and ordering safeguards, set up distributed tracing with Zipkin and Kibana, manage infrastructure with Terraform, and run CI/CD through Jenkins. I optimize PHP code using patterns like Data Mapper, generators, and bulk loading—and I test it with PHPUnit, WireMock, and concurrency stress scripts.
+I work in a microservice environment where I integrate services through internal clients, Consul discovery, and AWS messaging (SNS/SQS). Day to day I build event pipelines with filtering and ordering safeguards, set up distributed tracing with Zipkin and Kibana, manage infrastructure with Terraform, and run CI/CD through Jenkins. I optimize PHP code using patterns like Data Mapper, generators, and bulk loading, and I test it with PHPUnit, WireMock, and concurrency stress scripts.
 
 Previously at **Codibly** (5 years), I worked on Symfony/PHP 8 backends for insurance clients, built CQRS-based systems with message queues, and consulted on e-mobility solutions (OCPI/OCPP protocols, EV charging interoperability). Before that I built REST APIs and microservices at **Ailleron** in the fintech space.
 

@@ -13,7 +13,7 @@ Kapacitor processes streams from InfluxDB and evaluates [TICKscript](https://doc
 
 ### Kapacitor Config (Telegram Handler)
 
-Requires a [Telegram Bot API](https://core.telegram.org/bots/api) token — create one via @BotFather.
+Requires a [Telegram Bot API](https://core.telegram.org/bots/api) token; create one via @BotFather.
 
 ```toml
 # kapacitor.conf
