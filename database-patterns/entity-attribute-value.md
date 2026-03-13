@@ -267,7 +267,7 @@ $this->db->update('products', [
     'attributes' => json_encode(['ram_gb' => 16, 'screen_size' => 15.6, 'os' => 'Linux']),
 ], ['id' => $productId]);
 
-// Read — no pivot needed
+// Read: no pivot needed
 $product = $this->db->fetchAssociative('SELECT *, attributes FROM products WHERE id = ?', [$id]);
 $attrs   = json_decode($product['attributes'], true);
 ```
