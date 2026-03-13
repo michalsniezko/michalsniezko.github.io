@@ -2,7 +2,7 @@
 layout: default
 title: JS Testing with Jest
 parent: Testing & Concurrency
-nav_order: 5
+nav_order: 4
 ---
 
 ## JS Testing with Jest

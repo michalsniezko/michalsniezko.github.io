@@ -1,8 +1,8 @@
 ---
 layout: default
 title: Data Mapper with Bulk Loading
-parent: PHP Patterns in Practice
-nav_order: 2
+parent: Database & Persistence
+nav_order: 1
 ---
 
 ## Data Mapper with Bulk Loading

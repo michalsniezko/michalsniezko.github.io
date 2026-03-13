@@ -2,7 +2,7 @@
 layout: default
 title: Specification Pattern for Complex Financial Validation
 parent: PHP Patterns in Practice
-nav_order: 11
+nav_order: 7
 ---
 
 ## Specification Pattern for Complex Financial Validation

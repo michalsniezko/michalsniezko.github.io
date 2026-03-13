@@ -2,7 +2,7 @@
 layout: default
 title: ERP Bufferization
 parent: PHP Patterns in Practice
-nav_order: 5
+nav_order: 2
 ---
 
 ## ERP Bufferization

@@ -2,7 +2,7 @@
 layout: default
 title: Nested Dictionary DTOs
 parent: PHP Patterns in Practice
-nav_order: 6
+nav_order: 3
 ---
 
 ## Nested Dictionary DTOs

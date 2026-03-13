@@ -2,7 +2,7 @@
 layout: default
 title: Processor Chain with Error Accumulation and Circuit Breakers
 parent: PHP Patterns in Practice
-nav_order: 10
+nav_order: 6
 ---
 
 ## Processor Chain with Error Accumulation and Circuit Breakers

@@ -1,8 +1,8 @@
 ---
 layout: default
 title: PostgreSQL TOAST and WAL Internals
-parent: PHP Patterns in Practice
-nav_order: 13
+parent: Database & Persistence
+nav_order: 4
 ---
 
 ## PostgreSQL TOAST and WAL Internals

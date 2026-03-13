@@ -2,7 +2,7 @@
 layout: default
 title: Out-of-Order Message Testing
 parent: Testing & Concurrency
-nav_order: 6
+nav_order: 5
 ---
 
 ## Out-of-Order Message Testing

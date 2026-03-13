@@ -2,7 +2,7 @@
 layout: default
 title: Rebuilding Object State from Changelogs (Event Replay with Strategy Pattern)
 parent: PHP Patterns in Practice
-nav_order: 7
+nav_order: 4
 ---
 
 ## Rebuilding Object State from Changelogs (Event Replay with Strategy Pattern)

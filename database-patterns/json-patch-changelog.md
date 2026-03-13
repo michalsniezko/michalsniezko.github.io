@@ -1,8 +1,8 @@
 ---
 layout: default
 title: Doctrine Changelog with JSON Patch Diffing (RFC 6902)
-parent: PHP Patterns in Practice
-nav_order: 8
+parent: Database & Persistence
+nav_order: 2
 ---
 
 ## Doctrine Changelog with JSON Patch Diffing (RFC 6902)

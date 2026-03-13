@@ -2,7 +2,7 @@
 layout: default
 title: Pluggable Validator Pipeline with Symfony Tagged Services
 parent: PHP Patterns in Practice
-nav_order: 9
+nav_order: 5
 ---
 
 ## Pluggable Validator Pipeline with Symfony Tagged Services

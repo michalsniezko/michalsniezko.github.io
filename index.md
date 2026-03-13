@@ -30,35 +30,41 @@ How services find each other with Consul, how requests get traced with Zipkin B3
 
 ### 3. PHP Patterns in Practice
 
-Generators, bulk-loading, DTOs, processor chains with circuit breakers, event replay, JSON patch changelogs, specification pattern, and pluggable validator pipelines.
+Generators, DTOs, processor chains with circuit breakers, event replay, specification pattern, and pluggable validator pipelines.
 
 - [PHP Patterns in Practice](backend-patterns-optimization/index.md)
 
-### 4. Testing & Concurrency
+### 4. Database & Persistence
 
-Distributed locks, upserts that eliminate race conditions, WireMock for external API simulation, PHPUnit mocking with Prophecy, and concurrency stress testing.
+Normal forms, TOAST and WAL internals, the Data Mapper pattern, Doctrine JSON patch changelogs, and upserts that eliminate race conditions.
+
+- [Database & Persistence](database-patterns/index.md)
+
+### 5. Testing & Concurrency
+
+Distributed locks, WireMock for external API simulation, PHPUnit mocking with Prophecy, and concurrency stress testing.
 
 - [Testing & Concurrency](testing-concurrency-locks/index.md)
 
-### 5. Infrastructure & CI/CD
+### 6. Infrastructure & CI/CD
 
 Terraform with remote state locking, Jenkins pipelines that apply the exact plan you reviewed, and secrets that never touch a Git repo.
 
 - [Infrastructure & CI/CD](devops-infrastructure-cicd/index.md)
 
-### 6. Autoscaling & Lambda
+### 7. Autoscaling & Lambda
 
 Autoscaling ECS workers based on SQS queue depth instead of CPU, CloudWatch alarms that catch stale consumers, and Lambda concurrency guardrails.
 
 - [Autoscaling & Lambda](scaling-cloudwatch-autoscaling/index.md)
 
-### 7. Self-Hosted Monitoring
+### 8. Self-Hosted Monitoring
 
 The TICK stack (Telegraf, InfluxDB, Chronograf, Kapacitor), Telegram alerts, and custom metric pipelines.
 
 - [Self-Hosted Monitoring](monitoring-js-tooling/index.md)
 
-### 8. JavaScript & Frontend Tooling
+### 9. JavaScript & Frontend Tooling
 
 Rollup bundler configs, frontend dictionary sync from backend DTOs, and the wrap interceptor pattern for Node.js Lambdas.
 

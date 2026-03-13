@@ -1,8 +1,8 @@
 ---
 layout: default
 title: Database Normal Forms
-parent: PHP Patterns in Practice
-nav_order: 12
+parent: Database & Persistence
+nav_order: 3
 ---
 
 ## Database Normal Forms

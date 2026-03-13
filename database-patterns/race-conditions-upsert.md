@@ -1,8 +1,8 @@
 ---
 layout: default
 title: Race Conditions & Upsert (ON CONFLICT)
-parent: Testing & Concurrency
-nav_order: 2
+parent: Database & Persistence
+nav_order: 5
 ---
 
 ## Race Conditions & Upsert ([`ON CONFLICT`](https://www.postgresql.org/docs/current/sql-insert.html#SQL-ON-CONFLICT))
