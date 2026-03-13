@@ -8,9 +8,8 @@ permalink: /
 
 # The Distributed Engineer's Handbook
 
-> Battle-tested patterns, architectural decisions, and sharp lessons from building distributed systems that actually run in production.
-> 
-> No theory without context - every entry here came from a real problem in a PHP/AWS/microservices stack.
+Battle-tested patterns, architectural decisions, and sharp lessons from building distributed systems that actually run in production.
+No theory without context, every entry here came from a real problem in a PHP/AWS/microservices stack.
 
 ---
 
