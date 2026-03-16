@@ -58,3 +58,5 @@ docker run -p 8082:8080 \
 ```
 
 > **Gotcha:** Annotations only document what you write - they don't validate runtime behavior. If your annotation says the response is `200` with an `OrderResponse` schema but your code actually returns a different structure on edge cases, the doc becomes a lie. Pair annotations with response serialization tests that assert the actual output matches the documented schema.
+
+For APIs with meaningful state machines, [HATEOAS](hateoas.md) complements OpenAPI by embedding available actions directly in each response at runtime, so clients discover transitions without consulting the spec.

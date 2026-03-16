@@ -188,3 +188,5 @@ $entity->setConfig((array) $patched);
 | `preUpdate` instead of `postUpdate` | The changeset is available only in `preUpdate`; `postUpdate` has no diff data |
 
 **Trade-off:** JSON Patch computation adds CPU cost per update. For entities with large JSON fields that change frequently, this is a worthwhile trade. For entities that update hundreds of times per second or whose JSON fields are always fully replaced, storing only the new snapshot is simpler and faster.
+
+Once these patches are stored, [Rebuilding Object State from Changelogs](../backend-patterns-optimization/changelog-reconstruction-replay.md) describes how to replay them sequentially to reconstruct the full entity state at any point in time.

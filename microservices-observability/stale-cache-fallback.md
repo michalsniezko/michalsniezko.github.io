@@ -7,7 +7,7 @@ nav_order: 7
 
 ## Stale Cache Fallback for Microservice Resilience
 
-**Problem:** Your service fetches configuration from an upstream microservice on every request. When that upstream is briefly unavailable, all downstream requests fail - even though the configuration data it serves changes at most a few times a day.
+**Problem:** Your service fetches configuration from an upstream microservice on every request. This pattern is a natural complement to the [Repositories as Service Clients](repositories-service-clients.md) pattern, where the repository wraps an HTTP call that can fail. When that upstream is briefly unavailable, all downstream requests fail - even though the configuration data it serves changes at most a few times a day.
 
 **Solution:** Implement a "stale-while-revalidate" cache. Store entries with a manually-tracked `expiresAt` timestamp but *without* setting a real TTL in APCu. This way expired entries stay in memory and can be served when the upstream is down. Normal reads respect the expiry; fallback reads ignore it.
 

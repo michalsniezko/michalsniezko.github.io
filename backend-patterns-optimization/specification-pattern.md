@@ -191,3 +191,5 @@ No service container needed - just build the specification with its direct depen
 | Composition in the service | Caller reads like a checklist; rules are independent |
 
 **Trade-off:** With 10+ specifications in a service constructor, Symfony DI still handles it cleanly. The cost is more files. The benefit is that each rule can be changed, replaced, or disabled without touching unrelated logic. If you find yourself adding `&&` or `||` inside a specification, consider splitting it into two and composing them at the service level.
+
+Individual specifications can serve as the building blocks for a validator pipeline: the [Pluggable Validator Pipeline](pluggable-validator-pipeline.md) article shows how to compose focused rule objects into context-specific validation sets using Symfony tagged services.

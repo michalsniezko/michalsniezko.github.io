@@ -7,7 +7,7 @@ nav_order: 3
 
 ## Environment Syncing: Frontend Dictionaries from Backend DTOs
 
-**Use Case:** The backend serves a `/api/v1/filters/dictionaries` endpoint that returns all possible filter values. The frontend needs to consume this and keep its TypeScript types in sync - otherwise the backend adds a new delivery method and the frontend's type system doesn't know it exists.
+**Use Case:** The backend serves a `/api/v1/filters/dictionaries` endpoint that returns all possible filter values. The PHP DTO structure and controller that produce this response are described in [Nested Dictionary DTOs](../backend-patterns-optimization/nested-dictionary-dto.md). The frontend needs to consume this and keep its TypeScript types in sync - otherwise the backend adds a new delivery method and the frontend's type system doesn't know it exists.
 
 ### Backend Response (Recap)
 

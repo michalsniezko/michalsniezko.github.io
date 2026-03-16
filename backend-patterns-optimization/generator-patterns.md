@@ -84,6 +84,8 @@ function merged(array $sources): Generator
 
 > **Performance Tip:** A generator processing 1M rows uses ~2MB of memory. The same pipeline with `array_map` + `array_filter` allocates ~200MB+ for intermediate arrays. The trade-off: you lose random access (`$rows[500]`) and can only iterate once. If you need multiple passes, either re-create the generator or `iterator_to_array()` a small, filtered subset.
 
+This same generator approach powers the collect-fetch-hydrate pipeline in [Data Mapper with Bulk Loading](../database-patterns/data-mapper-bulk-loading.md), where streaming IDs one chunk at a time avoids loading the full dataset before making bulk API calls.
+
 ```mermaid
     %%{init: {'theme':'neutral'}}%%
 sequenceDiagram

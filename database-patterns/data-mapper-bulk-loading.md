@@ -81,3 +81,5 @@ class MerchantClient
 
 > **Performance Tip:** Most bulk APIs have a max batch size (commonly 100–500 IDs). If you have 2,000 unique IDs, chunk them: `array_chunk($ids, 200)` and fire requests in parallel using Symfony HttpClient's async capabilities. 10 parallel requests of 200 IDs each finishes in ~50ms instead of 10 sequential requests at ~500ms.
 
+When the source data itself is large, the generator techniques covered in [Generator Patterns](../backend-patterns-optimization/generator-patterns.md) let you stream rows through the collect-fetch-hydrate pipeline without loading the full dataset into memory first.
+

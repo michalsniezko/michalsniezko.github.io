@@ -139,7 +139,7 @@ The loop terminates because eventually `splitFactor` equals `N` (one item per me
 
 ### Generator + Adaptive Split: Why Combine Them?
 
-The generator (`splitIntoChunks`) solves the memory problem: instead of building one giant array of all items and then splitting it, items flow through one chunk at a time.
+The generator (`splitIntoChunks`) solves the memory problem: instead of building one giant array of all items and then splitting it, items flow through one chunk at a time. The broader generator composition techniques behind this approach are covered in [Generator Patterns](../backend-patterns-optimization/generator-patterns.md).
 
 The adaptive loop solves the size-estimation problem: you don't need to know item sizes in advance. Try, measure, adjust.
 

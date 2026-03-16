@@ -89,3 +89,5 @@ framework:
 ```
 
 > **Safety First:** The `ttl` is your dead-man switch. If a process crashes while holding the lock, the lock auto-expires after TTL seconds. Set it too low and long-running operations lose the lock mid-execution (another worker barges in). Set it too high and a crashed process blocks all workers for that duration. Measure your 99th-percentile execution time and set TTL to 2–3x that value.
+
+When application-level locking feels like too much overhead for your use case, the database-level alternative described in [Race Conditions & Upsert](../database-patterns/race-conditions-upsert.md) solves the duplicate-write problem atomically without a separate lock store.

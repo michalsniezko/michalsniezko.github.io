@@ -9,7 +9,7 @@ nav_order: 7
 
 **Problem:** You need to store attributes for entities that vary per row. Products in a marketplace have different attributes depending on category: a book has `isbn`, `author`, `page_count`; a laptop has `ram_gb`, `screen_size`, `battery_wh`. You cannot add a column per attribute: new categories arrive constantly, most columns would be NULL for most rows, and schema migrations on a live table with 50 million rows are expensive.
 
-EAV trades a clean relational model for schema flexibility. It is a sharp tool. Used in the right place it solves a real problem; used everywhere it creates a maintenance disaster.
+EAV trades a clean relational model for schema flexibility. It is a sharp tool. Used in the right place it solves a real problem; used everywhere it creates a maintenance disaster. By design, EAV violates 1NF: multiple logical values (one per attribute row) describe a single entity rather than each cell holding one atomic fact, a trade-off discussed in [Database Normal Forms](database-normal-forms.md).
 
 ---
 

@@ -99,3 +99,5 @@ pipeline {
 ```
 
 > **Security Note:** The `COMPOSER_AUTH` build arg (for private Packagist repos) is visible in `docker history`. Use multi-stage builds where the auth token is only present in the builder stage, not the final production image. Better yet, use Docker BuildKit secrets: `--secret id=composer_auth,src=./auth.json` with `RUN --mount=type=secret,id=composer_auth`.
+
+Runtime secrets like `DB_PASSWORD` and API keys injected into the container should never live in the Jenkinsfile or in a committed `.env` file; [AWS SSM Parameter Store](aws-ssm-parameter-store.md) shows how to store them encrypted and reference them directly in the ECS task definition.

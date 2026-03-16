@@ -116,3 +116,5 @@ Resources:
 > **Pro-Tip:** Each Lambda function gets its own IAM execution role by default (SAM generates it). Use `Policies` with SAM policy templates like `SNSPublishMessagePolicy` instead of crafting inline IAM - it's less error-prone and automatically scopes permissions to the specific topic ARN.
 
 > **Gotcha:** Lambda's default timeout is 3 seconds. SNS publish calls typically complete in <100ms, but if your VPC-attached Lambda needs a NAT gateway to reach SNS, cold starts + network setup can blow past that. Either increase the timeout or use a **VPC endpoint for SNS** (`com.amazonaws.region.sns`) to keep traffic off the public internet and reduce latency.
+
+The SDK patterns used in the publisher above (client reuse at module level, retry configuration, and concurrency guardrails) are the same pitfalls covered in [AWS SDK Pitfalls in High-Concurrency Environments](../scaling-cloudwatch-autoscaling/aws-sdk-pitfalls.md), which applies directly to Lambda publishers under load.

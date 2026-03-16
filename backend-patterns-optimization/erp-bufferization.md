@@ -104,3 +104,5 @@ class ErpCommandHandler
 
 > **Performance Tip:** The in-memory buffer is fast but loses data on process crash. For durability, use the queue-based approach (SQS/RabbitMQ) with a rate-limited consumer. The consumer pulls at the ERP's safe throughput (e.g., 50 msg/s), and the queue absorbs spikes. Monitor queue depth - if it grows steadily, your production rate permanently exceeds consumption rate and you need to negotiate higher ERP limits or aggregate commands.
 
+When using SQS as the buffer transport, the growing queue depth from buffered commands can drive worker scaling automatically: [SQS-Based Autoscaling](../scaling-cloudwatch-autoscaling/sqs-based-autoscaling.md) shows how to scale ECS workers based on backlog per instance so the consumer fleet keeps pace with the incoming command rate.
+

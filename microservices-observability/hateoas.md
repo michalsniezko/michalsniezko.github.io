@@ -306,3 +306,5 @@ Clients bookmark `/api`. They never bookmark `/shipments/s-789/recall`.
 ---
 
 > **Gotcha:** Including links is not enough on its own. If your API documentation says "to recall a shipment, POST to `/shipments/{id}/recall`" and clients read the docs instead of the responses, you have added `_links` to your JSON with no actual decoupling. HATEOAS only delivers its benefit if clients are written to follow links. Document the link relation names (`self`, `recall`, `track`), not the URLs.
+
+The link relation names and the response schemas for each state can be formally described using [API Documentation with Swagger/OpenAPI](swagger-openapi.md), giving clients a static contract alongside the runtime self-description that HATEOAS provides.

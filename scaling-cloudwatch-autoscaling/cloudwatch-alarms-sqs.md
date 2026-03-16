@@ -73,3 +73,5 @@ resource "aws_sns_topic_subscription" "slack_webhook" {
 ```
 
 > **Cost/Performance Note:** `evaluation_periods = 3` with `period = 60` means the alarm triggers after 3 consecutive minutes above threshold. This prevents alert noise from brief spikes (e.g., a batch job drops 10k messages, workers drain it in 90 seconds). For `ApproximateAgeOfOldestMessage`, use `statistic = "Maximum"` - you care about the worst case, not the average.
+
+Alarms tell you when a threshold is breached; [SQS-Based Autoscaling](sqs-based-autoscaling.md) acts on the same metrics continuously by scaling worker capacity up and down to keep backlog per instance within a target range.

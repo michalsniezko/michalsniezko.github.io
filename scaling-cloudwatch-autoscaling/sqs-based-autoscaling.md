@@ -114,3 +114,5 @@ resource "aws_lambda_permission" "allow_eventbridge" {
 ```
 
 > **Cost/Performance Note:** Set `scale_in_cooldown` significantly higher than `scale_out_cooldown`. Scaling out is cheap (handle the spike). Scaling in too fast causes **flapping**: traffic spike → scale to 20 → spike subsides → scale to 2 → next batch arrives → scale to 20. A 5-minute scale-in cooldown lets transient dips pass without thrashing. Also: ECS tasks take 30–90 seconds to become healthy - factor this startup lag into your target value.
+
+For alerting when the queue grows beyond acceptable bounds regardless of scaling activity, the [CloudWatch Alarms for SQS Backlog](cloudwatch-alarms-sqs.md) article shows how to set threshold-based alarms on the same SQS metrics used here.

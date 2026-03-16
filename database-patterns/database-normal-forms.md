@@ -244,6 +244,8 @@ erDiagram
 
 ---
 
+Not every schema can or should follow normal forms strictly. The [Entity-Attribute-Value](entity-attribute-value.md) pattern deliberately trades normal form compliance for schema flexibility, storing variable attributes as rows rather than columns and accepting the query complexity that comes with it.
+
 ### When to Denormalize Deliberately
 
 Normalization is the correct default. But there are cases where a controlled denormalization is worth it:

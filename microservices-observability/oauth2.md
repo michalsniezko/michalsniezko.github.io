@@ -225,7 +225,7 @@ final class JwksKeyProvider
 }
 ```
 
-Cache this response aggressively. JWKS endpoints rarely change and calling them on every request is wasteful.
+Cache this response aggressively. JWKS endpoints rarely change and calling them on every request is wasteful. The [Stale Cache Fallback](stale-cache-fallback.md) pattern applies directly here: storing the JWKS response with a manual `expiresAt` timestamp allows token validation to continue even when the Authorization Server's JWKS endpoint is briefly unavailable.
 
 #### Validating the Token
 

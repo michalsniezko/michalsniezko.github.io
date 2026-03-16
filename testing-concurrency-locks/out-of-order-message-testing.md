@@ -7,7 +7,7 @@ nav_order: 5
 
 ## Out-of-Order Message Testing
 
-**Scenario:** SQS delivers two messages for shipment `s-123`: first `status=delivered` (timestamp `T2`), then `status=dispatched` (timestamp `T1`, older). If your consumer blindly applies each message, the shipment ends up as "dispatched" when it should be "delivered." Your test must prove the consumer correctly discards stale events.
+**Scenario:** SQS delivers two messages for shipment `s-123`: first `status=delivered` (timestamp `T2`), then `status=dispatched` (timestamp `T1`, older). The timestamp-based idempotency approach being tested here is described in [Handling Out-of-Order Messages](../aws-event-driven/out-of-order.md). If your consumer blindly applies each message, the shipment ends up as "dispatched" when it should be "delivered." Your test must prove the consumer correctly discards stale events.
 
 ### Consumer Logic (Recap)
 

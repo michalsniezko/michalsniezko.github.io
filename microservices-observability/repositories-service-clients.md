@@ -50,3 +50,5 @@ App\Repository\VehicleRepository:
 ```
 
 > **Gotcha:** Treat HTTP repositories as unreliable data sources. Unlike a DB query, a service call can timeout, return 503, or give you stale data. Always define explicit timeouts on the HTTP client and decide on a fallback strategy (throw, return null, use cache) - don't let Guzzle's default 30s timeout silently stall your request.
+
+For service-to-service security, clients like this need an OAuth2 Bearer token on every request; the [OAuth2 in a Microservice Environment](oauth2.md) article covers the Client Credentials flow and token caching. For resilience when the upstream is temporarily unavailable, the [Stale Cache Fallback](stale-cache-fallback.md) pattern lets the repository serve a cached response rather than propagating the failure.

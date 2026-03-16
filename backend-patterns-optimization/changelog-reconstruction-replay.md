@@ -199,3 +199,5 @@ class ReconstructionStrategyCompilerPass implements CompilerPassInterface
 | `reconstruct()` accepts `DateTimeInterface` | Same code answers "what was the state last Tuesday?" |
 
 **Trade-off:** This approach requires the changelog to be append-only and ordered by time. It breaks if rows are modified or deleted retroactively. It also becomes slow for objects with thousands of changelog entries - in that case, materialise periodic snapshots and replay only from the nearest earlier snapshot.
+
+The diffs being replayed here are produced by the mechanism described in [Doctrine Changelog with JSON Patch Diffing](../database-patterns/json-patch-changelog.md), which records both forward and reverse RFC 6902 patches for every entity mutation.

@@ -7,7 +7,7 @@ nav_order: 6
 
 ## Active Record vs Data Mapper
 
-Two patterns for mapping between objects and relational tables. Both are everywhere in PHP. They make opposite trade-offs, and picking the wrong one for your context creates friction that compounds over years.
+Two patterns for mapping between objects and relational tables. Both are everywhere in PHP. They make opposite trade-offs, and picking the wrong one for your context creates friction that compounds over years. Before choosing an access pattern, the underlying schema should be well-structured: [Database Normal Forms](database-normal-forms.md) covers the progressive rules that keep your tables free of update anomalies and hidden dependencies.
 
 ---
 
