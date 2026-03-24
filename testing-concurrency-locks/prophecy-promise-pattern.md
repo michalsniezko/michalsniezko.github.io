@@ -2,7 +2,7 @@
 layout: default
 title: Prophecy & Promise Pattern (PHPUnit)
 parent: Testing & Concurrency
-nav_order: 6
+nav_order: 7
 ---
 
 ## Prophecy & Promise Pattern (PHPUnit)

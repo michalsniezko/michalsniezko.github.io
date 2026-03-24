@@ -98,3 +98,43 @@ import { formatCurrency, debounce } from '@company/ui-utils';
 ```
 
 > **Clean Code Tip:** The `external` array is the most commonly misconfigured option. If you forget to exclude `react`, Rollup bundles React into your library - every app that imports your library ships two copies of React (148KB duplicated). Rule: everything in `peerDependencies` goes in `external`. Use a regex pattern for internal packages to avoid maintaining a long list.
+
+---
+
+### esbuild: The Faster Alternative
+
+[esbuild](https://esbuild.github.io/) is a Go-based bundler that is 10-100x faster than Rollup on large codebases. The ecosystem has been steadily moving toward it - Vite uses it internally for dependency pre-bundling, and many teams are migrating library builds to it as well.
+
+| Concern | Rollup | esbuild |
+|---|---|---|
+| Build speed | Moderate | Extremely fast (Go-based) |
+| Tree-shaking | Best-in-class | Good, improving |
+| Plugin ecosystem | Mature, rich | Younger, growing |
+| Config complexity | Low for libraries | Very low |
+| TypeScript support | Via plugin | Built-in |
+| CSS / assets | Via plugins | Built-in |
+
+**esbuild config for a shared library:**
+
+```javascript
+// build.mjs
+import { build } from 'esbuild';
+
+await build({
+    entryPoints: ['src/index.ts'],
+    bundle: true,
+    outfile: 'dist/index.esm.js',
+    format: 'esm',
+    platform: 'browser',
+    external: ['react', 'react-dom', 'axios'],  // same rule: peerDeps go here
+    sourcemap: true,
+    minify: true,
+});
+```
+
+esbuild handles TypeScript natively - no plugin needed. For dual CJS/ESM output, run two `build()` calls with different `format` values.
+
+**When to pick which:**
+
+- **Rollup** - you need advanced tree-shaking, a specific plugin from the Rollup ecosystem, or you're maintaining an older library build and the migration cost isn't worth it yet.
+- **esbuild** - you're starting a new library or your Rollup build is becoming a bottleneck in CI. The speed difference becomes very noticeable on larger codebases or monorepos with many packages building in sequence.

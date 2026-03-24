@@ -2,7 +2,7 @@
 layout: default
 title: Distributed Lock (Symfony Lock)
 parent: Testing & Concurrency
-nav_order: 1
+nav_order: 2
 ---
 
 ## Distributed Lock ([Symfony Lock](https://symfony.com/doc/current/lock.html))

@@ -2,10 +2,14 @@
 layout: default
 title: JS Testing with Jest
 parent: Testing & Concurrency
-nav_order: 4
+nav_order: 5
 ---
 
 ## JS Testing with Jest
+
+For an overview of test types (Unit, Integration, Functional, API) and when to use each, see [Test Types](test-types.md).
+
+---
 
 **Scenario:** Your frontend calculates a subscription plan's monthly cost based on base price, discount rate, and billing period. This logic lives in a pure TypeScript module - no DOM, no API calls. You need fast, isolated tests with good mocking support for the edge cases (zero discount, negative values, rounding).
 
@@ -49,38 +53,56 @@ describe('monthlyPayment', () => {
 });
 ```
 
-### Mocking an API Module
+### Mocking a Dependency (Unit Test via DI)
+
+Instead of patching `global.fetch`, inject the HTTP concern as a dependency and mock that. The class under test never knows whether the real client or a mock is wired in.
 
 ```typescript
+// src/finance/apiClient.ts
+export interface ApiClient {
+    get<T>(url: string): Promise<T>;
+}
+
 // src/finance/priceService.ts
-export async function fetchProductPrice(productId: string): Promise<number> {
-    const res = await fetch(`/api/v1/products/${productId}/price`);
-    return (await res.json()).price;
+export class PriceService {
+    constructor(private client: ApiClient) {}
+
+    async fetchProductPrice(productId: string): Promise<number> {
+        const data = await this.client.get<{ price: number }>(
+            `/api/v1/products/${productId}/price`
+        );
+        return data.price;
+    }
 }
 
 // src/finance/__tests__/priceService.test.ts
-import { fetchProductPrice } from '../priceService';
+import { PriceService } from '../priceService';
+import type { ApiClient } from '../apiClient';
 
-// Mock the global fetch
-global.fetch = jest.fn();
+describe('PriceService', () => {
+    it('returns price from client', async () => {
+        const mockClient: ApiClient = {
+            get: jest.fn().mockResolvedValueOnce({ price: 25000 }),
+        };
 
-describe('fetchProductPrice', () => {
-    it('returns price from API', async () => {
-        (fetch as jest.Mock).mockResolvedValueOnce({
-            json: async () => ({ price: 25000 }),
-        });
+        const service = new PriceService(mockClient);
+        const price = await service.fetchProductPrice('p-123');
 
-        const price = await fetchProductPrice('p-123');
         expect(price).toBe(25000);
-        expect(fetch).toHaveBeenCalledWith('/api/v1/products/p-123/price');
+        expect(mockClient.get).toHaveBeenCalledWith('/api/v1/products/p-123/price');
     });
 
-    it('propagates network errors', async () => {
-        (fetch as jest.Mock).mockRejectedValueOnce(new Error('Network failure'));
+    it('propagates client errors', async () => {
+        const mockClient: ApiClient = {
+            get: jest.fn().mockRejectedValueOnce(new Error('Network failure')),
+        };
 
-        await expect(fetchProductPrice('p-123')).rejects.toThrow('Network failure');
+        const service = new PriceService(mockClient);
+        await expect(service.fetchProductPrice('p-123')).rejects.toThrow('Network failure');
     });
 });
 ```
+
+The test owns the mock - no global state patched, no `afterEach` cleanup needed. Swapping the real HTTP client for a different implementation (Axios, `fetch`, a test double) requires no changes to `PriceService` or its tests.
 
 > **Safety First:** Jest runs tests in parallel by default (one worker per CPU core). If your tests share mutable state (e.g., `global.fetch = jest.fn()` without cleanup), tests can leak state into each other. Always restore mocks in `afterEach` or use `jest.restoreAllMocks()`. For true isolation, use `--runInBand` to run sequentially - slower, but eliminates parallel flakiness during debugging.

@@ -11,25 +11,32 @@ nav_order: 1
 
 ### Example: A Repository That Calls an External Service
 
+Configure the HTTP client as a [scoped client](https://symfony.com/doc/current/http_client.html#scoping-client) in `framework.yaml`. This keeps the base URL and default headers out of PHP code entirely, and lets Symfony inject a pre-configured client directly:
+
+```yaml
+# config/packages/framework.yaml
+framework:
+    http_client:
+        scoped_clients:
+            vehicle_service.client:
+                base_uri: '%env(VEHICLE_SERVICE_URL)%'
+                headers:
+                    Accept: 'application/json'
+```
+
+The repository receives the ready-to-use client and works with relative URLs only:
+
 ```php
 class VehicleRepository
 {
-    private HttpClientInterface $client;
-    private string $baseUrl;
-
-    public function __construct(HttpClientInterface $client, string $baseUrl)
-    {
-        $this->client = $client;
-        $this->baseUrl = $baseUrl;
-    }
+    public function __construct(private HttpClientInterface $client) {}
 
     public function findById(string $vehicleId): ?VehicleDTO
     {
-        $response = $this->client->request('GET', sprintf(
-            '%s/api/v1/vehicles/%s',
-            $this->baseUrl,
-            $vehicleId
-        ));
+        $response = $this->client->request(
+            'GET',
+            '/api/v1/vehicles/' . $vehicleId
+        );
 
         if ($response->getStatusCode() === 404) {
             return null;
@@ -40,14 +47,14 @@ class VehicleRepository
 }
 ```
 
-### Service Definition (Symfony)
-
 ```yaml
-# services.yaml
+# services.yaml - Symfony autowires by name when the argument matches the scoped client
 App\Repository\VehicleRepository:
     arguments:
-        $baseUrl: '%env(VEHICLE_SERVICE_URL)%'
+        $client: '@vehicle_service.client'
 ```
+
+The repository no longer knows or cares about the base URL. Changing the upstream service URL is a config change, not a code change.
 
 > **Gotcha:** Treat HTTP repositories as unreliable data sources. Unlike a DB query, a service call can timeout, return 503, or give you stale data. Always define explicit timeouts on the HTTP client and decide on a fallback strategy (throw, return null, use cache) - don't let Guzzle's default 30s timeout silently stall your request.
 
