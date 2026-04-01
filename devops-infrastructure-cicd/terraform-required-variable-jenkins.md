@@ -9,6 +9,47 @@ nav_order: 8
 
 **Scenario:** Jenkins runs `terraform plan -var-file qa.tfvars` and hangs waiting for input, then times out. The variable exists in `environment_variables` inside the tfvars file. Why isn't that enough?
 
+Here is the setup that triggers the problem:
+
+```hcl
+# variables.tf
+variable "region" {
+  type    = string
+  default = "eu-west-1"
+}
+
+variable "app_image" {
+  type    = string
+  default = "my-app:latest"
+}
+
+variable "environment_variables" {
+  type = list(object({
+    name  = string
+    value = string
+  }))
+  default = []
+}
+
+variable "config_cache_ttl" {
+  type = number          # no default - Terraform will prompt if not supplied
+}
+```
+
+```hcl
+# qa.tfvars
+region    = "eu-west-1"
+app_image = "my-app:3.4.1"
+
+environment_variables = [
+  { name = "APP_ENV",          value = "qa"  },
+  { name = "LOG_LEVEL",        value = "debug" },
+  { name = "CONFIG_CACHE_TTL", value = "3"   },
+]
+
+# config_cache_ttl is NOT assigned here as a top-level value
+```
+
 ---
 
 ### Why Terraform Prompted for a Value
