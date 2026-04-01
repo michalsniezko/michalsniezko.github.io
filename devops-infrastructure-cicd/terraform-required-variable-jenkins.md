@@ -22,15 +22,15 @@ When you declare a variable in `variables.tf` without a default, Terraform treat
 
 ```hcl
 # variables.tf — no default means required
-variable "autobooking_config_cache_ttl" {
+variable "config_cache_ttl" {
   type = number
 }
 ```
 
-When Jenkins ran `terraform plan -var-file qa.tfvars`, Terraform scanned all four sources, found nothing for `autobooking_config_cache_ttl`, and fell back to prompting interactively:
+When Jenkins ran `terraform plan -var-file qa.tfvars`, Terraform scanned all four sources, found nothing for `config_cache_ttl`, and fell back to prompting interactively:
 
 ```
-var.autobooking_config_cache_ttl
+var.config_cache_ttl
   Enter a value:
 ```
 
@@ -45,12 +45,12 @@ The `environment_variables` block in the tfvars is a list of strings passed to E
 ```hcl
 # qa.tfvars
 environment_variables = [
-  { name = "AUTOBOOKING_CONFIG_CACHE_TTL", value = "3" },  # passes value to container
+  { name = "CONFIG_CACHE_TTL", value = "3" },  # passes value to container
   # ...
 ]
 ```
 
-This satisfies the `environment_variables` input variable (a list), not `autobooking_config_cache_ttl` (a number). Terraform does not parse string values inside lists looking for matching variable names. The declared variable is still unsatisfied.
+This satisfies the `environment_variables` input variable (a list), not `config_cache_ttl` (a number). Terraform does not parse string values inside lists looking for matching variable names. The declared variable is still unsatisfied.
 
 ---
 
@@ -62,7 +62,7 @@ Two changes together:
 
 ```hcl
 # variables.tf
-variable "autobooking_config_cache_ttl" {
+variable "config_cache_ttl" {
   type    = number
   default = 10800
 }
@@ -74,15 +74,15 @@ Now every environment that doesn't override it gets `10800`. Terraform never pro
 
 ```hcl
 # qa.tfvars
-autobooking_config_cache_ttl = 3   # overrides the default for QA
+config_cache_ttl = 3   # overrides the default for QA
 
 environment_variables = [
-  { name = "AUTOBOOKING_CONFIG_CACHE_TTL", value = "3" },
+  { name = "CONFIG_CACHE_TTL", value = "3" },
   # ...
 ]
 ```
 
-The top-level assignment is what satisfies the Terraform variable. The entry inside `environment_variables` is what actually passes the value into the PHP container. Both are needed and they serve different purposes.
+The top-level assignment is what satisfies the Terraform variable. The entry inside `environment_variables` is what actually passes the value into the container. Both are needed and they serve different purposes.
 
 ---
 
@@ -90,9 +90,9 @@ The top-level assignment is what satisfies the Terraform variable. The entry ins
 
 | Thing | Purpose |
 |---|---|
-| `variable "autobooking_config_cache_ttl"` in `variables.tf` | Declares the Terraform variable with default `10800` |
-| `autobooking_config_cache_ttl = 3` in `qa.tfvars` | Overrides it to `3` for QA |
-| `{ name = "AUTOBOOKING_CONFIG_CACHE_TTL", value = "3" }` in `environment_variables` | Passes the value to the container as a runtime env var |
+| `variable "config_cache_ttl"` in `variables.tf` | Declares the Terraform variable with default `10800` |
+| `config_cache_ttl = 3` in `qa.tfvars` | Overrides it to `3` for QA |
+| `{ name = "CONFIG_CACHE_TTL", value = "3" }` in `environment_variables` | Passes the value to the container as a runtime env var |
 
 The Terraform variable and the container env var are currently separate — the variable isn't wired to set the env var (that would require using it in `main.tf`). It exists for documentation and to prevent Jenkins from being prompted again if the tfvars entry is ever removed.
 
@@ -105,10 +105,10 @@ Any variable declaration without a default is a pipeline timebomb — it will bl
 **Always add a default for infrastructure variables that have a sensible fallback.**
 
 ```hcl
-variable "cache_ttl_seconds" {
+variable "config_cache_ttl" {
   type        = number
   default     = 10800
-  description = "TTL in seconds for the autobooking config cache."
+  description = "TTL in seconds for the application config cache."
 }
 ```
 
