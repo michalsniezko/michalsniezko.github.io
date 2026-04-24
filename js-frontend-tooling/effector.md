@@ -7,7 +7,7 @@ nav_order: 4
 
 ## Effector
 
-[Effector](https://effector.dev/) is a reactive state management library for JavaScript and TypeScript. Unlike Redux (which centralises everything into one store) or MobX (which makes objects observable), Effector is built around three primitives — stores, events, and effects — that compose together through explicit data flow.
+[Effector](https://effector.dev/) is a reactive state management library for JavaScript and TypeScript. Unlike Redux (which centralises everything into one store) or MobX (which makes objects observable), Effector is built around three primitives - stores, events, and effects - that compose together through explicit data flow.
 
 It works with React, Vue, Solid, or plain JS, and has first-class TypeScript support.
 
@@ -15,11 +15,11 @@ It works with React, Vue, Solid, or plain JS, and has first-class TypeScript sup
 
 ### The Three Primitives
 
-**Store** (`$` prefix by convention) — holds a value. Immutable from the outside; updated only through events.
+**Store** (`$` prefix by convention) - holds a value. Immutable from the outside; updated only through events.
 
-**Event** — a function that signals something happened. Can carry a payload. Think of it as a typed message.
+**Event** - a function that signals something happened. Can carry a payload. Think of it as a typed message.
 
-**Effect** — an event that wraps async work (API calls, timers). Has built-in `pending`, `done`, `fail`, and `finally` derived events.
+**Effect** - an event that wraps async work (API calls, timers). Has built-in `pending`, `done`, `fail`, and `finally` derived events.
 
 ```typescript
 import { createStore, createEvent, createEffect } from 'effector';
@@ -90,7 +90,7 @@ sample({
     target: $query,
 });
 
-// When $query changes, trigger search — but only if query is non-empty
+// When $query changes, trigger search - but only if query is non-empty
 sample({
     clock: $query,
     filter: (query) => query.length > 0,
@@ -104,11 +104,11 @@ sample({
 });
 ```
 
-`clock` — what triggers the sample (event, effect, or store update)
-`source` — value to read when clock fires (optional, defaults to clock's payload)
-`filter` — predicate or boolean store; skips if false
-`fn` — transforms the value before sending to target
-`target` — where to send the result (store, event, or effect)
+`clock` - what triggers the sample (event, effect, or store update)
+`source` - value to read when clock fires (optional, defaults to clock's payload)
+`filter` - predicate or boolean store; skips if false
+`fn` - transforms the value before sending to target
+`target` - where to send the result (store, event, or effect)
 
 ---
 
@@ -124,12 +124,12 @@ const fetchUserFx = createEffect<string, User, Error>(async (userId) => {
 });
 
 // Derived stores and events on every effect:
-// fetchUserFx.pending  — boolean store, true while running
-// fetchUserFx.done     — event fired on success: { params, result }
-// fetchUserFx.fail     — event fired on failure: { params, error }
-// fetchUserFx.doneData — event fired on success with result only
-// fetchUserFx.failData — event fired on failure with error only
-// fetchUserFx.finally  — event fired always: { params, status, result?, error? }
+// fetchUserFx.pending  - boolean store, true while running
+// fetchUserFx.done     - event fired on success: { params, result }
+// fetchUserFx.fail     - event fired on failure: { params, error }
+// fetchUserFx.doneData - event fired on success with result only
+// fetchUserFx.failData - event fired on failure with error only
+// fetchUserFx.finally  - event fired always: { params, status, result?, error? }
 
 const $user = createStore<User | null>(null)
     .on(fetchUserFx.doneData, (_, user) => user)
@@ -142,7 +142,7 @@ const $error = createStore<string | null>(null)
     .reset(fetchUserFx);
 ```
 
-Because `pending`, `done`, and `fail` are standard units on every effect, you get loading and error state for free — no boilerplate.
+Because `pending`, `done`, and `fail` are standard units on every effect, you get loading and error state for free - no boilerplate.
 
 ---
 
@@ -159,15 +159,15 @@ const $lastName = createStore('Smith');
 const $fullName = combine($firstName, $lastName, (first, last) => `${first} ${last}`);
 // $fullName => "Jane Smith"
 
-// Object syntax — produces a store of { firstName, lastName }
+// Object syntax - produces a store of { firstName, lastName }
 const $formState = combine({ firstName: $firstName, lastName: $lastName });
 ```
 
-Derived stores are read-only — you can't call `.on` on them directly. Update the source stores and the derived store follows.
+Derived stores are read-only - you can't call `.on` on them directly. Update the source stores and the derived store follows.
 
 ---
 
-### `split` — Routing Events to Different Targets
+### `split` - Routing Events to Different Targets
 
 `split` routes a single event to different targets based on a condition:
 
@@ -190,7 +190,7 @@ sample({ clock: serverError, target: notifyOncallFx });
 
 ### Real-World Example: Search with Loading and Error State
 
-Putting it together — a search feature with debounce, loading state, and error handling:
+Putting it together - a search feature with debounce, loading state, and error handling:
 
 ```typescript
 import { createStore, createEvent, createEffect, sample, combine } from 'effector';
@@ -229,7 +229,7 @@ sample({
 });
 ```
 
-The UI layer subscribes to `$results`, `$isLoading`, `$error`, and calls `queryChanged` on input. All logic lives in the model file — the component has nothing to test and nothing to maintain.
+The UI layer subscribes to `$results`, `$isLoading`, `$error`, and calls `queryChanged` on input. All logic lives in the model file - the component has nothing to test and nothing to maintain.
 
 ---
 
@@ -268,7 +268,7 @@ export function SearchPage() {
 }
 ```
 
-`useUnit` subscribes to stores and re-renders on change. It also wraps events and effects so they can be called directly from event handlers. The component owns no state — it's a pure view over the model.
+`useUnit` subscribes to stores and re-renders on change. It also wraps events and effects so they can be called directly from event handlers. The component owns no state - it's a pure view over the model.
 
 ---
 
@@ -306,7 +306,7 @@ test('failed search sets error message', async () => {
 });
 ```
 
-`fork` creates an isolated scope — stores start from their initial values and effects use the provided mock handlers. `allSettled` runs the event and waits for all effects to settle. No mocking frameworks, no async complications.
+`fork` creates an isolated scope - stores start from their initial values and effects use the provided mock handlers. `allSettled` runs the event and waits for all effects to settle. No mocking frameworks, no async complications.
 
 ---
 
