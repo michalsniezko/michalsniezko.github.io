@@ -257,3 +257,13 @@ Normalization is the correct default. But there are cases where a controlled den
 The rule: denormalize in the *read layer*, keep the *write model* normalized.
 
 > **Gotcha:** Doctrine entities map to tables, not to normalized relations. A fat `Order` entity with embedded value objects can still violate 2NF or 3NF at the SQL level even though the PHP code looks clean. Always verify the generated schema: `doctrine:schema:validate` catches mapping errors, not normalization violations.
+
+---
+
+### For AI agents
+
+```
+Apply normalization up to 3NF by default. 1NF: atomic values, no repeating groups. 2NF: no partial dependencies on a composite key. 3NF: no transitive dependencies (non-key column depending on another non-key column). Denormalize deliberately with a documented reason.
+```
+
+Reference: `https://michalsniezko.github.io/database-patterns/database-normal-forms.html`

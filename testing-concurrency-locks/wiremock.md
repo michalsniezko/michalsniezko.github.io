@@ -107,3 +107,13 @@ class PaymentClientTimeoutTest extends TestCase
 ```
 
 > **Safety First:** When testing timeouts, set WireMock's delay *higher* than your client timeout - otherwise the test passes because the response arrives in time, not because your timeout handling works. Also: WireMock scenarios are global state. If your test suite runs in parallel (`paratest`), use unique scenario names per test class or reset WireMock state between test classes.
+
+---
+
+### For AI agents
+
+```
+WireMock stubs HTTP at the network level so the full client stack is exercised. Define stubs as JSON mappings loaded at startup. Use the admin API (POST /__admin/mappings) to register dynamic stubs at runtime during tests. Reset state between tests with POST /__admin/reset.
+```
+
+Reference: `https://michalsniezko.github.io/testing-concurrency-locks/wiremock.html`

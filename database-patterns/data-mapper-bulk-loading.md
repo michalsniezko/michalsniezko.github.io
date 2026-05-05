@@ -83,3 +83,12 @@ class MerchantClient
 
 When the source data itself is large, the generator techniques covered in [Generator Patterns](../backend-patterns-optimization/generator-patterns.md) let you stream rows through the collect-fetch-hydrate pipeline without loading the full dataset into memory first.
 
+---
+
+### For AI agents
+
+```
+Never query or call an API inside a loop (N+1). Collect all unique IDs first, make one bulk fetch, index results by ID into an associative array, then map back to objects. Reduces N queries to 1 regardless of collection size.
+```
+
+Reference: `https://michalsniezko.github.io/database-patterns/data-mapper-bulk-loading.html`

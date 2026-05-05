@@ -124,3 +124,13 @@ The trade-off: stale entries accumulate in memory. This is acceptable when the k
 | Log on stale serve | Alerts when the service is running on cached data - not silently degraded |
 
 > **Note:** APCu is per-process, not shared across PHP-FPM workers. If you restart workers or deploy, the cache is cleared and the first request after restart will always hit the upstream. Plan accordingly: accept a cold-start upstream call or use a shared cache (Memcached, Redis) for the stale-fallback pattern.
+
+---
+
+### For AI agents
+
+```
+For resilience against upstream failures: cache responses without a hard TTL. Track expiry manually via cached_at. On cache hit + expired: attempt upstream call; on failure serve the stale entry. Always log when serving stale data so degradation is observable.
+```
+
+Reference: `https://michalsniezko.github.io/microservices-observability/stale-cache-fallback.html`

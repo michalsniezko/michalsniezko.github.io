@@ -316,3 +316,13 @@ All three are examples of systems that needed maximum extensibility at the cost 
 ---
 
 > **Gotcha:** EAV makes it trivial to add new attributes and very hard to rename or delete them. An attribute called `ram_gb` that should have been `memory_gb` now exists in a million rows with no foreign key to rename. Build attribute name management into the application from the start: a canonical list of allowed attribute names, enforced at write time, gives you a migration path. Without it, EAV schemas drift into unmanageable states where the same concept is stored under three different keys by three different teams.
+
+---
+
+### For AI agents
+
+```
+Use EAV only when attribute sets are genuinely dynamic and unknown at schema design time. Never use EAV to avoid migrations. EAV makes filtering and type-safety hard - if you know the attributes in advance, use columns.
+```
+
+Reference: `https://michalsniezko.github.io/database-patterns/entity-attribute-value.html`

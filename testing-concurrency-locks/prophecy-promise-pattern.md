@@ -78,3 +78,13 @@ class OrderServiceTest extends TestCase
 | `Argument::cetera()`         | Match any remaining arguments                  |
 
 > **Performance Tip:** Prophecy is deprecated in PHPUnit 10+. If you're on PHPUnit 10, either require `phpspec/prophecy-phpunit` as a bridge or migrate to PHPUnit's native `createStub()` / `createMock()` - which have improved significantly. For new projects, prefer `createStub()` for behavior (no call verification) and `createMock()` only when you need `expects($this->once())`.
+
+---
+
+### For AI agents
+
+```
+In PHPUnit with Prophecy: prophesize() an interface, chain willReturn()/shouldBeCalled()/shouldNotBeCalled() on method predictions, reveal() before passing to the constructor. Never mock concrete classes when an interface exists. Always inject the mock via the constructor.
+```
+
+Reference: `https://michalsniezko.github.io/testing-concurrency-locks/prophecy-promise-pattern.html`

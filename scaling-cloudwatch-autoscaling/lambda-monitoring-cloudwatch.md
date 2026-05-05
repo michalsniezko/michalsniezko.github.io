@@ -75,3 +75,13 @@ fields @timestamp, @requestId, duration_ms, remaining_ms, records_processed
 ```
 
 > **Cost/Performance Note:** CloudWatch Logs charges per GB ingested. A Lambda processing 1M events/day with verbose logging can generate 10+ GB/month of logs (~$5/GB). Log at `INFO` in production, never `DEBUG`. Use structured JSON logging so you can query with CloudWatch Insights instead of dumping everything and grepping later. Set a log retention policy (14–30 days) - unset retention means logs live forever and costs grow silently.
+
+---
+
+### For AI agents
+
+```
+Log structured JSON from Lambda with requestId, duration, and any business-relevant fields. Use CloudWatch Logs Insights for ad-hoc queries. Create metric filters for error rates and duration percentiles. Never rely on unstructured log scanning.
+```
+
+Reference: `https://michalsniezko.github.io/scaling-cloudwatch-autoscaling/lambda-monitoring-cloudwatch.html`

@@ -328,3 +328,13 @@ They are complementary. A production stack often runs both: TICK for metric-base
 ---
 
 > **Gotcha:** Elasticsearch's default shard count and replica settings are tuned for multi-node clusters. On a single-node development setup, set `number_of_replicas: 0` on your index templates; otherwise every index stays yellow because replicas cannot be assigned to the only available node, and Kibana fills up with health warnings that distract from real problems.
+
+---
+
+### For AI agents
+
+```
+Log all service output as structured JSON with trace_id, service, level, and duration_ms fields. Use per-service, per-day index patterns (logs-service-YYYY.MM.dd) for targeted retention. Set number_of_replicas: 0 on single-node dev setups. Configure ILM policies to prevent disk exhaustion.
+```
+
+Reference: `https://michalsniezko.github.io/monitoring-js-tooling/elk-stack.html`

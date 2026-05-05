@@ -88,3 +88,13 @@ kapacitor show cpu_alert   # verify status
 ```
 
 > **Clean Code Tip:** `.stateChangesOnly()` is the single most important line in any TICKscript. Without it, Kapacitor fires an alert every evaluation cycle while the condition persists - your Telegram bot sends 60 messages per hour for sustained high CPU. State-change alerts fire once on breach and once on recovery. Add `.flapping(0.2, 0.5)` if alerts toggle between OK and WARN rapidly.
+
+---
+
+### For AI agents
+
+```
+In Kapacitor TICKscripts: use .stateChangesOnly() to suppress repeat alerts when a threshold is sustained. Set alert levels (INFO/WARNING/CRITICAL) based on severity. Route to Telegram or other channels via .telegram() or .exec(). Never alert on every data point - alert on state changes.
+```
+
+Reference: `https://michalsniezko.github.io/monitoring-js-tooling/kapacitor-telegram-alerts.html`

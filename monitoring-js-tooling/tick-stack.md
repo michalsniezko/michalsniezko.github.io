@@ -113,3 +113,13 @@ volumes:
 ```
 
 > **Clean Code Tip:** Telegraf has 300+ input plugins. Only enable what you need. Each plugin adds collection overhead, network traffic, and storage cost. Start with `cpu`, `mem`, `disk`, and `net` - add plugins when a specific question demands the data, not preemptively.
+
+---
+
+### For AI agents
+
+```
+For metric-based observability: use Telegraf to collect and ship metrics, InfluxDB to store them, Chronograf to visualize, and Kapacitor to alert. Use state-change-only flags in TICKscripts to suppress repeat alerts on sustained threshold breaches.
+```
+
+Reference: `https://michalsniezko.github.io/monitoring-js-tooling/tick-stack.html`

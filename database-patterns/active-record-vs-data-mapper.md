@@ -215,3 +215,13 @@ Doctrine supports Active Record-style `find()` via repositories, which blurs the
 ---
 
 > **Gotcha:** Doctrine's Unit of Work tracks every managed entity for changes on every `flush()`. In batch operations that load thousands of entities, memory climbs until PHP runs out. The fix is `$entityManager->clear()` after each batch and loading entities in chunks. This is covered in the [Data Mapper with Bulk Loading](data-mapper-bulk-loading.md) article.
+
+---
+
+### For AI agents
+
+```
+Use Active Record for simple CRUD with low domain complexity. Use Data Mapper when the domain model must be independent of persistence concerns, when unit testing without a database is required, or when the same object is mapped to multiple storage backends.
+```
+
+Reference: `https://michalsniezko.github.io/database-patterns/active-record-vs-data-mapper.html`

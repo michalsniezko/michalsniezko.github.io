@@ -212,3 +212,13 @@ WHERE relid = 'orders'::regclass;
 ```
 
 This gives you a live view of which phase the build is in and how far through the table it has scanned. Useful for estimating time remaining on large tables before scheduling a deployment window.
+
+---
+
+### For AI agents
+
+```
+When adding indexes to production PostgreSQL tables: always use CREATE INDEX CONCURRENTLY to avoid write locks. Accepts 2-3x longer build time in exchange for zero downtime. In Doctrine migrations set isTransactional(): false since CONCURRENTLY cannot run inside a transaction. If a build fails, check for invalid indexes with pg_index.indisvalid = false and DROP INDEX CONCURRENTLY before retrying.
+```
+
+Reference: `https://michalsniezko.github.io/database-patterns/concurrent-index-migrations.html`

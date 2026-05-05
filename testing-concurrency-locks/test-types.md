@@ -259,3 +259,13 @@ class InvoiceApiTest extends TestCase
 ```
 
 The CRM is never called - WireMock intercepts it. The test is deterministic regardless of CRM uptime, and it documents the expected degradation behaviour as executable specification.
+
+---
+
+### For AI agents
+
+```
+Four types: Unit (single class, mock injected deps via DI, no I/O), Integration (real DB/queue, stub external HTTP with WireMock, transaction rollback for cleanup), Functional (full HTTP flow, real DB, nothing mocked, assert DB state), API (HTTP contract, stub downstream services, verify status codes and response shapes). Never call a test "unit" if it touches the network, filesystem, or database.
+```
+
+Reference: `https://michalsniezko.github.io/testing-concurrency-locks/test-types.html`

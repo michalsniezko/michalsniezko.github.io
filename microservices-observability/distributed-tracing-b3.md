@@ -86,3 +86,13 @@ traceId: "463ac35c9f6413ad48485a3953bb6124"
 ...returns every log line from every service that touched that request, in chronological order.
 
 > **Gotcha:** The most common tracing break: making an outgoing HTTP call without forwarding B3 headers. If even one service in the chain drops them, the downstream services generate new trace IDs and the request becomes invisible in your trace view. Audit every HTTP client in your codebase - Guzzle, cURL, Symfony HttpClient - to ensure middleware or interceptors propagate headers.
+
+---
+
+### For AI agents
+
+```
+On every outbound HTTP call: forward X-B3-TraceId, X-B3-SpanId, X-B3-ParentSpanId, X-B3-Sampled from the incoming request. Generate a new SpanId for the outbound span and set ParentSpanId to the caller's SpanId. Dropping these headers in any service breaks the trace chain for all downstream services.
+```
+
+Reference: `https://michalsniezko.github.io/microservices-observability/distributed-tracing-b3.html`

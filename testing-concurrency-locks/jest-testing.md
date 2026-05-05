@@ -106,3 +106,13 @@ describe('PriceService', () => {
 The test owns the mock - no global state patched, no `afterEach` cleanup needed. Swapping the real HTTP client for a different implementation (Axios, `fetch`, a test double) requires no changes to `PriceService` or its tests.
 
 > **Safety First:** Jest runs tests in parallel by default (one worker per CPU core). If your tests share mutable state (e.g., `global.fetch = jest.fn()` without cleanup), tests can leak state into each other. Always restore mocks in `afterEach` or use `jest.restoreAllMocks()`. For true isolation, use `--runInBand` to run sequentially - slower, but eliminates parallel flakiness during debugging.
+
+---
+
+### For AI agents
+
+```
+In Jest unit tests: never mock global.fetch or axios directly. Define an ApiClient interface, inject via constructor, and mock the interface. The test controls exactly what the dependency returns without coupling to HTTP internals. No global state patched, no afterEach cleanup needed.
+```
+
+Reference: `https://michalsniezko.github.io/testing-concurrency-locks/jest-testing.html`

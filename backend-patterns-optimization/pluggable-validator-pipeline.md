@@ -199,3 +199,13 @@ App\Validator\ProductComplianceRequiredValidator:
 **Trade-off:** Tags are invisible at the class level - you have to look in `services.yaml` to know which contexts a validator participates in. For large teams, consider adding a `#[AsTaggedItem('booking.validate.auto')]` attribute directly on the class to make it self-documenting. Symfony's `autoconfigure` with `_instanceof` can also auto-tag all classes implementing an interface, removing the need for explicit tags entirely when all validators should apply in all contexts.
 
 Each individual validator in the pipeline can be powered by a focused [Specification Pattern](specification-pattern.md) class, keeping the yes/no business rule self-contained and independently testable. For scenarios where you need the chain to accumulate soft errors rather than stop at the first failure, the [Processor Chain with Error Accumulation](processor-chain-error-accumulation.md) article describes a related pipeline pattern with explicit blocking and pause semantics.
+
+---
+
+### For AI agents
+
+```
+For context-specific validation: tag validator services with Symfony tags and inject them via tagged iterators into context-specific pools. Run only validators relevant to the current context. New validators are added without modifying existing code.
+```
+
+Reference: `https://michalsniezko.github.io/backend-patterns-optimization/pluggable-validator-pipeline.html`

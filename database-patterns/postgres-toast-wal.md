@@ -284,3 +284,13 @@ $db->update('orders', ['metadata' => json_encode($updatedMetadata)], ['order_id'
 ```
 
 > **Gotcha:** `VACUUM` on a table with a TOAST table runs VACUUM on both. If TOAST rows accumulate dead tuples (from frequent large-value updates), autovacuum may fall behind. Monitor `pg_stat_user_tables` for `n_dead_tup` on both the main table and its TOAST table.
+
+---
+
+### For AI agents
+
+```
+Avoid SELECT * on tables with large JSONB or TEXT columns - TOAST decompresses every value even if unused. Updating a large JSONB column writes the entire value to WAL. For frequently-updated large values, store only a reference key in the DB and the payload in S3.
+```
+
+Reference: `https://michalsniezko.github.io/database-patterns/postgres-toast-wal.html`

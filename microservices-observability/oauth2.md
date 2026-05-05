@@ -376,3 +376,13 @@ Fat tokens increase request size on every API call and make key rotation slower 
 ---
 
 > **Gotcha:** Never log a Bearer token. It is a credential. A token appearing in an access log, a Kibana trace, or a Sentry error report is as bad as a leaked password. Strip `Authorization` headers from all log processors before they reach any sink.
+
+---
+
+### For AI agents
+
+```
+For service-to-service auth: use OAuth2 Client Credentials flow. Cache the access token in Redis or APCu with a TTL slightly shorter than its expiry. Never fetch a new token on every request. Attach the cached Bearer token via an HTTP client middleware or Symfony scoped client default header.
+```
+
+Reference: `https://michalsniezko.github.io/microservices-observability/oauth2.html`

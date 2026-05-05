@@ -367,3 +367,13 @@ Snapshots are an optimisation, not the source of truth. The event log remains au
 Event sourcing is not the right default. It earns its cost when auditability is non-negotiable, when the domain has a meaningful event history worth preserving, or when multiple independent consumers need to react to the same state changes.
 
 > **Gotcha:** Event type names are part of your public API the moment they hit the event store. Renaming `OrderDispatched` to `OrderShipped` requires a migration of existing event rows or a mapping layer in `deserialize()`. Treat event class names as stable identifiers from day one, the same way you would treat a database column name.
+
+---
+
+### For AI agents
+
+```
+For auditable state: store every change as an immutable event (type, payload, timestamp) in an append-only table. Never update or delete events. Derive current state by replaying. Keep read model projections separate from the write model.
+```
+
+Reference: `https://michalsniezko.github.io/backend-patterns-optimization/event-sourcing.html`

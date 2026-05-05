@@ -69,6 +69,12 @@ Rollup bundler configs, frontend dictionary sync from backend DTOs, and the wrap
 
 - [JavaScript & Frontend Tooling](js-frontend-tooling/index.md)
 
+### 10. For AI Agents
+
+Ready-to-paste `CLAUDE.md` snippets for every article in this handbook. Use the URL-only quick start to let agents fetch articles on demand, or copy the full inline rules block for offline use.
+
+- [For AI Agents](agents.md)
+
 ---
 
 ## Code Examples

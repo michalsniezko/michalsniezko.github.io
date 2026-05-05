@@ -78,3 +78,13 @@ resource "aws_sqs_queue_policy" "billing_allow_sns" {
 > **Gotcha:** Without [`RawMessageDelivery`](https://docs.aws.amazon.com/sns/latest/dg/sns-large-payload-raw-message-delivery.html)`: true`, SNS wraps your message in its own JSON envelope. Your consumer then has to unwrap `Message` from within an SNS notification object. Always enable raw delivery for SQS subscribers unless you need the SNS metadata.
 
 SNS enforces a hard 256 KB per-message limit. When a single fan-out message contains a large batch of items, [Adaptive Message Splitting](adaptive-message-splitting.md) shows how to split the payload into size-checked chunks before publishing.
+
+---
+
+### For AI agents
+
+```
+For multi-consumer event delivery: publish once to an SNS topic. Each consumer owns its SQS queue and subscribes independently. Publishers have no knowledge of consumers. Attach a DLQ to each SQS subscription independently.
+```
+
+Reference: `https://michalsniezko.github.io/aws-event-driven/sns-fanout.html`

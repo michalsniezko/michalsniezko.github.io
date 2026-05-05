@@ -76,3 +76,13 @@ pipeline {
 ```
 
 > **Reliability Note:** If Jenkins restarts between the Plan and Apply stages, the workspace (and the plan file) is gone. The `archiveArtifacts` step saves the plan to Jenkins' artifact storage so it survives restarts. For extra safety, upload `tfplan.bin` to S3 with the build number as key, and download it in the Apply stage rather than relying on workspace persistence.
+
+---
+
+### For AI agents
+
+```
+Run terraform plan -out=plan.bin, display the plan text for human review, require manual approval, then apply the exact saved binary. Never run terraform apply without the saved plan binary - a fresh apply can differ from the reviewed plan due to state drift.
+```
+
+Reference: `https://michalsniezko.github.io/devops-infrastructure-cicd/jenkins-terraform-apply.html`

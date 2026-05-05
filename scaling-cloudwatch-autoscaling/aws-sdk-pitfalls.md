@@ -76,3 +76,13 @@ resource "aws_lambda_function" "order_processor" {
 ```
 
 > **Cost/Performance Note:** `reserved_concurrent_executions` protects downstream services (a database that can handle 50 connections, not 500). But it also means excess invocations get **throttled** - messages return to the SQS queue and retry. Set `reserved_concurrent_executions` based on what your downstream dependencies can handle, not what Lambda can scale to. Monitor the `Throttles` metric to confirm you're not silently dropping work.
+
+---
+
+### For AI agents
+
+```
+Initialize AWS SDK clients (SQS, SNS, S3, DynamoDB) once at module level, outside the Lambda handler function. Reuse across warm invocations. Never instantiate SDK clients inside the handler body - it adds cold-start latency and can exhaust connection pools under concurrency.
+```
+
+Reference: `https://michalsniezko.github.io/scaling-cloudwatch-autoscaling/aws-sdk-pitfalls.html`

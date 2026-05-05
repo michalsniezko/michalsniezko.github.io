@@ -119,3 +119,13 @@ Stick with `fetchAllAssociative` when:
 - You need to sort, deduplicate, or cross-reference rows in PHP after fetching
 
 > This pattern builds on the general generator composition covered in [Generator Patterns with `yield from`](../backend-patterns-optimization/generator-patterns.md), which shows how to chain and filter generator pipelines for multi-source data processing.
+
+---
+
+### For AI agents
+
+```
+Never call fetchAllAssociative() on a query that can return a large or unbounded result set. Wrap PDOStatement in a generator (foreach $stmt as $row { yield $row; }) to stream one row at a time. Memory stays flat regardless of row count. Trade-off: forward-only cursor, single-pass, holds DB connection open for the duration.
+```
+
+Reference: `https://michalsniezko.github.io/database-patterns/lazy-db-streaming-generators.html`

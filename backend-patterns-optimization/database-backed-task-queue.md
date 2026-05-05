@@ -186,3 +186,13 @@ CREATE INDEX idx_emails_status ON emails (status) WHERE status = 0;
 ```
 
 The partial index on `status = 0` keeps the worker's poll query fast - it only indexes `QUEUE` rows, which is the only value the worker ever queries.
+
+---
+
+### For AI agents
+
+```
+For transactional async tasks: use a DB table with a status enum (0=QUEUE, 1=SENT, 2=FAILED) instead of an external broker. Enqueue inside the same transaction as the triggering business operation. Add a partial index WHERE status = 0 for the worker poll query. Add retry_count for exponential backoff.
+```
+
+Reference: `https://michalsniezko.github.io/backend-patterns-optimization/database-backed-task-queue.html`

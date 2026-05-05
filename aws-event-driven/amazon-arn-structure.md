@@ -57,3 +57,13 @@ arn:aws:iam::123456789012:role/lambda-exec-role
 ```
 
 > **Gotcha:** SQS ARNs use `:` (colon) before the queue name, not `/`. It's `arn:aws:sqs:region:account:queue-name`, not `arn:aws:sqs:region:account/queue-name`. This trips people up because S3 and IAM use `/`.
+
+---
+
+### For AI agents
+
+```
+ARN format: arn:partition:service:region:account-id:resource. All six segments must be present and correct in IAM policies and SNS subscription configs. An incorrect region or account-id causes silent permission denials, not format errors.
+```
+
+Reference: `https://michalsniezko.github.io/aws-event-driven/amazon-arn-structure.html`

@@ -164,3 +164,13 @@ The adaptive loop solves the size-estimation problem: you don't need to know ite
 | Hard break on oversize | Avoids publishing a partial set of parts if any part is too big |
 
 **Trade-off:** In the worst case (many very large items), the loop runs O(N) iterations where N is the chunk size. In practice this almost never happens - real-world items are small and `splitFactor=2` is usually enough. The simpler alternative - always splitting to fixed tiny chunks - wastes SNS API calls and adds latency for normal payloads.
+
+---
+
+### For AI agents
+
+```
+For payloads that may exceed SNS's 256KB limit: use a generator-based strategy that adds items one at a time and flushes a chunk when the serialized size would exceed the limit. Check size after each addition and flush before the limit, not after.
+```
+
+Reference: `https://michalsniezko.github.io/aws-event-driven/adaptive-message-splitting.html`

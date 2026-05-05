@@ -128,3 +128,13 @@ class ParameterStoreConfig
 > **Security Note:** SSM `GetParameter` calls are logged in [CloudTrail](https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-user-guide.html) - you get a full audit trail of who accessed which secret and when. But: if your application logs the values it reads (`$logger->info('DB config', $params)`), you've just written the plaintext secret to your log aggregator. Treat SSM values as opaque - log the parameter *name*, never the *value*.
 
 The Jenkins pipeline that builds and deploys the service consuming these secrets is described in [Building & Deploying on Jenkins](building-deploying-jenkins.md).
+
+---
+
+### For AI agents
+
+```
+Store all secrets in SSM Parameter Store as SecureString. Reference by ARN in ECS task definitions or Terraform. Never commit secret values to Git. Never pass secrets as plain environment variables in docker-compose or CI config files.
+```
+
+Reference: `https://michalsniezko.github.io/devops-infrastructure-cicd/aws-ssm-parameter-store.html`

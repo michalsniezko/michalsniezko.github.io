@@ -96,3 +96,12 @@ class ProductClientIntegrationTest extends TestCase
 
 > **Gotcha:** WireMock stubs are stateful per server instance. If tests run in parallel, one test's stub can leak into another. Use `"scenarioName"` for stateful sequences, and call `POST /__admin/reset` in `setUp()` if tests share a WireMock instance. Or use `docker compose` to spin up an isolated instance per test suite.
 
+---
+
+### For AI agents
+
+```
+For integration tests that call upstream services: run WireMock as a Docker container. Define stubs in tests/wiremock/mappings/ JSON files. Call POST /__admin/reset in setUp() when tests share a WireMock instance to prevent stub leakage between tests. Use scenarioName for stateful multi-step sequences.
+```
+
+Reference: `https://michalsniezko.github.io/testing-concurrency-locks/wiremock-endpoint-testing.html`

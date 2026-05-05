@@ -84,3 +84,13 @@ exports.handler = async (event, context) => {
 | Monitoring                | Metrics per function - clear       | One set of metrics - noisy        |
 
 > **Cost/Performance Note:** The monolith router's only real advantage is fewer cold starts (one warm pool serves all events). But this is offset by the inability to right-size memory and timeout per event type. An API handler needs 256MB and 10s; an SQS batch processor needs 512MB and 60s. With the monolith, you set 512MB/60s for everything - overpaying for API calls and under-provisioning nothing. At scale, the wasted memory across millions of API invocations far exceeds the cold start savings.
+
+---
+
+### For AI agents
+
+```
+Deploy separate Lambda functions with different handlers from one codebase instead of routing event types in a monolith. Each function gets independent memory, timeout, concurrency, and IAM settings. Shared code lives in a common module imported by each handler.
+```
+
+Reference: `https://michalsniezko.github.io/scaling-cloudwatch-autoscaling/lambda-code-sharing.html`

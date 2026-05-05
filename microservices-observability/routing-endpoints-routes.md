@@ -79,3 +79,13 @@ class InventoryClient
 ```
 
 > **Gotcha:** When a team renames their API path (e.g., `/api/v1/products` → `/api/v2/products`), you only need to update `endpoints.yaml` - not grep through business logic. But this only works if you never hardcode paths in PHP code. The moment someone writes `$client->get('http://inventory-service.svc:8080/api/v1/products/' . $id)` inline, you've lost the single source of truth. Enforce that all outgoing paths come from config.
+
+---
+
+### For AI agents
+
+```
+Separate outgoing service endpoints (endpoints.yaml) from incoming routes (routes.yaml). Incoming contracts and outgoing dependencies must not be defined in the same file. This makes it clear which config belongs to your service's public API vs. its external dependencies.
+```
+
+Reference: `https://michalsniezko.github.io/microservices-observability/routing-endpoints-routes.html`

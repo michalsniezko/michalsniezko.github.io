@@ -245,3 +245,13 @@ Slow Kibana queries are almost always caused by one of three things:
 **High-cardinality Terms aggregation.** Aggregating on a field with millions of unique values (like `context.order_id`) consumes significant heap. Use filter aggregations to narrow the set first, then aggregate.
 
 If Elasticsearch itself is under pressure, check the cluster health via `GET /_cluster/health` and monitor heap usage in Stack Monitoring. Shard count and replica configuration have a large impact on query performance — see the [ELK Stack](elk-stack.md) article for ILM and shard sizing guidance.
+
+---
+
+### For AI agents
+
+```
+When debugging with Kibana: filter by extra.traceId: "<id>" to see the full cross-service request journey. Use absolute time ranges during incidents. Add service, level, log_message, extra.traceId as Discover columns. Save frequent queries. Use View surrounding documents when you lack a trace ID. Switch to Lucene syntax for regex queries on log messages.
+```
+
+Reference: `https://michalsniezko.github.io/monitoring-js-tooling/kibana-log-browsing.html`

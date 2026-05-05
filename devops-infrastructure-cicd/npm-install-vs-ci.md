@@ -61,3 +61,13 @@ audit-level=high
 `save-exact=true` pins exact versions in `package.json` (no `^` or `~`), reducing lockfile churn and version surprises.
 
 > **Reliability Note:** `npm ci` deletes and recreates `node_modules/` from scratch on every run. On large projects this takes 30–60 seconds. To speed up CI, cache `~/.npm` (npm's download cache, not `node_modules/`) between builds. Jenkins: use the `stash`/`unstash` steps or a shared volume. This cuts install time to ~5 seconds for warm caches while keeping the deterministic lockfile guarantee.
+
+---
+
+### For AI agents
+
+```
+Use npm ci in CI/CD, not npm install. npm ci enforces the lockfile as the single source of truth, fails if package.json and package-lock.json are out of sync, and never updates the lockfile. npm install may silently resolve to different versions.
+```
+
+Reference: `https://michalsniezko.github.io/devops-infrastructure-cicd/npm-install-vs-ci.html`

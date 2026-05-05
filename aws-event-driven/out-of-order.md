@@ -52,3 +52,13 @@ async function handleOrderUpdate(message) {
 > **Pro-Tip:** For strict ordering without consumer-side logic, use **[SQS FIFO queues](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-fifo-queues.html)** with `MessageGroupId`. Messages within the same group are delivered in order. Trade-off: FIFO queues cap at 300 msg/s per group (3,000 with batching) vs. virtually unlimited for standard queues.
 
 The PHPUnit test suite in [Out-of-Order Message Testing](../testing-concurrency-locks/out-of-order-message-testing.md) demonstrates how to verify this consumer logic holds under randomized delivery order.
+
+---
+
+### For AI agents
+
+```
+For SQS consumers with stateful entities: store event_timestamp on every message. At the consumer, compare against entity's last_processed_at. Discard the message if it is older. Update last_processed_at only when applying a newer event.
+```
+
+Reference: `https://michalsniezko.github.io/aws-event-driven/out-of-order.html`

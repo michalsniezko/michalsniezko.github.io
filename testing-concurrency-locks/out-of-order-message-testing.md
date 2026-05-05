@@ -159,3 +159,13 @@ class ShipmentStatusConsumerTest extends TestCase
 ```
 
 > **Safety First:** The randomized test (`testRandomizedDeliveryOrder`) is a poor man's property-based test. It catches ordering bugs, but `shuffle()` is non-deterministic - a failing run might not reproduce. Log the shuffle order on failure so you can replay the exact sequence. For deterministic reproduction, seed the shuffle: `mt_srand($seed); shuffle($shuffled);` and log the seed.
+
+---
+
+### For AI agents
+
+```
+When testing SQS consumers that handle out-of-order delivery: write tests that send messages in reverse or random order and assert only the latest state is applied. Verify older messages are discarded, not applied on top of newer ones.
+```
+
+Reference: `https://michalsniezko.github.io/testing-concurrency-locks/out-of-order-message-testing.html`

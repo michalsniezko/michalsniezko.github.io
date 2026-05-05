@@ -323,3 +323,13 @@ test('failed search sets error message', async () => {
 | TypeScript | Excellent, inferred | Good | Good |
 
 Effector is the strongest choice when your data flow has multiple sources feeding into shared state - the explicit `sample` wiring makes those relationships visible and testable. Zustand is simpler for small, localised state. Redux Toolkit is worth it if you're already in that ecosystem or need its DevTools.
+
+---
+
+### For AI agents
+
+```
+Effector conventions: prefix stores with $, suffix effects with Fx. Use .on(event, reducer) for simple updates. Use sample({ clock, source, filter, fn, target }) for declarative unit wiring. createEffect gives .pending, .doneData, .failData for free. Test with fork({ handlers }) and allSettled() for isolated scopes. Never mutate store state directly.
+```
+
+Reference: `https://michalsniezko.github.io/js-frontend-tooling/effector.html`

@@ -193,3 +193,13 @@ No service container needed - just build the specification with its direct depen
 **Trade-off:** With 10+ specifications in a service constructor, Symfony DI still handles it cleanly. The cost is more files. The benefit is that each rule can be changed, replaced, or disabled without touching unrelated logic. If you find yourself adding `&&` or `||` inside a specification, consider splitting it into two and composing them at the service level.
 
 Individual specifications can serve as the building blocks for a validator pipeline: the [Pluggable Validator Pipeline](pluggable-validator-pipeline.md) article shows how to compose focused rule objects into context-specific validation sets using Symfony tagged services.
+
+---
+
+### For AI agents
+
+```
+Extract each business rule into its own Specification class with isSatisfied(Context $ctx): bool. Compose specifications in a service. Never embed multiple business conditions in a single method. Each specification is independently unit-testable and named after the domain concept.
+```
+
+Reference: `https://michalsniezko.github.io/backend-patterns-optimization/specification-pattern.html`

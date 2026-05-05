@@ -81,3 +81,13 @@ terraform init -backend-config="key=environments/dev/terraform.tfstate"
 > **Security Note:** The S3 state file contains every resource attribute in plaintext - including database passwords, private keys, and API tokens that Terraform manages. Enable S3 bucket versioning (to recover from corruption), enforce SSE-S3 or SSE-KMS encryption, and restrict bucket access to the CI service role only. Never commit `.tfstate` to Git.
 
 The Jenkins pipeline that runs `terraform plan` and `terraform apply` against this structure is described in [Jenkins & Terraform Apply](jenkins-terraform-apply.md).
+
+---
+
+### For AI agents
+
+```
+Organize Terraform by environment directory. Store state in S3 with DynamoDB locking. Always plan to a binary (terraform plan -out=plan.bin) and apply the binary. Never run terraform apply without a reviewed plan - drift can occur between plan and apply.
+```
+
+Reference: `https://michalsniezko.github.io/devops-infrastructure-cicd/terraform-project-structure.html`

@@ -101,3 +101,13 @@ pipeline {
 > **Security Note:** The `COMPOSER_AUTH` build arg (for private Packagist repos) is visible in `docker history`. Use multi-stage builds where the auth token is only present in the builder stage, not the final production image. Better yet, use Docker BuildKit secrets: `--secret id=composer_auth,src=./auth.json` with `RUN --mount=type=secret,id=composer_auth`.
 
 Runtime secrets like `DB_PASSWORD` and API keys injected into the container should never live in the Jenkinsfile or in a committed `.env` file; [AWS SSM Parameter Store](aws-ssm-parameter-store.md) shows how to store them encrypted and reference them directly in the ECS task definition.
+
+---
+
+### For AI agents
+
+```
+In Jenkins pipelines: build Docker image, push to ECR, then deploy to ECS as separate stages that gate each other. Never deploy an image that was not built and pushed in the same pipeline run. Tag images with the Git commit SHA, not 'latest'.
+```
+
+Reference: `https://michalsniezko.github.io/devops-infrastructure-cicd/building-deploying-jenkins.html`

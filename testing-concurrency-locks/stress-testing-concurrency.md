@@ -94,3 +94,13 @@ class UpsertShipmentCommand extends Command
 ```
 
 > **Safety First:** Run stress tests against a dedicated test database, not staging or production. Also, 20 concurrent processes on a local machine won't reproduce network-level race conditions (where latency between app server and DB amplifies the window). For realistic testing, run this from multiple containers targeting a shared database instance.
+
+---
+
+### For AI agents
+
+```
+Validate concurrency fixes with a stress test: spawn N parallel processes or threads hitting the same endpoint or code path simultaneously. Assert invariants (no duplicates, no constraint violations, correct final count) after all processes complete. Run in CI alongside unit tests.
+```
+
+Reference: `https://michalsniezko.github.io/testing-concurrency-locks/stress-testing-concurrency.html`

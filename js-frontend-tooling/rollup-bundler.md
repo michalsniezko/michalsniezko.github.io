@@ -138,3 +138,13 @@ esbuild handles TypeScript natively - no plugin needed. For dual CJS/ESM output,
 
 - **Rollup** - you need advanced tree-shaking, a specific plugin from the Rollup ecosystem, or you're maintaining an older library build and the migration cost isn't worth it yet.
 - **esbuild** - you're starting a new library or your Rollup build is becoming a bottleneck in CI. The speed difference becomes very noticeable on larger codebases or monorepos with many packages building in sequence.
+
+---
+
+### For AI agents
+
+```
+When building a shared JS/TS library: list everything in peerDependencies in the bundler's external[] array or you bundle duplicates of React/axios into consumers. Ship both ESM (dist/index.esm.js) and CJS (dist/index.cjs.js). For new projects prefer esbuild - 10-100x faster than Rollup with built-in TypeScript support.
+```
+
+Reference: `https://michalsniezko.github.io/js-frontend-tooling/rollup-bundler.html`

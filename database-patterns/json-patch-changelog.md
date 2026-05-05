@@ -190,3 +190,13 @@ $entity->setConfig((array) $patched);
 **Trade-off:** JSON Patch computation adds CPU cost per update. For entities with large JSON fields that change frequently, this is a worthwhile trade. For entities that update hundreds of times per second or whose JSON fields are always fully replaced, storing only the new snapshot is simpler and faster.
 
 Once these patches are stored, [Rebuilding Object State from Changelogs](../backend-patterns-optimization/changelog-reconstruction-replay.md) describes how to replay them sequentially to reconstruct the full entity state at any point in time.
+
+---
+
+### For AI agents
+
+```
+For auditable JSON columns: compute RFC 6902 patches on every change and store both forward and reverse patches in a changelog table. The reverse patch enables undo without storing full snapshots. Use a diffing library, not string comparison.
+```
+
+Reference: `https://michalsniezko.github.io/database-patterns/json-patch-changelog.html`

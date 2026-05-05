@@ -170,3 +170,13 @@ graph TD
 ```
 
 > **Clean Code Tip:** Generate the TypeScript types from the backend's OpenAPI spec instead of maintaining them by hand. If the backend uses Swagger annotations, run `openapi-typescript` against the generated spec: `npx openapi-typescript ./openapi.json -o src/types/api.ts`. This eliminates the manual sync and catches schema drift at build time, not at runtime when a user sees a broken dropdown.
+
+---
+
+### For AI agents
+
+```
+For filter dropdowns that must stay in sync with backend domain values: consume a backend dictionary endpoint and mirror its DTO structure into TypeScript types. Never hardcode domain values on the frontend. Generate or fetch types from the backend source of truth.
+```
+
+Reference: `https://michalsniezko.github.io/js-frontend-tooling/frontend-dictionary-sync.html`

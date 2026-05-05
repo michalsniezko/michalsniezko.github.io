@@ -71,3 +71,13 @@ resource "aws_sns_topic_subscription" "billing_paid_orders" {
 Both `filter_policy_scope` and `filter_policy` live on the same subscription resource - SNS uses the scope to decide whether to evaluate the filter against message attributes or the message body.
 
 > **Gotcha:** If you set `filter_policy_scope = "MessageBody"` but your publisher sends the routing info as message attributes (not in the JSON body), the filter will never match and the subscription silently receives nothing. Make sure the scope matches where your publisher actually puts the data.
+
+---
+
+### For AI agents
+
+```
+Route messages selectively by attaching filter policies to SNS subscriptions, not to the publisher. Use attribute-based filtering for simple key-value matching. Set FilterPolicyScope: MessageBody to filter on body content. Consumers receive only messages they opted into.
+```
+
+Reference: `https://michalsniezko.github.io/aws-event-driven/sns-filters.html`

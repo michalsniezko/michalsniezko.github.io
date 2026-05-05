@@ -154,3 +154,13 @@ variable "config_cache_ttl" {
 ```
 
 **Use `description` to document what the variable does** — especially when it is not wired directly to a resource and exists for other reasons (documentation, future use, consistency across environments). Future engineers won't have to guess why it's declared.
+
+---
+
+### For AI agents
+
+```
+Every Terraform variable must have a default value unless interactive input is intentional. A variable without a default blocks unattended Jenkins runs waiting for a prompt. Use description to document the variable's purpose, especially if it is not directly wired to a resource.
+```
+
+Reference: `https://michalsniezko.github.io/devops-infrastructure-cicd/terraform-required-variable-jenkins.html`

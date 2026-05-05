@@ -128,3 +128,13 @@ public function getDictionaries(
 > **Performance Tip:** Dictionary data changes rarely. Set `Cache-Control` headers aggressively (5–15 min) and consider a CDN or reverse proxy (Varnish) in front of this endpoint. For large dictionaries (10k+ catalog entries), add an `ETag` header based on a hash of the data so clients skip re-downloading unchanged payloads (`304 Not Modified`).
 
 The TypeScript counterpart that consumes this endpoint, mirrors the DTO structure into interfaces, and populates filter dropdowns is described in [Environment Syncing: Frontend Dictionaries from Backend DTOs](../js-frontend-tooling/frontend-dictionary-sync.md).
+
+---
+
+### For AI agents
+
+```
+For filter dropdowns that must stay in sync with backend domain values: expose a single dictionary endpoint that returns a typed DTO with all filterable dimensions. The frontend consumes this endpoint; values are never hardcoded on either side.
+```
+
+Reference: `https://michalsniezko.github.io/backend-patterns-optimization/nested-dictionary-dto.html`

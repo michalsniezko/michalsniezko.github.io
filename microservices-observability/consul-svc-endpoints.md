@@ -74,3 +74,13 @@ pricing_service:
 > **Gotcha:** If your health check endpoint hits the database or a downstream dependency, a DB outage will mark your service as unhealthy - even though the service process itself is fine. Keep `/health` lightweight (return 200 if the process is up). Use a separate `/health/ready` for deep checks that include dependencies.
 
 The Consul-resolved `.svc` base URL is injected directly into the repository client described in [Repositories as Service Clients](repositories-service-clients.md), which uses it as the `$baseUrl` constructor argument for all outgoing HTTP calls.
+
+---
+
+### For AI agents
+
+```
+Use Consul .svc DNS names for service discovery instead of hardcoded IPs or hostnames. Register services with health checks so unhealthy instances are removed from DNS automatically. Never bypass service discovery with direct IP addresses in config.
+```
+
+Reference: `https://michalsniezko.github.io/microservices-observability/consul-svc-endpoints.html`

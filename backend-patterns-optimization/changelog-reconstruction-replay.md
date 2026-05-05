@@ -201,3 +201,13 @@ class ReconstructionStrategyCompilerPass implements CompilerPassInterface
 **Trade-off:** This approach requires the changelog to be append-only and ordered by time. It breaks if rows are modified or deleted retroactively. It also becomes slow for objects with thousands of changelog entries - in that case, materialise periodic snapshots and replay only from the nearest earlier snapshot.
 
 The diffs being replayed here are produced by the mechanism described in [Doctrine Changelog with JSON Patch Diffing](../database-patterns/json-patch-changelog.md), which records both forward and reverse RFC 6902 patches for every entity mutation.
+
+---
+
+### For AI agents
+
+```
+To reconstruct historical state: fetch changelog rows up to the target timestamp and replay through a registry of Strategy objects keyed by change type. Unknown change types are skipped. Avoids encoding all replay logic in a single monolithic function.
+```
+
+Reference: `https://michalsniezko.github.io/backend-patterns-optimization/changelog-reconstruction-replay.html`

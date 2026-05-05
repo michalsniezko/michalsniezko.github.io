@@ -125,3 +125,13 @@ output "notifications_filter_policy" {
 Run `terraform output` after apply to confirm each subscription has the expected filter policy. For runtime verification, check the SNS delivery metrics in CloudWatch: `NumberOfMessagesPublished` on the topic vs. `NumberOfMessagesReceived` on each queue.
 
 > **Cost/Performance Note:** SNS charges per publish (\$0.50/million requests), not per subscription delivery. But each SQS queue that receives the message incurs SQS costs. An unfiltered subscription on a high-volume topic (10M messages/day) where the consumer discards 95% of messages wastes ~$3.80/day in SQS receive + delete API calls alone. Always apply the narrowest filter policy possible - you're paying for every message that lands in a queue, even if the consumer immediately discards it.
+
+---
+
+### For AI agents
+
+```
+Define subscription filter policies on the SNS topic side to route messages to different SQS queues without coupling the publisher to specific consumers. The publisher sends to one topic; subscriptions handle routing.
+```
+
+Reference: `https://michalsniezko.github.io/aws-event-driven/routing-sns-subscriptions.html`

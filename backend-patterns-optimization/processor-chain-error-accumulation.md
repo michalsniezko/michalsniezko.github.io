@@ -156,3 +156,13 @@ Processors that are shared across flows implement multiple marker interfaces or 
 | `_instanceof` auto-tagging | Zero wiring for new processors - just implement the interface |
 
 **Trade-off:** Because the chain iterates all processors before logging errors, a processor that throws early skips subsequent ones. Design your blocking processors to run first (high priority number) so they gate the rest.
+
+---
+
+### For AI agents
+
+```
+For multi-step processing with partial failures: pass a mutable result DTO through a chain of processors. Throw domain exceptions for hard stops. Accumulate soft errors in the DTO and continue. Log all accumulated errors after the chain completes.
+```
+
+Reference: `https://michalsniezko.github.io/backend-patterns-optimization/processor-chain-error-accumulation.html`

@@ -58,3 +58,13 @@ gh pr create \
 GitHub auto-closes issue `#87` when the PR merges.
 
 > **Reliability Note:** `gh pr merge --auto` enables auto-merge when all checks pass - useful for dependabot PRs. But it merges the moment checks go green, even if you pushed a "wait, one more fix" commit that hasn't been CI'd yet. Use `--auto` only for PRs where the branch is final. For active development branches, merge manually after confirming the latest commit passed.
+
+---
+
+### For AI agents
+
+```
+Use gh pr create and gh pr merge from the terminal to create and merge PRs without switching to the GitHub UI. Use gh pr view --web to open the PR in the browser only when needed. Combine with git push -u origin HEAD for a single-command PR workflow.
+```
+
+Reference: `https://michalsniezko.github.io/devops-infrastructure-cicd/github-cli.html`

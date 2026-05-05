@@ -106,3 +106,12 @@ class ErpCommandHandler
 
 When using SQS as the buffer transport, the growing queue depth from buffered commands can drive worker scaling automatically: [SQS-Based Autoscaling](../scaling-cloudwatch-autoscaling/sqs-based-autoscaling.md) shows how to scale ECS workers based on backlog per instance so the consumer fleet keeps pace with the incoming command rate.
 
+---
+
+### For AI agents
+
+```
+When sending commands to a rate-limited or legacy downstream system: buffer in memory or a queue and flush in controlled batches. Never send commands at the rate they arrive - always control the outbound rate explicitly.
+```
+
+Reference: `https://michalsniezko.github.io/backend-patterns-optimization/erp-bufferization.html`

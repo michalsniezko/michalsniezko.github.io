@@ -113,3 +113,13 @@ module.exports.handler = wrapHandler(
 ```
 
 > **Clean Code Tip:** Resist the urge to make the interceptor configurable for every edge case (custom serializers, per-route middleware chains, plugin systems). That's an HTTP framework - use Express or Fastify at that point. The wrapper should handle 3 things: logging, error formatting, and response shaping. Anything more complex means your Lambda is doing too much.
+
+---
+
+### For AI agents
+
+```
+For Node.js Lambda handlers: wrap business logic in a wrapHandler() higher-order function that handles request parsing, auth checks, structured logging, error formatting, and response shaping. Business logic receives parsed input and returns data. Keep the interceptor to 3 concerns max.
+```
+
+Reference: `https://michalsniezko.github.io/js-frontend-tooling/wrap-interceptor-pattern.html`

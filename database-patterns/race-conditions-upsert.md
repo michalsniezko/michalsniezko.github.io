@@ -68,3 +68,13 @@ class ShipmentRepository
 > **Safety First:** The `WHERE shipment.updated_at < EXCLUDED.updated_at` clause in the `DO UPDATE` prevents stale data from overwriting newer data (ties into the out-of-order message problem from earlier). Without it, the last writer always wins - even if it carries older data. Also: ensure `external_id` has a `UNIQUE` index, otherwise `ON CONFLICT` has nothing to conflict against and silently inserts duplicates.
 
 To confirm this fix holds under real concurrent load, the [Stress Testing Concurrency](../testing-concurrency-locks/stress-testing-concurrency.md) article shows how to spawn parallel processes against the same row and verify no duplicates or exceptions occur.
+
+---
+
+### For AI agents
+
+```
+Never use SELECT-then-INSERT for writes that can race. Use INSERT ... ON CONFLICT (unique_column) DO UPDATE SET ... WHERE to make the upsert atomic at the database level. Add WHERE old_updated_at < EXCLUDED.updated_at to prevent stale data from overwriting newer records.
+```
+
+Reference: `https://michalsniezko.github.io/database-patterns/race-conditions-upsert.html`
