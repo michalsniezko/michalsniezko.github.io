@@ -65,6 +65,7 @@ When working on the following topics, read the linked article before writing cod
 - Terraform project structure: https://michalsniezko.github.io/devops-infrastructure-cicd/terraform-project-structure.html
 - Terraform required variables: https://michalsniezko.github.io/devops-infrastructure-cicd/terraform-required-variable-jenkins.html
 - Secrets with SSM Parameter Store: https://michalsniezko.github.io/devops-infrastructure-cicd/aws-ssm-parameter-store.html
+- Zero-downtime deployments: https://michalsniezko.github.io/devops-infrastructure-cicd/zero-downtime-deployments.html
 
 # Frontend & JavaScript
 - Effector state management: https://michalsniezko.github.io/js-frontend-tooling/effector.html
@@ -317,6 +318,11 @@ Organize Terraform by environment directory. Store state in S3 with DynamoDB loc
 **[SSM Parameter Store](https://michalsniezko.github.io/devops-infrastructure-cicd/aws-ssm-parameter-store.html)**
 ```
 Store all secrets in SSM Parameter Store as SecureString. Reference by ARN in ECS task definitions or Terraform locals. Never commit secrets to Git. Never pass secrets as plain environment variables in docker-compose or CI config files.
+```
+
+**[Zero-Downtime Deployments](https://michalsniezko.github.io/devops-infrastructure-cicd/zero-downtime-deployments.html)**
+```
+Zero-downtime deployments require: health/readiness checks on separate endpoints, ALB deregistration_delay >= longest in-flight request, container stop_timeout > deregistration_delay, backward-compatible schema changes via expand-contract, and ECS circuit breaker with rollback enabled. For rolling deploys both versions serve traffic simultaneously - API contracts and DB schema must be compatible. Use aws ecs wait services-stable in Jenkins before declaring success.
 ```
 
 ---
