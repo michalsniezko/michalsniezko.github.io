@@ -66,6 +66,7 @@ When working on the following topics, read the linked article before writing cod
 - Terraform required variables: https://michalsniezko.github.io/devops-infrastructure-cicd/terraform-required-variable-jenkins.html
 - Secrets with SSM Parameter Store: https://michalsniezko.github.io/devops-infrastructure-cicd/aws-ssm-parameter-store.html
 - Zero-downtime deployments: https://michalsniezko.github.io/devops-infrastructure-cicd/zero-downtime-deployments.html
+- CI/CD stack (Docker, Jenkins, Terraform, ECS): https://michalsniezko.github.io/devops-infrastructure-cicd/docker-jenkins-terraform-ecs-stack.html
 
 # Frontend & JavaScript
 - Effector state management: https://michalsniezko.github.io/js-frontend-tooling/effector.html
@@ -323,6 +324,11 @@ Store all secrets in SSM Parameter Store as SecureString. Reference by ARN in EC
 **[Zero-Downtime Deployments](https://michalsniezko.github.io/devops-infrastructure-cicd/zero-downtime-deployments.html)**
 ```
 Zero-downtime deployments require: health/readiness checks on separate endpoints, ALB deregistration_delay >= longest in-flight request, container stop_timeout > deregistration_delay, backward-compatible schema changes via expand-contract, and ECS circuit breaker with rollback enabled. For rolling deploys both versions serve traffic simultaneously - API contracts and DB schema must be compatible. Use aws ecs wait services-stable in Jenkins before declaring success.
+```
+
+**[CI/CD Stack: Docker, Jenkins, Terraform, ECS](https://michalsniezko.github.io/devops-infrastructure-cicd/docker-jenkins-terraform-ecs-stack.html)**
+```
+Deployment stack: Docker builds the image (multi-stage, Composer secrets in builder stage only). Makefile wraps all commands (make build/test/push/deploy). Jenkins calls make targets - never raw docker/terraform commands. Terraform registers a new ECS task definition revision on each deploy by passing -var="image_tag=<sha>". ECS Fargate runs desired_count tasks; circuit breaker auto-rollback on health check failure. Always run aws ecs wait services-stable before declaring deploy successful.
 ```
 
 ---
