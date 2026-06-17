@@ -68,6 +68,7 @@ When working on the following topics, read the linked article before writing cod
 - Zero-downtime deployments: https://michalsniezko.github.io/devops-infrastructure-cicd/zero-downtime-deployments.html
 - CI/CD stack (Docker, Jenkins, Terraform, ECS): https://michalsniezko.github.io/devops-infrastructure-cicd/docker-jenkins-terraform-ecs-stack.html
 - ECS standalone and scheduled tasks: https://michalsniezko.github.io/devops-infrastructure-cicd/ecs-standalone-scheduled-tasks.html
+- IAM PassRole, trust policies, permissions policies: https://michalsniezko.github.io/devops-infrastructure-cicd/iam-passrole-trust-permissions.html
 
 # Frontend & JavaScript
 - Effector state management: https://michalsniezko.github.io/js-frontend-tooling/effector.html
@@ -337,6 +338,11 @@ Deployment stack: Docker builds the image (multi-stage, Composer secrets in buil
 Two ECS task patterns outside normal request handling:
 1. Standalone (one-time): Terraform in infrastructure/terraform/one-time-task/ registers an ECS task definition. Jenkins pipeline runs it with aws ecs run-task + command override, then polls with aws ecs wait tasks-stopped. Check exit code from describe-tasks. Use for migrations and backfills. Logs visible in Kibana (not Jenkins).
 2. Scheduled (CloudWatch): aws_cloudwatch_event_rule with schedule_expression (rate() or cron()) + aws_cloudwatch_event_target pointing to ECS cluster (direct container start) or SQS queue (message to existing consumer). CloudWatch needs an IAM role with ecs:RunTask + iam:PassRole to trigger ECS directly. CloudWatch schedule_expression uses UTC.
+```
+
+**[IAM PassRole, Trust Policies, and Permissions Policies](https://michalsniezko.github.io/devops-infrastructure-cicd/iam-passrole-trust-permissions.html)**
+```
+IAM has three distinct concepts: trust policy (who can assume the role - sts:AssumeRole in the role's own policy document), permissions policy (what the assumed role can do), and iam:PassRole (whether a caller can hand a role to an AWS service). Common pitfalls: forgetting iam:PassRole when creating/updating resources with associated roles; wrong service principal in trust policy (ecs-tasks.amazonaws.com not ecs.amazonaws.com); confusing trust policy with permissions policy; iam:PassRole with Resource:* is a privilege escalation risk - always scope to specific role ARNs and use iam:PassedToService condition; iam:PassRole is not transitive - check it on the role making the API call, not the original human caller. ECS has two separate roles: executionRoleArn (ECS agent pulls image and secrets) and taskRoleArn (application code makes API calls) - they need different permissions.
 ```
 
 ---
