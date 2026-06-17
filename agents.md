@@ -67,6 +67,7 @@ When working on the following topics, read the linked article before writing cod
 - Secrets with SSM Parameter Store: https://michalsniezko.github.io/devops-infrastructure-cicd/aws-ssm-parameter-store.html
 - Zero-downtime deployments: https://michalsniezko.github.io/devops-infrastructure-cicd/zero-downtime-deployments.html
 - CI/CD stack (Docker, Jenkins, Terraform, ECS): https://michalsniezko.github.io/devops-infrastructure-cicd/docker-jenkins-terraform-ecs-stack.html
+- ECS standalone and scheduled tasks: https://michalsniezko.github.io/devops-infrastructure-cicd/ecs-standalone-scheduled-tasks.html
 
 # Frontend & JavaScript
 - Effector state management: https://michalsniezko.github.io/js-frontend-tooling/effector.html
@@ -329,6 +330,13 @@ Zero-downtime deployments require: health/readiness checks on separate endpoints
 **[CI/CD Stack: Docker, Jenkins, Terraform, ECS](https://michalsniezko.github.io/devops-infrastructure-cicd/docker-jenkins-terraform-ecs-stack.html)**
 ```
 Deployment stack: Docker builds the image (multi-stage, Composer secrets in builder stage only). Makefile wraps all commands (make build/test/push/deploy). Jenkins calls make targets - never raw docker/terraform commands. Terraform registers a new ECS task definition revision on each deploy by passing -var="image_tag=<sha>". ECS Fargate runs desired_count tasks; circuit breaker auto-rollback on health check failure. Always run aws ecs wait services-stable before declaring deploy successful.
+```
+
+**[ECS Standalone and Scheduled Tasks](https://michalsniezko.github.io/devops-infrastructure-cicd/ecs-standalone-scheduled-tasks.html)**
+```
+Two ECS task patterns outside normal request handling:
+1. Standalone (one-time): Terraform in infrastructure/terraform/one-time-task/ registers an ECS task definition. Jenkins pipeline runs it with aws ecs run-task + command override, then polls with aws ecs wait tasks-stopped. Check exit code from describe-tasks. Use for migrations and backfills. Logs visible in Kibana (not Jenkins).
+2. Scheduled (CloudWatch): aws_cloudwatch_event_rule with schedule_expression (rate() or cron()) + aws_cloudwatch_event_target pointing to ECS cluster (direct container start) or SQS queue (message to existing consumer). CloudWatch needs an IAM role with ecs:RunTask + iam:PassRole to trigger ECS directly. CloudWatch schedule_expression uses UTC.
 ```
 
 ---
