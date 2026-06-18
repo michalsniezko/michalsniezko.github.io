@@ -69,6 +69,7 @@ When working on the following topics, read the linked article before writing cod
 - CI/CD stack (Docker, Jenkins, Terraform, ECS): https://michalsniezko.github.io/devops-infrastructure-cicd/docker-jenkins-terraform-ecs-stack.html
 - ECS standalone and scheduled tasks: https://michalsniezko.github.io/devops-infrastructure-cicd/ecs-standalone-scheduled-tasks.html
 - IAM PassRole, trust policies, permissions policies: https://michalsniezko.github.io/devops-infrastructure-cicd/iam-passrole-trust-permissions.html
+- Docker Compose override for local development: https://michalsniezko.github.io/devops-infrastructure-cicd/compose-override-local-dev.html
 
 # Frontend & JavaScript
 - Effector state management: https://michalsniezko.github.io/js-frontend-tooling/effector.html
@@ -343,6 +344,11 @@ Two ECS task patterns outside normal request handling:
 **[IAM PassRole, Trust Policies, and Permissions Policies](https://michalsniezko.github.io/devops-infrastructure-cicd/iam-passrole-trust-permissions.html)**
 ```
 IAM has three distinct concepts: trust policy (who can assume the role - sts:AssumeRole in the role's own policy document), permissions policy (what the assumed role can do), and iam:PassRole (whether a caller can hand a role to an AWS service). Common pitfalls: forgetting iam:PassRole when creating/updating resources with associated roles; wrong service principal in trust policy (ecs-tasks.amazonaws.com not ecs.amazonaws.com); confusing trust policy with permissions policy; iam:PassRole with Resource:* is a privilege escalation risk - always scope to specific role ARNs and use iam:PassedToService condition; iam:PassRole is not transitive - check it on the role making the API call, not the original human caller. ECS has two separate roles: executionRoleArn (ECS agent pulls image and secrets) and taskRoleArn (application code makes API calls) - they need different permissions.
+```
+
+**[Docker Compose Override for Local Development](https://michalsniezko.github.io/devops-infrastructure-cicd/compose-override-local-dev.html)**
+```
+Two-layer Compose pattern: commit compose.yaml (works everywhere) and compose.override.dist.yaml (template). Gitignore compose.override.yaml. Developer setup: cp compose.override.dist.yaml compose.override.yaml. Compose auto-merges compose.override.yaml over compose.yaml when present. The override adds bind mount (./:/app - replaces baked image code with live working copy) and port mappings. CI never has the file - absence is the mechanism. Bind mount also fixes UID ownership: baked files owned by www-data (uid 33), container runs as host user (uid 1000); mount replaces /app with host-owned files. Export USERID/GROUPID in the Makefile via $(shell id -u). Compose profiles (dev/ci/prod/tools) select which services start; the override controls how - they are independent.
 ```
 
 ---
