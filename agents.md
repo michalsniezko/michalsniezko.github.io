@@ -70,6 +70,7 @@ When working on the following topics, read the linked article before writing cod
 - ECS standalone and scheduled tasks: https://michalsniezko.github.io/devops-infrastructure-cicd/ecs-standalone-scheduled-tasks.html
 - IAM PassRole, trust policies, permissions policies: https://michalsniezko.github.io/devops-infrastructure-cicd/iam-passrole-trust-permissions.html
 - Docker Compose override for local development: https://michalsniezko.github.io/devops-infrastructure-cicd/compose-override-local-dev.html
+- Jenkins multibranch pipelines: https://michalsniezko.github.io/devops-infrastructure-cicd/jenkins-multibranch-pipelines.html
 
 # Frontend & JavaScript
 - Effector state management: https://michalsniezko.github.io/js-frontend-tooling/effector.html
@@ -349,6 +350,11 @@ IAM has three distinct concepts: trust policy (who can assume the role - sts:Ass
 **[Docker Compose Override for Local Development](https://michalsniezko.github.io/devops-infrastructure-cicd/compose-override-local-dev.html)**
 ```
 Two-layer Compose pattern: commit compose.yaml (works everywhere) and compose.override.dist.yaml (template). Gitignore compose.override.yaml. Developer setup: cp compose.override.dist.yaml compose.override.yaml. Compose auto-merges compose.override.yaml over compose.yaml when present. The override adds bind mount (./:/app - replaces baked image code with live working copy) and port mappings. CI never has the file - absence is the mechanism. Bind mount also fixes UID ownership: baked files owned by www-data (uid 33), container runs as host user (uid 1000); mount replaces /app with host-owned files. Export USERID/GROUPID in the Makefile via $(shell id -u). Compose profiles (dev/ci/prod/tools) select which services start; the override controls how - they are independent.
+```
+
+**[Jenkins Multibranch Pipelines](https://michalsniezko.github.io/devops-infrastructure-cicd/jenkins-multibranch-pipelines.html)**
+```
+Jenkins multibranch pipeline: one Jenkinsfile in the repo root runs for every branch. Branch discovery via periodic scanning - guard against spurious indexing builds by checking buildCauses for BranchIndexingCause and aborting. Use when { branch 'main' } to gate push/deploy stages. options { disableConcurrentBuilds() } serialises builds per branch - always pair with timeout() or a hung build blocks the queue. Parameters are not available on the first build of a new branch - always set safe defaults. Sanitise branch names for use in URLs/state paths (slashes, special chars). Shared libraries loaded with @Library('name@version') _ extract reusable pipeline functions into vars/functionName.groovy. Never hardcode credentials - use credentials() binding or withCredentials block.
 ```
 
 ---
