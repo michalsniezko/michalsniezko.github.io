@@ -1,7 +1,7 @@
 ---
 layout: default
 title: PHP Persistent Database Connections
-parent: Database Patterns
+parent: Database & Persistence
 nav_order: 10
 ---
 
