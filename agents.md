@@ -31,6 +31,7 @@ When working on the following topics, read the linked article before writing cod
 - PostgreSQL TOAST and WAL: https://michalsniezko.github.io/database-patterns/postgres-toast-wal.html
 - Active Record vs Data Mapper: https://michalsniezko.github.io/database-patterns/active-record-vs-data-mapper.html
 - Database-backed task queue: https://michalsniezko.github.io/backend-patterns-optimization/database-backed-task-queue.html
+- PHP persistent DB connections vs PgBouncer: https://michalsniezko.github.io/database-patterns/php-persistent-connections.html
 
 # PHP Patterns
 - Generator pipelines: https://michalsniezko.github.io/backend-patterns-optimization/generator-patterns.html
@@ -177,6 +178,11 @@ Avoid SELECT * on tables with large JSONB or TEXT columns - TOAST decompresses e
 **[Database-Backed Task Queue](https://michalsniezko.github.io/backend-patterns-optimization/database-backed-task-queue.html)**
 ```
 For transactional async tasks: use a DB table with a status enum (0=QUEUE, 1=SENT, 2=FAILED) instead of an external broker. Enqueue inside the same transaction as the triggering business operation. Add a partial index WHERE status = 0 for the worker poll query. Add retry_count for exponential backoff.
+```
+
+**[PHP Persistent DB Connections vs PgBouncer](https://michalsniezko.github.io/database-patterns/php-persistent-connections.html)**
+```
+PHP persistent database connections (PDO::ATTR_PERSISTENT): PHP-FPM creates one persistent connection per worker process, not a global pool. Connections carry session state between requests - active transactions, SET variables, named prepared statements. If a request crashes mid-transaction the next request inherits the open transaction. Persistent connections are not safe for PHP-FPM web applications. Use PgBouncer instead: it sits between PHP and PostgreSQL and multiplexes many application connections through a small pool of real server connections. Transaction pooling mode: server connection held only for the duration of a transaction, supporting many more application connections than server connections. Use ordinary non-persistent PDO connections pointing at PgBouncer's port. Detect leaked transactions in pg_stat_activity WHERE state = 'idle in transaction'.
 ```
 
 ---
