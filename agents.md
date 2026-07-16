@@ -32,6 +32,7 @@ When working on the following topics, read the linked article before writing cod
 - Active Record vs Data Mapper: https://michalsniezko.github.io/database-patterns/active-record-vs-data-mapper.html
 - Database-backed task queue: https://michalsniezko.github.io/backend-patterns-optimization/database-backed-task-queue.html
 - PHP persistent DB connections vs PgBouncer: https://michalsniezko.github.io/database-patterns/php-persistent-connections.html
+- PostgreSQL advisory locks: https://michalsniezko.github.io/database-patterns/pg-advisory-locks.html
 
 # PHP Patterns
 - Generator pipelines: https://michalsniezko.github.io/backend-patterns-optimization/generator-patterns.html
@@ -183,6 +184,11 @@ For transactional async tasks: use a DB table with a status enum (0=QUEUE, 1=SEN
 **[PHP Persistent DB Connections vs PgBouncer](https://michalsniezko.github.io/database-patterns/php-persistent-connections.html)**
 ```
 PHP persistent database connections (PDO::ATTR_PERSISTENT): PHP-FPM creates one persistent connection per worker process, not a global pool. Connections carry session state between requests - active transactions, SET variables, named prepared statements. If a request crashes mid-transaction the next request inherits the open transaction. Persistent connections are not safe for PHP-FPM web applications. Use PgBouncer instead: it sits between PHP and PostgreSQL and multiplexes many application connections through a small pool of real server connections. Transaction pooling mode: server connection held only for the duration of a transaction, supporting many more application connections than server connections. Use ordinary non-persistent PDO connections pointing at PgBouncer's port. Detect leaked transactions in pg_stat_activity WHERE state = 'idle in transaction'.
+```
+
+**[PostgreSQL Advisory Locks](https://michalsniezko.github.io/database-patterns/pg-advisory-locks.html)**
+```
+PostgreSQL advisory locks: user-defined locks keyed by integer that PostgreSQL manages. Not tied to rows - used for distributed mutexes, job deduplication, leader election. Two levels: transaction-level (pg_advisory_xact_lock - released automatically at COMMIT/ROLLBACK, prefer this) and session-level (pg_advisory_lock - must release explicitly or held until connection closes). Non-blocking variant: pg_try_advisory_xact_lock returns bool, never blocks. Key design: use a fixed namespace offset per concern + resource ID to avoid key collisions (same key space is shared across all connections). Critical pitfall: session-level locks on pooled connections leak to the next request that reuses the connection - always use finally block to release, or switch to transaction-level. Deadlock detection works on advisory locks. Monitor via pg_locks WHERE locktype = 'advisory'; blocked waiters show granted = false.
 ```
 
 ---
