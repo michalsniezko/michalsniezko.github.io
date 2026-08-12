@@ -41,6 +41,7 @@ When working on the following topics, read the linked article before writing cod
 - Processor chain with error accumulation: https://michalsniezko.github.io/backend-patterns-optimization/processor-chain-error-accumulation.html
 - Event sourcing: https://michalsniezko.github.io/backend-patterns-optimization/event-sourcing.html
 - Event replay from changelogs: https://michalsniezko.github.io/backend-patterns-optimization/changelog-reconstruction-replay.html
+- FrankenPHP worker mode: https://michalsniezko.github.io/backend-patterns-optimization/frankenphp.html
 
 # Testing
 - Test types (unit/integration/functional/API): https://michalsniezko.github.io/testing-concurrency-locks/test-types.html
@@ -223,6 +224,11 @@ For auditable state: store every change as an immutable event (type, payload, ti
 **[Event Replay from Changelog](https://michalsniezko.github.io/backend-patterns-optimization/changelog-reconstruction-replay.html)**
 ```
 To reconstruct historical state: fetch changelog rows up to the target timestamp and replay through a registry of Strategy objects keyed by change type. Unknown change types are skipped. Avoids encoding all replay logic in a single monolithic function.
+```
+
+**[FrankenPHP](https://michalsniezko.github.io/backend-patterns-optimization/frankenphp.html)**
+```
+FrankenPHP: PHP application server built on Caddy (Go). Worker mode is the key feature - PHP application boots once per worker process, then handles requests in a loop via frankenphp_handle_request(). Boot cost (autoloading, DI container, config) paid once instead of per-request; reduces response time 40-80% for bootstrap-heavy apps. State leakage risk: static properties, singletons, global vars are NOT reset between requests (unlike PHP-FPM). Symfony integration via runtime/frankenphp-symfony + APP_RUNTIME env var - no custom worker script needed, index.php stays unchanged. Symfony resets container-managed services implementing ResetInterface automatically after each request (Symfony's own services do this; your custom services must implement reset() too). Static class properties and objects created outside the container do NOT reset. Check what resets with: bin/console debug:container --tag=kernel.reset. APP_DEBUG=1 enables per-request kernel reboot for local dev (same as FPM behaviour, no worker-mode perf). Restart workers after deploy with kill -USR1. Memory leaks accumulate - mitigate with gc_collect_cycles() and --max-requests N flag.
 ```
 
 ---
