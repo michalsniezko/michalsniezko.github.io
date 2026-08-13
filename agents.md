@@ -75,6 +75,9 @@ When working on the following topics, read the linked article before writing cod
 - Docker Compose override for local development: https://michalsniezko.github.io/devops-infrastructure-cicd/compose-override-local-dev.html
 - Jenkins multibranch pipelines: https://michalsniezko.github.io/devops-infrastructure-cicd/jenkins-multibranch-pipelines.html
 
+# AI Tooling
+- STE100 for agent-facing text (tool descriptions, error messages, prompts): https://michalsniezko.github.io/ai-tooling/ste100-agent-output.html
+
 # Frontend & JavaScript
 - Effector state management: https://michalsniezko.github.io/js-frontend-tooling/effector.html
 - Rollup/esbuild for libraries: https://michalsniezko.github.io/js-frontend-tooling/rollup-bundler.html
@@ -373,6 +376,15 @@ Two-layer Compose pattern: commit compose.yaml (works everywhere) and compose.ov
 **[Jenkins Multibranch Pipelines](https://michalsniezko.github.io/devops-infrastructure-cicd/jenkins-multibranch-pipelines.html)**
 ```
 Jenkins multibranch pipeline: one Jenkinsfile in the repo root runs for every branch. Branch discovery via periodic scanning - guard against spurious indexing builds by checking buildCauses for BranchIndexingCause and aborting. Use when { branch 'main' } to gate push/deploy stages. options { disableConcurrentBuilds() } serialises builds per branch - always pair with timeout() or a hung build blocks the queue. Parameters are not available on the first build of a new branch - always set safe defaults. Sanitise branch names for use in URLs/state paths (slashes, special chars). Shared libraries loaded with @Library('name@version') _ extract reusable pipeline functions into vars/functionName.groovy. Never hardcode credentials - use credentials() binding or withCredentials block.
+```
+
+---
+
+### AI Tooling
+
+**[STE100 for Agent-Facing Text](https://michalsniezko.github.io/ai-tooling/ste100-agent-output.html)**
+```
+ASD-STE100 for agent-facing text: aerospace controlled-language standard adapted for AI agent consumption. Core structural rules (apply these without the official dictionary): active voice, one instruction per sentence, max 20 words (procedures) / 25 words (descriptions), no semicolons, no phrasal verbs (use plain single verb), noun clusters max 3 words, no nominalization, no marketing adjectives. Critical: preserve modality - "may have failed" must not become "failed"; hedges are information, not noise. Apply to: tool descriptions, error messages, system prompts, inter-agent instructions. Claude Code skill at github.com/danyuchn/asd-ste100-skill - install to ~/.claude/skills/asd-ste100, trigger with "disambiguate this" / "apply STE100". Two modes: Strict (all rules) and STE-flavored (structural only, for prose).
 ```
 
 ---
