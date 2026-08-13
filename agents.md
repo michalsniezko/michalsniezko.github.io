@@ -1,7 +1,7 @@
 ---
 layout: default
 title: For AI Agents
-nav_order: 11
+nav_order: 12
 ---
 
 # For AI Agents
