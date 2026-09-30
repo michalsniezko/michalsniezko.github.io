@@ -33,6 +33,7 @@ When working on the following topics, read the linked article before writing cod
 - Database-backed task queue: https://michalsniezko.github.io/backend-patterns-optimization/database-backed-task-queue.html
 - PHP persistent DB connections vs PgBouncer: https://michalsniezko.github.io/database-patterns/php-persistent-connections.html
 - PostgreSQL advisory locks: https://michalsniezko.github.io/database-patterns/pg-advisory-locks.html
+- Redis eviction policies: https://michalsniezko.github.io/database-patterns/redis-eviction-policies.html
 
 # PHP Patterns
 - Generator pipelines: https://michalsniezko.github.io/backend-patterns-optimization/generator-patterns.html
@@ -193,6 +194,11 @@ PHP persistent database connections (PDO::ATTR_PERSISTENT): PHP-FPM creates one 
 **[PostgreSQL Advisory Locks](https://michalsniezko.github.io/database-patterns/pg-advisory-locks.html)**
 ```
 PostgreSQL advisory locks: user-defined locks keyed by integer that PostgreSQL manages. Not tied to rows - used for distributed mutexes, job deduplication, leader election. Two levels: transaction-level (pg_advisory_xact_lock - released automatically at COMMIT/ROLLBACK, prefer this) and session-level (pg_advisory_lock - must release explicitly or held until connection closes). Non-blocking variant: pg_try_advisory_xact_lock returns bool, never blocks. Key design: use a fixed namespace offset per concern + resource ID to avoid key collisions (same key space is shared across all connections). Critical pitfall: session-level locks on pooled connections leak to the next request that reuses the connection - always use finally block to release, or switch to transaction-level. Deadlock detection works on advisory locks. Monitor via pg_locks WHERE locktype = 'advisory'; blocked waiters show granted = false.
+```
+
+**[Redis Eviction Policies](https://michalsniezko.github.io/database-patterns/redis-eviction-policies.html)**
+```
+Redis eviction: when used_memory exceeds maxmemory, Redis applies maxmemory-policy before each write. maxmemory default 0 = no limit (64-bit). Open-source default policy is noeviction (writes fail with "OOM command not allowed", reads and DEL still work); AWS ElastiCache default is volatile-lru. Policies: noeviction, allkeys-lru/lfu/random (any key), volatile-lru/lfu/random/ttl (only keys with TTL). Pitfall: volatile-* with no TTL keys acts like noeviction - writes fail. LRU/LFU are approximate (sampling, maxmemory-samples default 5, 10 is closer to true LRU). LFU uses a logarithmic 8-bit counter (lfu-log-factor, lfu-decay-time); use LFU when some keys are always hot and scans would push them out under LRU. Eviction ignores TTL: a key can be evicted before it expires. Eviction (evicted_keys) is not expiration (expired_keys). Rule: separate instances - cache on allkeys-lru or allkeys-lfu, locks/queues/sessions/Messenger on noeviction. Never store lock keys on an evicting instance: an evicted lock lets two processes run the critical section. Logical databases (/0, /1) share maxmemory and policy, so they do not separate anything. Monitor evicted_keys, hit rate (keyspace_hits / (hits + misses)), used_memory vs maxmemory.
 ```
 
 ---
