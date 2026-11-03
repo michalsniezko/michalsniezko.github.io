@@ -34,6 +34,7 @@ When working on the following topics, read the linked article before writing cod
 - PHP persistent DB connections vs PgBouncer: https://michalsniezko.github.io/database-patterns/php-persistent-connections.html
 - PostgreSQL advisory locks: https://michalsniezko.github.io/database-patterns/pg-advisory-locks.html
 - Redis eviction policies: https://michalsniezko.github.io/database-patterns/redis-eviction-policies.html
+- Full load vs incremental load: https://michalsniezko.github.io/database-patterns/full-vs-incremental-load.html
 
 # PHP Patterns
 - Generator pipelines: https://michalsniezko.github.io/backend-patterns-optimization/generator-patterns.html
@@ -199,6 +200,11 @@ PostgreSQL advisory locks: user-defined locks keyed by integer that PostgreSQL m
 **[Redis Eviction Policies](https://michalsniezko.github.io/database-patterns/redis-eviction-policies.html)**
 ```
 Redis eviction: when used_memory exceeds maxmemory, Redis applies maxmemory-policy before each write. maxmemory default 0 = no limit (64-bit). Open-source default policy is noeviction (writes fail with "OOM command not allowed", reads and DEL still work); AWS ElastiCache default is volatile-lru. Policies: noeviction, allkeys-lru/lfu/random (any key), volatile-lru/lfu/random/ttl (only keys with TTL). Pitfall: volatile-* with no TTL keys acts like noeviction - writes fail. LRU/LFU are approximate (sampling, maxmemory-samples default 5, 10 is closer to true LRU). LFU uses a logarithmic 8-bit counter (lfu-log-factor, lfu-decay-time); use LFU when some keys are always hot and scans would push them out under LRU. Eviction ignores TTL: a key can be evicted before it expires. Eviction (evicted_keys) is not expiration (expired_keys). Rule: separate instances - cache on allkeys-lru or allkeys-lfu, locks/queues/sessions/Messenger on noeviction. Never store lock keys on an evicting instance: an evicted lock lets two processes run the critical section. Logical databases (/0, /1) share maxmemory and policy, so they do not separate anything. Monitor evicted_keys, hit rate (keyspace_hits / (hits + misses)), used_memory vs maxmemory.
+```
+
+**[Full Load vs Incremental Load](https://michalsniezko.github.io/database-patterns/full-vs-incremental-load.html)**
+```
+Copying data from PostgreSQL to a data warehouse (e.g. Redshift). Full load: copy the whole table each run and replace the warehouse copy. Always correct (picks up updates, deletes, manual SQL fixes), but slow and puts load on the source that grows with table size. Load into a staging table and swap with ALTER TABLE RENAME in one transaction; never TRUNCATE + INSERT in Redshift (TRUNCATE commits immediately, readers see an empty table). Incremental load: copy only rows WHERE updated_at > watermark, then upsert. Fast, but misses rows changed without updated_at moving and never sees hard deletes - silently. Make it safe: set updated_at with a BEFORE UPDATE trigger, index updated_at (CREATE INDEX CONCURRENTLY), take the watermark from max(updated_at) loaded, not the job clock, re-read an overlap window (now() is transaction start time, so late commits can fall behind the watermark), and make the load idempotent (Redshift does not enforce primary keys - use MERGE or delete+insert from staging). Deletes: soft delete (deleted_at), periodic full reload, ID comparison, or CDC from the WAL (Debezium, AWS DMS). Append-only tables: incremental by id with an overlap. Default: incremental often + full reload sometimes. Read from a replica, not the primary.
 ```
 
 ---
