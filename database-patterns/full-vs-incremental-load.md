@@ -63,6 +63,8 @@ DROP TABLE payment_history_old;
 
 Readers see either the full old copy or the full new copy, never a half-loaded one. If the load fails, the old table is still there.
 
+One catch: a normal Redshift view is bound to the table itself, not to its name. After the rename, such a view still reads `payment_history_old`, and the `DROP TABLE` fails because the view depends on it. Create views on swapped tables as late-binding views (`CREATE VIEW ... WITH NO SCHEMA BINDING`), which look up the table by name when they run.
+
 ---
 
 ## Incremental Load
@@ -218,7 +220,7 @@ And in both cases, read from a read replica, not the primary database. The load 
 ### For AI agents
 
 ```
-Copying data from PostgreSQL to a data warehouse (e.g. Redshift). Full load: copy the whole table each run and replace the warehouse copy. Always correct (picks up updates, deletes, manual SQL fixes), but slow and puts load on the source that grows with table size. Load into a staging table and swap with ALTER TABLE RENAME in one transaction; never TRUNCATE + INSERT in Redshift (TRUNCATE commits immediately, readers see an empty table). Incremental load: copy only rows WHERE updated_at > watermark, then upsert. Fast, but misses rows changed without updated_at moving and never sees hard deletes - silently. Make it safe: set updated_at with a BEFORE UPDATE trigger, index updated_at (CREATE INDEX CONCURRENTLY), take the watermark from max(updated_at) loaded, not the job clock, re-read an overlap window (now() is transaction start time, so late commits can fall behind the watermark), and make the load idempotent (Redshift does not enforce primary keys - use MERGE or delete+insert from staging). Deletes: soft delete (deleted_at), periodic full reload, ID comparison, or CDC from the WAL (Debezium, AWS DMS). Append-only tables: incremental by id with an overlap. Default: incremental often + full reload sometimes. Read from a replica, not the primary.
+Copying data from PostgreSQL to a data warehouse (e.g. Redshift). Full load: copy the whole table each run and replace the warehouse copy. Always correct (picks up updates, deletes, manual SQL fixes), but slow and puts load on the source that grows with table size. Load into a staging table and swap with ALTER TABLE RENAME in one transaction (views on the table must be late-binding, WITH NO SCHEMA BINDING, or they keep pointing at the old table); never TRUNCATE + INSERT in Redshift (TRUNCATE commits immediately, readers see an empty table). Incremental load: copy only rows WHERE updated_at > watermark, then upsert. Fast, but misses rows changed without updated_at moving and never sees hard deletes - silently. Make it safe: set updated_at with a BEFORE UPDATE trigger, index updated_at (CREATE INDEX CONCURRENTLY), take the watermark from max(updated_at) loaded, not the job clock, re-read an overlap window (now() is transaction start time, so late commits can fall behind the watermark), and make the load idempotent (Redshift does not enforce primary keys - use MERGE or delete+insert from staging). Deletes: soft delete (deleted_at), periodic full reload, ID comparison, or CDC from the WAL (Debezium, AWS DMS). Append-only tables: incremental by id with an overlap. Default: incremental often + full reload sometimes. Read from a replica, not the primary.
 ```
 
 Reference: `https://michalsniezko.github.io/database-patterns/full-vs-incremental-load.html`
